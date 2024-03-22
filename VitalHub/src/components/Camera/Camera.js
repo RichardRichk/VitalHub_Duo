@@ -98,7 +98,7 @@ export const CameraComp = ({ visible, setShowCamera, setUriCameraCapture }) => {
                             <FontAwesome name="trash" size={23} color={'#ff0000'} />
                         </TouchableOpacity>
 
-                        <TouchableOpacity style={styles.btnUpload} onPress={() => {SavePhoto(); SendFormPhoto()}}>
+                        <TouchableOpacity style={styles.btnUpload} onPress={() => {SavePhoto(); SendFormPhoto(); setOpenModal(false)}}>
                             <FontAwesome name="save" size={23} color={'#121212'} />
                         </TouchableOpacity>
 
