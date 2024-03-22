@@ -136,7 +136,7 @@ const styles = StyleSheet.create({
 
         alignItems: 'center',
 
-        justifyContent: 'center'
+        justifyContent: 'center',
     },
     btnTake: {
         margin: 20,
@@ -146,7 +146,7 @@ const styles = StyleSheet.create({
 
         alignItems: 'center',
 
-        justifyContent: 'center'
+        justifyContent: 'center',
     },
     btnGallery: {
         margin: 20,

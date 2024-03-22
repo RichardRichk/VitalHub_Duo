@@ -6,10 +6,26 @@ import { LinkMedium } from "../../components/Links/Style"
 import { Button, GoogleButton, TextButton, TextGoogleButton } from "../../components/Button/Style"
 import { ContentAccount, ContentForgot, ContentText } from "../../components/ContentAccount/Style"
 
+import api from "../../Service/Service"
+import { useState } from "react"
+
 export const LoginFunc = ({navigation}) => {
 
+    const [email, setEmail] = useState('');
+    const [senha, setSenha] = useState('');
+
+
+//Chama funcao de login
     async function Login(){
-        navigation.replace("Main")
+
+        //chamar a api de login 
+        const response = await api.post('/login', {
+            email: email,
+            senha: senha
+        })
+
+        console.log(response)
+        // navigation.replace("Main")
     }
 
     return(
@@ -23,10 +39,14 @@ export const LoginFunc = ({navigation}) => {
  
             <Input
                 placeholder="Usuario ou Email"
+                onChangeText = {(txt) => setEmail(txt)}
+                value={email}
             />
             <Input
                 placeholder="Senha"
                 secureTextEntry={true}
+                onChangeText = {(txt) => setSenha(txt)}
+                value={senha}
             />
 
             
