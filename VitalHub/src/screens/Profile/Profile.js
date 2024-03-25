@@ -4,10 +4,33 @@ import { HeaderPhotoContainer, HeaderPhoto } from "../../components/HeaderPhoto/
 import { InputDouble, InputLabel, InputProfile } from "../../components/Input/Style"
 import { ModalProfile } from "../../components/Modal/Style"
 import { SubTitle, Title } from "../../components/Title/Style"
+<<<<<<< HEAD
 import { Button, ButtonModal, ButtonSecondary, ButtonSecondaryTitle, TextButton } from "../../components/Button/Style"
+=======
+import { Button, ButtonSecondary, ButtonSecondaryTitle, TextButton } from "../../components/Button/Style"
+>>>>>>> Joao
 import { ContentInput } from "../../components/ContentAccount/Style"
 
+import { userEncodeToken } from "../../utils/Auth"
+import AsyncStorage from "@react-native-async-storage/async-storage"
+
 export const ProfileFunc = ({navigation}) => {
+
+    const handleLogout = async () => {
+        // Obtenha o token do AsyncStorage (supondo que você o tenha armazenado com o nome 'token')
+        const token = await AsyncStorage.getItem('token');
+
+        // Verifique se há um token antes de codificá-lo novamente
+        if (token) {
+            // Chame a função userEncodeToken para codificar o token novamente
+            await userEncodeToken(token);
+        }
+
+        navigation.replace('Login')
+
+        console.log(token);
+    };
+
     return(
     <Container>
 
@@ -61,8 +84,15 @@ export const ProfileFunc = ({navigation}) => {
 
             </Button>
 
+<<<<<<< HEAD
             <ButtonSecondary>
                 <ButtonSecondaryTitle>Sair do APP</ButtonSecondaryTitle>
+=======
+            <ButtonSecondary onPress={handleLogout}>
+                <ButtonSecondaryTitle>
+                    Sair do app
+                </ButtonSecondaryTitle>
+>>>>>>> Joao
             </ButtonSecondary>
 
             </ContainerScroll>

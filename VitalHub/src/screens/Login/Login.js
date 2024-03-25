@@ -5,6 +5,7 @@ import { Input } from "../../components/Input/Style"
 import { LinkMedium } from "../../components/Links/Style"
 import { Button, GoogleButton, TextButton, TextGoogleButton } from "../../components/Button/Style"
 import { ContentAccount, ContentForgot, ContentText } from "../../components/ContentAccount/Style"
+import AsyncStorage from "@react-native-async-storage/async-storage"
 
 import api from "../../Service/Service"
 import { useState } from "react"
@@ -14,8 +15,8 @@ import AsyncStorage from "@react-native-async-storage/async-storage"
 
 export const LoginFunc = ({navigation}) => {
 
-    const [email, setEmail] = useState('paciente@email.com');
-    const [senha, setSenha] = useState('paciente@email.com');
+    const [email, setEmail] = useState('Luci@gmail');
+    const [senha, setSenha] = useState('123456');
 
 
 //Chama funcao de login
@@ -28,7 +29,10 @@ export const LoginFunc = ({navigation}) => {
         })
 
         await AsyncStorage.setItem('token', JSON.stringify(response.data))
+<<<<<<< HEAD
 
+=======
+>>>>>>> Joao
         navigation.replace("Main")
     }
 

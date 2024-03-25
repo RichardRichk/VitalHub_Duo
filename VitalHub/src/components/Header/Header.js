@@ -6,7 +6,11 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { userDecodeToken } from '../../utils/Auth'
 import { useEffect, useState } from "react";
 
+<<<<<<< HEAD
 export const Header = ({navigation}) => {
+=======
+export const Header = ({ navigation }) => {
+>>>>>>> Joao
 
     const [name, setName] = useState(['']);
 
@@ -36,10 +40,15 @@ export const Header = ({navigation}) => {
                     <NameUser>{name}</NameUser>
                 </DataUser>
             </BoxUser>
+<<<<<<< HEAD
 	<MaterialIcons
+=======
+            
+            <MaterialIcons
+>>>>>>> Joao
                 name="notifications"
                 size={30}
-                color="#FBFBFB" 
+                color="#FBFBFB"
                 style={{ marginTop: 20, marginRight: 20 }}
             />
         </ContainerHeader>
