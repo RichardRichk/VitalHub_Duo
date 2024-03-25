@@ -4,11 +4,9 @@ import { HeaderPhotoContainer, HeaderPhoto } from "../../components/HeaderPhoto/
 import { InputDouble, InputLabel, InputProfile } from "../../components/Input/Style"
 import { ModalProfile } from "../../components/Modal/Style"
 import { SubTitle, Title } from "../../components/Title/Style"
-<<<<<<< HEAD
-import { Button, ButtonModal, ButtonSecondary, ButtonSecondaryTitle, TextButton } from "../../components/Button/Style"
-=======
+
 import { Button, ButtonSecondary, ButtonSecondaryTitle, TextButton } from "../../components/Button/Style"
->>>>>>> Joao
+
 import { ContentInput } from "../../components/ContentAccount/Style"
 
 import { userEncodeToken } from "../../utils/Auth"
@@ -84,15 +82,11 @@ export const ProfileFunc = ({navigation}) => {
 
             </Button>
 
-<<<<<<< HEAD
-            <ButtonSecondary>
-                <ButtonSecondaryTitle>Sair do APP</ButtonSecondaryTitle>
-=======
+
             <ButtonSecondary onPress={handleLogout}>
                 <ButtonSecondaryTitle>
                     Sair do app
                 </ButtonSecondaryTitle>
->>>>>>> Joao
             </ButtonSecondary>
 
             </ContainerScroll>

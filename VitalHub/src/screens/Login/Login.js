@@ -15,8 +15,8 @@ import AsyncStorage from "@react-native-async-storage/async-storage"
 
 export const LoginFunc = ({navigation}) => {
 
-    const [email, setEmail] = useState('Luci@gmail');
-    const [senha, setSenha] = useState('123456');
+    const [email, setEmail] = useState('paciente@email.com');
+    const [senha, setSenha] = useState('paciente@email.com');
 
 
 //Chama funcao de login
@@ -29,10 +29,7 @@ export const LoginFunc = ({navigation}) => {
         })
 
         await AsyncStorage.setItem('token', JSON.stringify(response.data))
-<<<<<<< HEAD
 
-=======
->>>>>>> Joao
         navigation.replace("Main")
     }
 
