@@ -8,18 +8,19 @@ import { ContentAccount, ContentForgot, ContentText } from "../../components/Con
 
 import api from "../../Service/Service"
 import { useState } from "react"
+import axios from "axios"
 
 export const LoginFunc = ({navigation}) => {
 
-    const [email, setEmail] = useState('');
-    const [senha, setSenha] = useState('');
+    const [email, setEmail] = useState('paciente@email.com');
+    const [senha, setSenha] = useState('paciente@email.com');
 
 
 //Chama funcao de login
     async function Login(){
 
         //chamar a api de login 
-        const response = await api.post('/login', {
+        const response = await api.post('/Login', {
             email: email,
             senha: senha
         })
