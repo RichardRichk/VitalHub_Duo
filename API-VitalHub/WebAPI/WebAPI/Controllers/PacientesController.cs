@@ -13,11 +13,11 @@ namespace WebAPI.Controllers
     [ApiController]
     public class PacientesController : ControllerBase
     {
-        private IPacienteRepository pacienteRepository { get; set; }
+        private IPacienteRepository _pacienteRepository { get; set; }
 
         public PacientesController()
         {
-            pacienteRepository = new PacienteRepository();
+            _pacienteRepository = new PacienteRepository();
         }
 
         [Authorize]
@@ -26,7 +26,7 @@ namespace WebAPI.Controllers
         {
             Guid idUsuario = Guid.Parse(HttpContext.User.Claims.First(c => c.Type == JwtRegisteredClaimNames.Jti).Value);
 
-            return Ok(pacienteRepository.BuscarAgendadas(idUsuario));
+            return Ok(_pacienteRepository.BuscarAgendadas(idUsuario));
         }
 
         [Authorize]
@@ -35,7 +35,7 @@ namespace WebAPI.Controllers
         {
             Guid idUsuario = Guid.Parse(HttpContext.User.Claims.First(c => c.Type == JwtRegisteredClaimNames.Jti).Value);
 
-            return Ok(pacienteRepository.BuscarRealizadas(idUsuario));
+            return Ok(_pacienteRepository.BuscarRealizadas(idUsuario));
         }
 
         [Authorize]
@@ -44,7 +44,7 @@ namespace WebAPI.Controllers
         {
             Guid idUsuario = Guid.Parse(HttpContext.User.Claims.First(c => c.Type == JwtRegisteredClaimNames.Jti).Value);
 
-            return Ok(pacienteRepository.BuscarRealizadas(idUsuario));
+            return Ok(_pacienteRepository.BuscarRealizadas(idUsuario));
         }
 
         [HttpGet("PerfilLogado")]
@@ -52,7 +52,7 @@ namespace WebAPI.Controllers
         {
             Guid idUsuario = Guid.Parse(HttpContext.User.Claims.First(c => c.Type == JwtRegisteredClaimNames.Jti).Value);
 
-            return Ok(pacienteRepository.BuscarPorId(idUsuario));
+            return Ok(_pacienteRepository.BuscarPorId(idUsuario));
         }
 
         [Authorize]
@@ -61,7 +61,7 @@ namespace WebAPI.Controllers
         {
             Guid idUsuario = user.Id;
 
-            return Ok(pacienteRepository.BuscarPorId(idUsuario));
+            return Ok(_pacienteRepository.BuscarPorId(idUsuario));
         }
 
         [HttpPost]
@@ -88,7 +88,7 @@ namespace WebAPI.Controllers
             user.Paciente.Endereco.Cep = pacienteModel.Cep;
 
 
-            pacienteRepository.Cadastrar(user);
+            _pacienteRepository.Cadastrar(user);
 
             return Ok();
         }
