@@ -10,6 +10,8 @@ import api from "../../Service/Service"
 import { useState } from "react"
 import axios from "axios"
 
+import AsyncStorage from "@react-native-async-storage/async-storage"
+
 export const LoginFunc = ({navigation}) => {
 
     const [email, setEmail] = useState('paciente@email.com');
@@ -25,8 +27,9 @@ export const LoginFunc = ({navigation}) => {
             senha: senha
         })
 
-        console.log(response)
-        // navigation.replace("Main")
+        await AsyncStorage.setItem('token', JSON.stringify(response.data))
+
+        navigation.replace("Main")
     }
 
     return(

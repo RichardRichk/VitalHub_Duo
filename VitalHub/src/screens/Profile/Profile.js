@@ -4,7 +4,7 @@ import { HeaderPhotoContainer, HeaderPhoto } from "../../components/HeaderPhoto/
 import { InputDouble, InputLabel, InputProfile } from "../../components/Input/Style"
 import { ModalProfile } from "../../components/Modal/Style"
 import { SubTitle, Title } from "../../components/Title/Style"
-import { Button, TextButton } from "../../components/Button/Style"
+import { Button, ButtonModal, ButtonSecondary, ButtonSecondaryTitle, TextButton } from "../../components/Button/Style"
 import { ContentInput } from "../../components/ContentAccount/Style"
 
 export const ProfileFunc = ({navigation}) => {
@@ -60,6 +60,10 @@ export const ProfileFunc = ({navigation}) => {
                 <TextButton>SALVAR</TextButton>
 
             </Button>
+
+            <ButtonSecondary>
+                <ButtonSecondaryTitle>Sair do APP</ButtonSecondaryTitle>
+            </ButtonSecondary>
 
             </ContainerScroll>
     
