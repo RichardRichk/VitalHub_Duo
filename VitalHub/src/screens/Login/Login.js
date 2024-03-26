@@ -9,7 +9,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage"
 
 import api from "../../Service/Service"
 import { useState } from "react"
-import axios from "axios"
+
 
 export const LoginFunc = ({navigation}) => {
 

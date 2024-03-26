@@ -10,6 +10,11 @@ import { ContentInput } from "../../components/ContentAccount/Style"
 import { userEncodeToken } from "../../utils/Auth"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 
+//Importado funcao da utils/Auth
+import { userDecodeToken } from '../../utils/Auth'
+import { useEffect, useState } from "react";
+
+
 export const ProfileFunc = ({navigation}) => {
 
     const handleLogout = async () => {
@@ -27,6 +32,27 @@ export const ProfileFunc = ({navigation}) => {
         console.log(token);
     };
 
+    const [name, setName] = useState(['']);
+    const [email, setEmail] = useState('');
+
+    useEffect(() => {
+        const profileLoad = async () => {
+
+            const token = await userDecodeToken();
+
+            const nameParts = token.name.split(' ');
+
+            const names = nameParts.slice(0, 2).join(' ');
+
+            setName(names)
+
+            setEmail(token.email)
+        };
+
+        profileLoad();
+    }, []);
+    
+
     return(
     <Container>
 
@@ -37,8 +63,8 @@ export const ProfileFunc = ({navigation}) => {
             </HeaderPhotoContainer>
 
             <ModalProfile>
-                <Title>Richard Kosta</Title>
-                <SubTitle>richard.kosta@gmail.com</SubTitle>
+                <Title>{name}</Title>
+                <SubTitle>{email}</SubTitle>
             </ModalProfile>
 
             <ContainerScroll>
