@@ -13,11 +13,11 @@ namespace WebAPI.Controllers
     [ApiController]
     public class PacientesController : ControllerBase
     {
-        private IPacienteRepository _pacienteRepository { get; set; }
+        private IPacienteRepository pacienteRepository { get; set; }
 
         public PacientesController()
         {
-            _pacienteRepository = new PacienteRepository();
+            pacienteRepository = new PacienteRepository();
         }
 
         [Authorize]
@@ -26,7 +26,7 @@ namespace WebAPI.Controllers
         {
             Guid idUsuario = Guid.Parse(HttpContext.User.Claims.First(c => c.Type == JwtRegisteredClaimNames.Jti).Value);
 
-            return Ok(_pacienteRepository.BuscarAgendadas(idUsuario));
+            return Ok(pacienteRepository.BuscarAgendadas(idUsuario));
         }
 
         [Authorize]
@@ -35,7 +35,7 @@ namespace WebAPI.Controllers
         {
             Guid idUsuario = Guid.Parse(HttpContext.User.Claims.First(c => c.Type == JwtRegisteredClaimNames.Jti).Value);
 
-            return Ok(_pacienteRepository.BuscarRealizadas(idUsuario));
+            return Ok(pacienteRepository.BuscarRealizadas(idUsuario));
         }
 
         [Authorize]
@@ -44,7 +44,7 @@ namespace WebAPI.Controllers
         {
             Guid idUsuario = Guid.Parse(HttpContext.User.Claims.First(c => c.Type == JwtRegisteredClaimNames.Jti).Value);
 
-            return Ok(_pacienteRepository.BuscarRealizadas(idUsuario));
+            return Ok(pacienteRepository.BuscarRealizadas(idUsuario));
         }
 
         [HttpGet("PerfilLogado")]
@@ -52,16 +52,14 @@ namespace WebAPI.Controllers
         {
             Guid idUsuario = Guid.Parse(HttpContext.User.Claims.First(c => c.Type == JwtRegisteredClaimNames.Jti).Value);
 
-            return Ok(_pacienteRepository.BuscarPorId(idUsuario));
+            return Ok(pacienteRepository.BuscarPorId(idUsuario));
         }
 
-        [Authorize]
-        [HttpGet("BuscarPorID")]
-        public IActionResult BuscarPorID(Usuario user)
+        //[Authorize]
+        [HttpGet("BuscarPorID/{id}")]
+        public IActionResult BuscarPorID(Guid id)
         {
-            Guid idUsuario = user.Id;
-
-            return Ok(_pacienteRepository.BuscarPorId(idUsuario));
+            return Ok(pacienteRepository.BuscarPorId(id));
         }
 
         [HttpPost]
@@ -84,11 +82,10 @@ namespace WebAPI.Controllers
             user.Paciente.Endereco = new Endereco();
 
             user.Paciente.Endereco.Logradouro = pacienteModel.Logradouro;
-            user.Paciente.Endereco.Numero = pacienteModel.Numero;
+            user.Paciente.Endereco.Numero= pacienteModel.Numero;
             user.Paciente.Endereco.Cep = pacienteModel.Cep;
 
-
-            _pacienteRepository.Cadastrar(user);
+            pacienteRepository.Cadastrar(user);
 
             return Ok();
         }
