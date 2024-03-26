@@ -19,7 +19,7 @@ export const Header = ({ navigation }) => {
 
             const names = nameParts.slice(0, 2).join(' ');
 
-            setName(names)
+            setName(names);
         };
 
         profileLoad();

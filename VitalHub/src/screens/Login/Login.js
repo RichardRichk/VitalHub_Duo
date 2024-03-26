@@ -9,28 +9,42 @@ import AsyncStorage from "@react-native-async-storage/async-storage"
 
 import api from "../../Service/Service"
 import { useState } from "react"
-import axios from "axios"
+import { ActivityIndicator, Alert } from "react-native"
 
-import AsyncStorage from "@react-native-async-storage/async-storage"
 
 export const LoginFunc = ({navigation}) => {
 
-    const [email, setEmail] = useState('paciente@email.com');
-    const [senha, setSenha] = useState('paciente@email.com');
+    const [email, setEmail] = useState('Luci@gmail');
+    const [senha, setSenha] = useState('123456');
+    const [loading, setLoading] = useState(false);
 
 
 //Chama funcao de login
     async function Login(){
 
-        //chamar a api de login 
-        const response = await api.post('/Login', {
-            email: email,
-            senha: senha
-        })
+        setLoading(true); // Ativa a animação de loading
+        try {
+            //chamar a api de login 
+            const response = await api.post('/Login', {
+                email: email,
+                senha: senha
+            });
 
-        await AsyncStorage.setItem('token', JSON.stringify(response.data))
+            if (response.status === 200) {
 
-        navigation.replace("Main")
+                await AsyncStorage.setItem('token', JSON.stringify(response.data))
+
+                setLoading(true);
+
+                navigation.replace("Main")
+
+            }
+
+        } catch (error) {
+            Alert.alert('Falha no login!', 'Verifique seus dados ou aguarde um momento.')
+            setLoading(false);
+        }
+
     }
 
     return(
@@ -65,8 +79,16 @@ export const LoginFunc = ({navigation}) => {
             
             <Button
             onPress={() => Login()}
+            disabled={loading}
             >
-                <TextButton>ENTRAR</TextButton>
+                {loading ? (
+                    // Componente de animação de loading
+                    <ActivityIndicator size="small" color="white" />
+                ) : (
+                    // Texto do botão
+                    <TextButton>ENTRAR</TextButton>
+                )}
+
             </Button>
                 
             

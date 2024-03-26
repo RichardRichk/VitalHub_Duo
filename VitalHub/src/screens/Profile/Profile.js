@@ -4,13 +4,16 @@ import { HeaderPhotoContainer, HeaderPhoto } from "../../components/HeaderPhoto/
 import { InputDouble, InputLabel, InputProfile } from "../../components/Input/Style"
 import { ModalProfile } from "../../components/Modal/Style"
 import { SubTitle, Title } from "../../components/Title/Style"
-
 import { Button, ButtonSecondary, ButtonSecondaryTitle, TextButton } from "../../components/Button/Style"
-
 import { ContentInput } from "../../components/ContentAccount/Style"
 
 import { userEncodeToken } from "../../utils/Auth"
 import AsyncStorage from "@react-native-async-storage/async-storage"
+
+//Importado funcao da utils/Auth
+import { userDecodeToken } from '../../utils/Auth'
+import { useEffect, useState } from "react";
+
 
 export const ProfileFunc = ({navigation}) => {
 
@@ -29,6 +32,27 @@ export const ProfileFunc = ({navigation}) => {
         console.log(token);
     };
 
+    const [name, setName] = useState(['']);
+    const [email, setEmail] = useState('');
+
+    useEffect(() => {
+        const profileLoad = async () => {
+
+            const token = await userDecodeToken();
+
+            const nameParts = token.name.split(' ');
+
+            const names = nameParts.slice(0, 2).join(' ');
+
+            setName(names)
+
+            setEmail(token.email)
+        };
+
+        profileLoad();
+    }, []);
+    
+
     return(
     <Container>
 
@@ -39,8 +63,8 @@ export const ProfileFunc = ({navigation}) => {
             </HeaderPhotoContainer>
 
             <ModalProfile>
-                <Title>Richard Kosta</Title>
-                <SubTitle>richard.kosta@gmail.com</SubTitle>
+                <Title>{name}</Title>
+                <SubTitle>{email}</SubTitle>
             </ModalProfile>
 
             <ContainerScroll>
@@ -81,7 +105,6 @@ export const ProfileFunc = ({navigation}) => {
                 <TextButton>SALVAR</TextButton>
 
             </Button>
-
 
             <ButtonSecondary onPress={handleLogout}>
                 <ButtonSecondaryTitle>
