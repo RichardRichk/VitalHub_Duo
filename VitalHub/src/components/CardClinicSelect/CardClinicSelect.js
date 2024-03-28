@@ -9,6 +9,7 @@ export const CardClinicSelect = ({
     id,
     name,
     adress,
+    adressNumber,
     rating,
     days,
     select,
@@ -27,7 +28,7 @@ export const CardClinicSelect = ({
 
                         <ClinicName>{name}</ClinicName>
 
-                        <ClinicAdress>{adress}</ClinicAdress>
+                        <ClinicAdress>{adress}, {adressNumber}</ClinicAdress>
 
                     </ContentNamePlace>
 
@@ -69,7 +70,7 @@ export const CardClinicSelect = ({
 
                         <ClinicName>{name}</ClinicName>
 
-                        <ClinicAdress>{adress}</ClinicAdress>
+                        <ClinicAdress>{adress}, {adressNumber}</ClinicAdress>
 
                     </ContentNamePlace>
 

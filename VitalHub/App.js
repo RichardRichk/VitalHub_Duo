@@ -55,9 +55,9 @@ export default function App() {
       >
 
 <Stack.Screen
-          name='DoctorSelect'
-          component={DoctorSelect}
-          options={{title: 'Doctor_Select'}}
+          name='ClinicSelect'
+          component={ClinicSelect}
+          options={{title: 'Clinic_Select'}}
         />
 
         <Stack.Screen
@@ -114,16 +114,16 @@ export default function App() {
           options={{title: 'Form_Require'}}
         />
 
-        <Stack.Screen
+        {/* <Stack.Screen
           name='ClinicSelect'
           component={ClinicSelect}
           options={{title: 'Clinic_Select'}}
-        />
-        {/* <Stack.Screen
+        /> */}
+        <Stack.Screen
           name='DoctorSelect'
           component={DoctorSelect}
           options={{title: 'Doctor_Select'}}
-        /> */}
+        />
         <Stack.Screen
           name='CalendarScreen'
           component={CalendarScreen}
