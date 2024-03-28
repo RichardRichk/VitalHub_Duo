@@ -54,6 +54,12 @@ export default function App() {
         screenOptions={{headerShown: false}}
       >
 
+<Stack.Screen
+          name='DoctorSelect'
+          component={DoctorSelect}
+          options={{title: 'Doctor_Select'}}
+        />
+
         <Stack.Screen
           name='Login'
           component={LoginFunc}
@@ -113,11 +119,11 @@ export default function App() {
           component={ClinicSelect}
           options={{title: 'Clinic_Select'}}
         />
-        <Stack.Screen
+        {/* <Stack.Screen
           name='DoctorSelect'
           component={DoctorSelect}
           options={{title: 'Doctor_Select'}}
-        />
+        /> */}
         <Stack.Screen
           name='CalendarScreen'
           component={CalendarScreen}
