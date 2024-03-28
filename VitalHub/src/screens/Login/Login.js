@@ -30,6 +30,7 @@ export const LoginFunc = ({navigation}) => {
                 senha: senha
             });
 
+
             if (response.status === 200) {
 
                 await AsyncStorage.setItem('token', JSON.stringify(response.data))

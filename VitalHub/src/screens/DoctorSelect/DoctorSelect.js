@@ -11,12 +11,14 @@ export const DoctorSelect = ({navigation}) => {
 
     const [selected, setSelected] = useState('');
 
+
     const[medicosLista, setMedicosLista] = useState([]);
     
     async function ListarMedicos(){
         await api.get('/Medicos')
         .then( response =>{
             setMedicosLista( response.data )
+            console.log(response.data);
         } ). catch (error => {
             console.log(error);
         })
@@ -43,12 +45,11 @@ export const DoctorSelect = ({navigation}) => {
             <ListComponent
                 data={medicosLista}
                 keyExtractor={(item) => item.id}
-            renderItem={({item})  => 
+                renderItem={({item})  => 
                     <CardDoctorSelect 
                         onPress={() => setSelected(item.idNavigation.id)}
                         select={selected}
                         id={item.idNavigation.id}
-                        image={item.image}
                         name={ item.idNavigation.nome }
                         specialty={item.especialidade.especialidade1}
                     />
