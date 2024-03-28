@@ -3,24 +3,31 @@ import { Container, ContainerWithMargin } from "../../components/Container/Style
 import { ContainerScrollWithMargin } from "./Style"
 import { ListComponent } from "../../components/List/List"
 import { Button, ButtonSecondary, ButtonSecondaryTitle, TextButton } from "../../components/Button/Style"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { CardDoctorSelect } from "../../components/CardDoctorSelect/CardDoctorSelect"
+import api from "../../Service/Service"
 
 export const DoctorSelect = ({navigation}) => {
 
     const [selected, setSelected] = useState('');
 
-    const doctorData = [
-        {id: 1, name: "Dra Alessandra", specialty: "Demartologa, Esteticista"},
-        {id: 2, name: "Dra Alessandra", specialty: "Demartologa, Esteticista"},
-        {id: 3, name: "Dra Alessandra", specialty: "Demartologa, Esteticista"},
-        {id: 4, name: "Dra Alessandra", specialty: "Demartologa, Esteticista"},
-        {id: 5, name: "Dra Alessandra", specialty: "Demartologa, Esteticista"},
-        {id: 6, name: "Dra Alessandra", specialty: "Demartologa, Esteticista"},
-        {id: 7, name: "Dra Alessandra", specialty: "Demartologa, Esteticista"},
-        {id: 8, name: "Dra Alessandra", specialty: "Demartologa, Esteticista"},
-        {id: 9, name: "Dra Alessandra", specialty: "Demartologa, Esteticista"},
-    ]
+
+    const[medicosLista, setMedicosLista] = useState([]);
+    
+    async function ListarMedicos(){
+        await api.get('/Medicos')
+        .then( response =>{
+            setMedicosLista( response.data )
+            console.log(response.data);
+        } ). catch (error => {
+            console.log(error);
+        })
+    }
+
+    useEffect(() => {
+        ListarMedicos();
+    }, [])
+
 
     return(
         <Container>
@@ -31,20 +38,24 @@ export const DoctorSelect = ({navigation}) => {
 
             </ContainerWithMargin>
             
+            
 
         <ContainerScrollWithMargin>
 
             <ListComponent
-                data={doctorData}
-                renderItem={({item})  =>
-                <CardDoctorSelect
-                    onPress={() => setSelected(item.id)}
-                    select={selected}
-                    id={item.id}
-                    image={item.image}
-                    name={item.name}
-                    specialty={item.specialty}
-                />}
+                data={medicosLista}
+                keyExtractor={(item) => item.id}
+                renderItem={({item})  => 
+                    <CardDoctorSelect 
+                        onPress={() => setSelected(item.idNavigation.id)}
+                        select={selected}
+                        id={item.idNavigation.id}
+                        name={ item.idNavigation.nome }
+                        specialty={item.especialidade.especialidade1}
+                    />
+                }
+                showsVerticalScrollIndicator={false}
+                
             />
 
 

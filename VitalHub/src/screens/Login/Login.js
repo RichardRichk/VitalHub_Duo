@@ -14,8 +14,8 @@ import { ActivityIndicator, Alert } from "react-native"
 
 export const LoginFunc = ({navigation}) => {
 
-    const [email, setEmail] = useState('Luci@gmail');
-    const [senha, setSenha] = useState('123456');
+    const [email, setEmail] = useState('paciente3@email.com');
+    const [senha, setSenha] = useState('paciente123');
     const [loading, setLoading] = useState(false);
 
 
@@ -29,6 +29,7 @@ export const LoginFunc = ({navigation}) => {
                 email: email,
                 senha: senha
             });
+
 
             if (response.status === 200) {
 
