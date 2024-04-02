@@ -6,7 +6,7 @@ import { StyleSheet } from 'react-native';
 
 
 // Componente de calendário
-const Calendar = () => {
+const Calendar = ({setDataConsulta}) => {
 
     // Define o padrão para o calendário em Português do Brasil
     moment.updateLocale("pt-br", {
@@ -34,6 +34,8 @@ const Calendar = () => {
             iconLeftStyle={styles.iconsStyle}
             // Estilo do ícone de navegação para a direita
             iconRightStyle={styles.iconsStyle}
+
+            onDateSelected={date => setDataConsulta( moment(date).format('YYYY-MM-DD' ))}
             // Data selecionada no calendário
             selectedDate={currentDate}
             // Data inicial permitida no calendário

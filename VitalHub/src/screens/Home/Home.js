@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { AbsListAppointment } from "../../components/AbsListAppointment/AbsListAppointment"
 import Calendar from "../../components/Calendar/Calendar"
 import { Container, ContainerScroll } from "../../components/Container/Style"
@@ -26,16 +26,41 @@ const AppointmentModalData = [
 ]
 
 export const HomeFunc = ({ navigation }) => {
+    const [dataConsulta, setDataConsulta] = useState('')
 
-    const [userType, setuserType] = useState("Doctor");
+    const [userType, setUserType] = useState('');
     const [statusLista, setStatusLista] = useState("pendente");
     // Satate para os modais
     const [showModalCancel, setShowModalCancel] = useState(false);
     const [showModalAppointment, setShowModalAppointment] = useState(false);
     const [showScheduleModal, setShowScheduleModal] = useState(false);
 
-    const [date, setDate] = useState('')
 
+
+    // async function ListarConsultas() {
+    //     const url = (profile.role == 'Medico' ? "Medicos" : "Pacientes")
+
+    //     await api.get(`/${url}/BuscarPorData?data=${dataConsulta}&id=${profile.user}`)
+    //     .then( response => {
+    //         setConsultas(response.data);
+    //     })
+    // }
+
+    // useEffect(() => {
+    //     const profileLoad = async () => {
+
+    //         const token = await userDecodeToken();
+            
+    //     };
+
+    //     profileLoad();  
+    // }, []);
+
+    // useEffect(() => {
+    //     if (dataConsulta != '') {
+    //         ListarConsultas();
+    //     }
+    // }, [dataConsulta])
 
     return (
         <Container>
@@ -45,9 +70,10 @@ export const HomeFunc = ({ navigation }) => {
             />
 
             <Calendar
+                // setDataConsulta={setDataConsulta}
             />
 
-            {/* <FilterAppointment>
+            <FilterAppointment>
 
                 <AbsListAppointment
                     textButton={"Agendadas"}
@@ -65,10 +91,10 @@ export const HomeFunc = ({ navigation }) => {
                     onPress={() => setStatusLista("cancelado")}
                 />
 
-            </FilterAppointment> */}
+            </FilterAppointment>
 
             <ContainerScroll>
-                
+
                 <ListComponent
                     data={Consultas}
                     keyExtractor={(item) => item.id}
@@ -127,7 +153,7 @@ export const HomeFunc = ({ navigation }) => {
             </ContainerScroll>
 
             {
-                userType == "Paciente" ? (
+                userType == "Doutor" ? (
                     <>
                     </>
                 ) : (
