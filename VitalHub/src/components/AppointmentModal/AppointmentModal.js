@@ -3,10 +3,28 @@ import { Title } from "../Title/Style"
 import { ModalContent, ModalText, PatientModal } from "../CancellationModal/Style"
 import { ButtonModal, ButtonSecondary, ButtonSecondaryTitle, TextButton } from "../Button/Style"
 import { ContainerModalText, ImageModalAppointment, ModalTextAppointment } from "./Style";
+import { useState } from "react";
+import LoadingButton from "../../utils/LoadingButton";
 
 const AppointmentModal = ({ navigation, situacao ,visible, setShowModalAppointment, id, name, ModalText1, ModalText2, ButtonProntuary ,...rest }) => {
 
     const image = require("../../assets/Images/Picture_Modal.png")
+
+    const [loading, setLoading] = useState(false);
+
+    // Função para cancelar a consulta
+    const appointmentModal = async () => {
+        setLoading(true); 
+        try {
+
+            await new Promise(resolve => setTimeout(resolve, 800));
+            navigation.replace("ClinicAdress")
+            setLoading(false); 
+            setShowModalAppointment(false); 
+        } catch (error) {
+            setLoading(false); 
+        }
+    };
 
     return (
         <Modal {...rest} visible={visible} transparent={true} animationType="fade">
@@ -36,9 +54,12 @@ const AppointmentModal = ({ navigation, situacao ,visible, setShowModalAppointme
                             </>
                         ) : situacao == "pendente" ? (
 
-                            <ButtonModal onPress={() => {setShowModalAppointment(false); navigation.navigate("ClinicAdress")}}>
-                                <TextButton>Ver Local da Consulta</TextButton>
-                            </ButtonModal>
+                            <LoadingButton 
+                            onPress={appointmentModal}
+                            disabled={loading} 
+                            loading={loading} 
+                            text="Ver Local da Consulta"
+                        />
 
                         ) : (
                             <ButtonModal onPress={() => {setShowModalAppointment(false); navigation.navigate("FormRequire")}}>

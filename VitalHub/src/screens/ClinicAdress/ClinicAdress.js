@@ -1,3 +1,4 @@
+import { ButtonSecondary, ButtonSecondaryTitle } from "../../components/Button/Style"
 import { BoxInput, Container, ContainerScroll, ContainerWithMargin, DoubleView } from "../../components/Container/Style"
 import { InputDouble, InputLabel, InputNotEditable } from "../../components/Input/Style"
 import { Map } from "../../components/Map/Map"
@@ -41,7 +42,13 @@ export const ClinicAdress = ({ navigation }) => {
                     </BoxInput>
                 </DoubleView>
 
+                
+
             </ContainerScroll>
+
+            <ButtonSecondary onPress={() => navigation.navigate('Home')}>
+                <ButtonSecondaryTitle>Voltar</ButtonSecondaryTitle>
+            </ButtonSecondary>
         </Container>
         </>
     )

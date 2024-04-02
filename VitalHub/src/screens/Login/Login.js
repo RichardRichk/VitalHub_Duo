@@ -10,6 +10,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage"
 import api from "../../Service/Service"
 import { useState } from "react"
 import { ActivityIndicator, Alert } from "react-native"
+import LoadingButton from "../../utils/LoadingButton"
 
 
 export const LoginFunc = ({navigation}) => {
@@ -78,19 +79,7 @@ export const LoginFunc = ({navigation}) => {
             </LinkMedium>
 
             
-            <Button
-            onPress={() => Login()}
-            disabled={loading}
-            >
-                {loading ? (
-                    // Componente de animação de loading
-                    <ActivityIndicator size="small" color="white" />
-                ) : (
-                    // Texto do botão
-                    <TextButton>ENTRAR</TextButton>
-                )}
-
-            </Button>
+            <LoadingButton onPress={Login} disabled={loading} loading={loading} text="ENTRAR" />
                 
             
 

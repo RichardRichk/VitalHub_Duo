@@ -28,6 +28,7 @@ export const InputFormRequire = styled(Input)`
 
 export const InputScheduleModal = styled(Input)`
     width: 100%;
+    margin-bottom: 30px;
 `
 
 export const InputVerify = styled.TextInput.attrs({placeholderTextColor: '#34898f'})`
