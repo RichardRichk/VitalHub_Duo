@@ -34,6 +34,8 @@ export const HomeFunc = ({ navigation }) => {
     const [showModalAppointment, setShowModalAppointment] = useState(false);
     const [showScheduleModal, setShowScheduleModal] = useState(false);
 
+    const [date, setDate] = useState('')
+
 
     return (
         <Container>
@@ -42,9 +44,10 @@ export const HomeFunc = ({ navigation }) => {
                 navigation={navigation}
             />
 
-            <Calendar />
+            <Calendar
+            />
 
-            <FilterAppointment>
+            {/* <FilterAppointment>
 
                 <AbsListAppointment
                     textButton={"Agendadas"}
@@ -62,10 +65,10 @@ export const HomeFunc = ({ navigation }) => {
                     onPress={() => setStatusLista("cancelado")}
                 />
 
-            </FilterAppointment>
+            </FilterAppointment> */}
 
             <ContainerScroll>
-                {/* Lista(Flatlist) */}
+                
                 <ListComponent
                     data={Consultas}
                     keyExtractor={(item) => item.id}
