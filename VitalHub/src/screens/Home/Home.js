@@ -9,17 +9,9 @@ import { CardAppointment } from "../../components/CardAppointment/CardAppointmen
 import CancellationModal from "../../components/CancellationModal/CancellationModal"
 import AppointmentModal from "../../components/AppointmentModal/AppointmentModal"
 import ScheduleModal from "../../components/ScheduleModal/ScheduleModal"
+import { userDecodeToken } from "../../utils/Auth"
+import api from "../../Service/Service"
 
-
-
-const Consultas = [
-    { id: 1, name: "Richk", age: "45", type: "Rotina", time: "14:00", situacao: "pendente" },
-    { id: 2, name: "Richk", age: "45", type: "Rotina", time: "14:00", situacao: "realizado" },
-    { id: 3, name: "Richk", age: "45", type: "Rotina", time: "14:00", situacao: "pendente" },
-    { id: 4, name: "Richk", age: "45", type: "Rotina", time: "14:00", situacao: "cancelado" },
-    { id: 5, name: "Richk", age: "45", type: "Rotina", time: "14:00", situacao: "pendente" },
-
-]
 
 const AppointmentModalData = [
     { id: 1, name: "Richk", ModalText1: "45 anos", ModalText2: "richk@gmail.com", ButtonProntuary: "Inserir Prontuario" },
@@ -28,39 +20,47 @@ const AppointmentModalData = [
 export const HomeFunc = ({ navigation }) => {
     const [dataConsulta, setDataConsulta] = useState('')
 
+    const [profileData, setProfileData] = useState('')
     const [userType, setUserType] = useState('');
     const [statusLista, setStatusLista] = useState("pendente");
     // Satate para os modais
     const [showModalCancel, setShowModalCancel] = useState(false);
     const [showModalAppointment, setShowModalAppointment] = useState(false);
     const [showScheduleModal, setShowScheduleModal] = useState(false);
+    const [Consultas, setConsultas] = useState([])
 
 
 
-    // async function ListarConsultas() {
-    //     const url = (profile.role == 'Medico' ? "Medicos" : "Pacientes")
+    async function ListarConsultas() {
+        const url = (userType == 'Medico' ? "Medicos" : "Pacientes")
 
-    //     await api.get(`/${url}/BuscarPorData?data=${dataConsulta}&id=${profile.user}`)
-    //     .then( response => {
-    //         setConsultas(response.data);
-    //     })
-    // }
+        await api.get(`/${url}/BuscarPorData?data=${dataConsulta}&id=${profileData.id}`)
+        .then( response => {
+            setConsultas(response.data);
+        })
+    }
 
-    // useEffect(() => {
-    //     const profileLoad = async () => {
+    useEffect(() => {
+        const profileLoad = async () => {
 
-    //         const token = await userDecodeToken();
-            
-    //     };
+            const token = await userDecodeToken();
 
-    //     profileLoad();  
-    // }, []);
+            setProfileData(token)
 
-    // useEffect(() => {
-    //     if (dataConsulta != '') {
-    //         ListarConsultas();
-    //     }
-    // }, [dataConsulta])
+            setUserType(token.role)
+
+        };
+
+        profileLoad();  
+    }, []);
+
+
+
+    useEffect(() => {
+        if (dataConsulta != '') {
+            ListarConsultas();
+        }
+    }, [dataConsulta])
 
     return (
         <Container>
@@ -70,10 +70,10 @@ export const HomeFunc = ({ navigation }) => {
             />
 
             <Calendar
-                // setDataConsulta={setDataConsulta}
+                setDataConsulta={setDataConsulta}
             />
 
-            <FilterAppointment>
+            {/* <FilterAppointment>
 
                 <AbsListAppointment
                     textButton={"Agendadas"}
@@ -91,7 +91,7 @@ export const HomeFunc = ({ navigation }) => {
                     onPress={() => setStatusLista("cancelado")}
                 />
 
-            </FilterAppointment>
+            </FilterAppointment> */}
 
             <ContainerScroll>
 
@@ -100,23 +100,19 @@ export const HomeFunc = ({ navigation }) => {
                     keyExtractor={(item) => item.id}
 
                     renderItem={({ item }) =>
-                        statusLista == item.situacao && (
+                        // statusLista == item.situacao.situacao && (
 
                             <CardAppointment
                                 navigation={navigation}
-                                userType={userType}
-                                situacao={item.situacao}
-                                id={item.id}
-                                name={item.name}
-                                age={item.age}
-                                type={item.type}
-                                time={item.time}
+                                idConsulta={item.id}
+                                situacao={item.situacao.situacao}
+                                type={item.prioridade.prioridade}
                                 onPressCancel={() => setShowModalCancel(true)}
                                 onPressAppointment={() => navigation.navigate('FormRequire', userType)}
                                 onPressCard={() => setShowModalAppointment(true)}
                             />
 
-                        )
+                        // )
                     }
                 />
 
