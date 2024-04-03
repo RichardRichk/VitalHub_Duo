@@ -1,11 +1,32 @@
+import { useState } from "react"
 import { Button, ButtonReturnIcon, TextButton } from "../../components/Button/Style"
 import { Container } from "../../components/Container/Style"
 import { ContentAccount, ContentResend, ContentVerify } from "../../components/ContentAccount/Style"
 import { InputVerify } from "../../components/Input/Style"
 import { Logo, ReturnIcon } from "../../components/Logo/Style"
 import { SubTitle, Title } from "../../components/Title/Style"
+import LoadingButton from "../../utils/LoadingButton"
 
 export const EmailVerify = ({navigation}) => {
+
+    const [loading, setLoading] = useState(false);
+
+    // Função para cancelar a consulta
+    const emailVerify = async () => {
+        setLoading(true);
+        try {
+
+            await new Promise(resolve => setTimeout(resolve, 800));
+            navigation.replace("Change_Password")
+            setLoading(false);
+
+        } catch (error) {
+            console.error("Erro ao cancelar consulta:", error);
+            setLoading(false);
+        }
+    };
+
+
     return(
         <Container>
             
@@ -43,11 +64,12 @@ export const EmailVerify = ({navigation}) => {
                 />
             </ContentVerify>
 
-            <Button
-                onPress={() => navigation.replace('Change_Password')}
-            >
-                <TextButton>ENTRAR</TextButton>
-            </Button>
+            <LoadingButton
+                onPress={emailVerify}
+                disabled={loading}
+                loading={loading}
+                text="Entrar"
+            />
 
             <ContentAccount>
                 <ContentResend>Reenviar Código</ContentResend>

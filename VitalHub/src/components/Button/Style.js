@@ -8,16 +8,7 @@ export const Button = styled.TouchableOpacity`
     border: 1px solid #496BBA;
     border-radius: 5px;
     align-items: center;
-`
-
-export const LoadingButton = styled.TouchableOpacity`
-    width: 88.88%;
-    height: 44px;
-    padding: 12px;
-    background-color: #496BBA;
-    border: 1px solid #496BBA;
-    border-radius: 5px;
-    align-items: center;
+    margin-top: 15px;
 `
 
 export const ButtonCard = styled.TouchableOpacity`

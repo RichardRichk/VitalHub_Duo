@@ -56,7 +56,6 @@ export const LoginFunc = ({navigation}) => {
                 source={require('../../assets/Images/VitalHub_Logo4.png')}
             />
 
-            <Title>ENTRAR OU CRIAR CONTA</Title>
  
             <Input
                 placeholder="Usuario ou Email"
