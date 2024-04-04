@@ -4,6 +4,9 @@ namespace WebAPI.Interfaces
 {
     public interface IUsuarioRepository
     {
+
+        public List<Usuario> Listar();
+
         void Cadastrar(Usuario usuario);
 
         Usuario BuscarPorId(Guid id);

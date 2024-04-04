@@ -3,51 +3,82 @@ import { ContainerCard } from "../Container/Style"
 import { ClockCard, ContentCard, DataProfileCard, ImageCard, ProfileDataCard, ProfileName, TextAge, TextBold, TextType, ViewRow } from "./Style"
 import { ButtonCard, ButtonTextCard } from "../Button/Style"
 import { AntDesign } from "@expo/vector-icons"
-import { useState } from "react"
+import { useEffect, useState } from "react"
+import { userDecodeToken } from "../../utils/Auth"
+import api from "../../Service/Service"
 
 
 
 export const CardAppointment = ({
     navigation,
     userType,
-    situacao = "pendente",
+    situacao,
     onPressCancel,
     onPressAppointment,
     onPressCard,
-    id,
-    image,
-    name,
-    age,
+    idConsulta,
     type,
-    time
+    time = "14:00",
 }) => {
+    const [profileData, setProfileData] = useState('')
+    const [userData, setUserData] = useState('')
 
-    image = require("../../assets/Images/ProfilePic.png")
+    async function LoadUserData() {
+        if (profileData.role == "Paciente") {
+            await api.get(`/Pacientes/BuscarPorID?id=${profileData.id}`)
+            .then( response => {
+                setUserData(response.data);
+            })
+        } else {
+            await api.get(`/Medicos/BuscarPorID?id=${profileData.id}`)
+            .then( response => {
+                setUserData(response.data);
+            })
+        }
+    }
+
+    useEffect(() => {
+        const profileLoad = async () => {
+
+            const token = await userDecodeToken();
+
+            setProfileData(token)
+
+            setUserType(token.role)
+
+        };
+
+        profileLoad();  
+    }, []);
+
+    useEffect(() => {
+        LoadUserData();
+    }, [profileData])
 
     return (
         <ContainerCard onPress={() => {
         
-            if (situacao === "realizado" && userType === "Paciente") {
+            if (situacao === "Realizados" && userType === "Paciente") {
                 navigation.replace("FormRequire");
-            } else if(situacao == "pendente" || situacao === "realizado"){
+            } else if(situacao == "Pendentes" || situacao === "Realizados"){
                 onPressCard();
             }
         }
         }>
 
             <ImageCard
-                source={image}
+                // source={image}
             />
 
             <ContentCard>
 
                 <DataProfileCard>
 
-                    <ProfileName>{name}</ProfileName>
+                    <ProfileName>{profileData.name}</ProfileName>
 
                     <ProfileDataCard>
 
-                        <TextAge>{age}</TextAge>
+                        {/* <TextAge>{profileData.role == "Paciente" ? {userData.dataNascimento} : {}}</TextAge> */}
                         <TextType>{type}</TextType>
 
                     </ProfileDataCard>
@@ -57,7 +88,7 @@ export const CardAppointment = ({
                 <ViewRow>
 
                     <ClockCard situacao={situacao}>
-                        <AntDesign name="clockcircle" size={14} color={situacao == "pendente" ? "#49B3BA" : "8C8A97"} />
+                        <AntDesign name="clockcircle" size={14} color={situacao == "Pendentes" ? "#49B3BA" : "8C8A97"} />
                         <TextBold situacao={situacao} color={"#49B3BA"}>{time} </TextBold>
                     </ClockCard>
 
@@ -65,10 +96,10 @@ export const CardAppointment = ({
                     {/* valida e mostra o tipo de botao conforme a situacao */}
 
                     {
-                        situacao == "cancelado" ? (
+                        situacao == "Cancelados" ? (
                             <>
                             </>
-                        ) : situacao == "pendente" ? (
+                        ) : situacao == "Pendentes" ? (
 
                             <ButtonCard onPress={onPressCancel}>
                                 <ButtonTextCard situacao={situacao}>Cancelar </ButtonTextCard>

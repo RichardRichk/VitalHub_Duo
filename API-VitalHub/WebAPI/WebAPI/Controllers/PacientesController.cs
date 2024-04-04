@@ -56,7 +56,7 @@ namespace WebAPI.Controllers
         }
 
         //[Authorize]
-        [HttpGet("BuscarPorID/{id}")]
+        [HttpGet("BuscarPorID")]
         public IActionResult BuscarPorID(Guid id)
         {
             return Ok(pacienteRepository.BuscarPorId(id));
@@ -82,12 +82,18 @@ namespace WebAPI.Controllers
             user.Paciente.Endereco = new Endereco();
 
             user.Paciente.Endereco.Logradouro = pacienteModel.Logradouro;
-            user.Paciente.Endereco.Numero= pacienteModel.Numero;
+            user.Paciente.Endereco.Numero = pacienteModel.Numero;
             user.Paciente.Endereco.Cep = pacienteModel.Cep;
 
             pacienteRepository.Cadastrar(user);
 
             return Ok();
+        }
+
+        [HttpGet("BuscarPorData")]
+        public IActionResult BuscarPorData(DateTime data, Guid id)
+        {
+            return Ok(pacienteRepository.BuscarPorData(data,id));
         }
     }
 }

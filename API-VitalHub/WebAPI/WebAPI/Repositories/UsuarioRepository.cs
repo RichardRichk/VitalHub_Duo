@@ -9,6 +9,11 @@ namespace WebAPI.Repositories
     {
         VitalContext ctx = new VitalContext();
 
+        public List<Usuario> Listar()
+        {
+            return ctx.Usuarios.ToList();
+        }
+
         public bool AlterarSenha(Guid Id, string senhaAntiga, string senhaNova)
         {
             var user = ctx.Usuarios.FirstOrDefault(x => x.Id == Id);
@@ -24,8 +29,6 @@ namespace WebAPI.Repositories
             return true;
 
         }
-
-        
 
         public Usuario BuscarPorEmailESenha(string email, string senha)
         {

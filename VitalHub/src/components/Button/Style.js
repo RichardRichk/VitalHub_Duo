@@ -53,7 +53,7 @@ export const ButtonSecondary = styled(Button)`
 `
 
 export const ButtonTextCard = styled.Text`
-    color: ${(props) => props.situacao == "pendente" ? "#c81d25" : "#344f8f"};
+    color: ${(props) => props.situacao == "Pendentes" ? "#c81d25" : "#344f8f"};
     `
 
 
