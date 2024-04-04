@@ -83,6 +83,7 @@ export const HomeFunc = ({ navigation }) => {
 
             <Calendar
                 setDataConsulta={setDataConsulta}
+
             />
 
             {/* <FilterAppointment>
@@ -106,7 +107,6 @@ export const HomeFunc = ({ navigation }) => {
             </FilterAppointment> */}
 
             <ContainerScroll>
-
                 <ListComponent
                     data={consultas}
                     keyExtractor={(item) => item.id}
