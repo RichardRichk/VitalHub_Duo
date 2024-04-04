@@ -27,7 +27,19 @@ export const HomeFunc = ({ navigation }) => {
     const [showModalCancel, setShowModalCancel] = useState(false);
     const [showModalAppointment, setShowModalAppointment] = useState(false);
     const [showScheduleModal, setShowScheduleModal] = useState(false);
-    const [Consultas, setConsultas] = useState([])
+    const [consultas, setConsultas] = useState([]);
+
+    const [consultaSelecionada, setConsultaSelecionada] = useState(null);
+
+    async function MostrarModal(modal, consulta) {
+        setConsultaSelecionada(consulta)
+
+        if (modal == 'cancelar') {
+            setShowModalCancel(true)
+        } else {
+            setShowModalAppointment(true)
+        }
+    }
 
 
 
@@ -96,7 +108,7 @@ export const HomeFunc = ({ navigation }) => {
             <ContainerScroll>
 
                 <ListComponent
-                    data={Consultas}
+                    data={consultas}
                     keyExtractor={(item) => item.id}
 
                     renderItem={({ item }) =>
@@ -107,9 +119,10 @@ export const HomeFunc = ({ navigation }) => {
                                 idConsulta={item.id}
                                 situacao={item.situacao.situacao}
                                 type={item.prioridade.prioridade}
-                                onPressCancel={() => setShowModalCancel(true)}
                                 onPressAppointment={() => navigation.navigate('FormRequire', userType)}
-                                onPressCard={() => setShowModalAppointment(true)}
+                                
+                                onPressCancel={() => MostrarModal('cancelar', item)}
+                                onPressCard={() => MostrarModal('prontuario', item)}
                             />
 
                         // )
@@ -129,6 +142,10 @@ export const HomeFunc = ({ navigation }) => {
                         <AppointmentModal
                             id={item.id}
                             name={item.name}
+
+                            consulta={consultaSelecionada}
+                            roleUsuario={userType}
+
                             ModalText1={item.ModalText1}
                             ModalText2={item.ModalText2}
                             ButtonProntuary={item.ButtonProntuary}
