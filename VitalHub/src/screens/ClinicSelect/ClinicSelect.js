@@ -6,6 +6,7 @@ import { ListComponent } from "../../components/List/List"
 import { Button, ButtonSecondary, ButtonSecondaryTitle, TextButton } from "../../components/Button/Style"
 import { useEffect, useState } from "react"
 import api from "../../Service/Service"
+
 import LoadingButton from "../../utils/LoadingButton"
 
 export const ClinicSelect = ({ navigation }) => {
@@ -31,7 +32,9 @@ export const ClinicSelect = ({ navigation }) => {
 
     const [selected, setSelected] = useState('');
 
+
     const [clinicData, setClinicData] = useState([]);
+
 
     async function ListClinic() {
         await api.get('/Clinica/ListarTodas')

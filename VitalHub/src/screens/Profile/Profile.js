@@ -13,6 +13,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage"
 //Importado funcao da utils/Auth
 import { userDecodeToken } from '../../utils/Auth'
 import { useEffect, useState } from "react";
+import moment from "moment";
 import api from "../../Service/Service"
 
 
@@ -82,7 +83,6 @@ export const ProfileFunc = ({navigation}) => {
         }
     }, [userIdLoaded]);
 
-{console.log(userData);}
     return(
         
     <Container>
@@ -102,24 +102,28 @@ export const ProfileFunc = ({navigation}) => {
 
             <InputLabel>Data de nascimento:</InputLabel>
             <InputProfile
-                placeholder= {new Date(userData.dataNascimento).toLocaleDateString()}
+                placeholder= {moment(userData.dataNascimento).format('DD-MM-YYYY')}
+                editable={false}
             />
 
             <InputLabel>CPF:</InputLabel>
             <InputProfile
-                placeholder= "859********"
+                placeholder= {userData.cpf}
+                editable={false}
             />
 
             <InputLabel>Endereço</InputLabel>
             <InputProfile
-                placeholder= "Rua Vicenso Silva, 987"
+                placeholder= {userData.endereco ? `${userData.endereco.logradouro}, ${userData.endereco.numero}` : ''}
+                editable={false}
             />
 
             <ContentInput>
                 <BoxInput>
                     <InputLabel>Cep</InputLabel>
                     <InputDouble
-                        placeholder="00000-000"
+                        placeholder= {userData.endereco ? userData.endereco.cep : ''}
+                        editable={false}
                     />
                 </BoxInput>
 
@@ -127,15 +131,16 @@ export const ProfileFunc = ({navigation}) => {
                     <InputLabel>Cidade</InputLabel>
                     <InputDouble
                         placeholder="Diadema-SP"
+                        editable={false}
                     />
                 </BoxInput>
             </ContentInput>
 
-            <Button>
+            {/* <Button>
 
                 <TextButton>SALVAR</TextButton>
 
-            </Button>
+            </Button> */}
 
             <ButtonSecondary onPress={handleLogout}>
                 <ButtonSecondaryTitle>

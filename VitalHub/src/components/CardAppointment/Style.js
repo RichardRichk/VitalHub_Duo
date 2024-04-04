@@ -51,8 +51,8 @@ export const ClockCard = styled.View`
 
     align-items: center;
 
-    color: ${(props) => props.situacao == "pendente" ? "#E8FCFD" : "#F1F0F5"};
-    background-color: ${(props) => props.situacao == "pendente" ? "#E8FCFD" : "#F1F0F5"};
+    color: ${(props) => props.situacao == "Pendentes" ? "#E8FCFD" : "#F1F0F5"};
+    background-color: ${(props) => props.situacao == "Pendentes" ? "#E8FCFD" : "#F1F0F5"};
 `
 
 export const TextBold = styled.Text`
