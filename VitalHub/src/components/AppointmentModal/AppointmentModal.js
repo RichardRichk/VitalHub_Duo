@@ -6,11 +6,22 @@ import { ContainerModalText, ImageModalAppointment, ModalTextAppointment } from 
 import { useState } from "react";
 import LoadingButton from "../../utils/LoadingButton";
 
-const AppointmentModal = ({ navigation, situacao ,visible, setShowModalAppointment, id, name, ModalText1, ModalText2, ButtonProntuary ,...rest }) => {
+const AppointmentModal = ({ roleUsuario, consulta, navigation, situacao ,visible, setShowModalAppointment, id, name, ModalText1, ModalText2, ButtonProntuary ,...rest }) => {
 
     const image = require("../../assets/Images/Picture_Modal.png")
 
     const [loading, setLoading] = useState(false);
+
+    async function handleClose(screen){
+        await setShowModalAppointment(false)
+
+        if (screen == "Local consulta"){
+            navigate.replace(screen,{clinicaid : consulta.medicoClinica.clinicaid})
+        }
+        else{
+            navigation.replace( screen )
+        }
+    }
 
     // Função para cancelar a consulta
     const appointmentModal = async () => {
@@ -49,10 +60,10 @@ const AppointmentModal = ({ navigation, situacao ,visible, setShowModalAppointme
                     </ContainerModalText>
 
                     {
-                        situacao == "cancelado" ? (
+                        situacao == "Cancelados" ? (
                             <>
                             </>
-                        ) : situacao == "pendente" ? (
+                        ) : situacao == "Pendentes" ? (
 
                             <LoadingButton 
                             onPress={appointmentModal}
