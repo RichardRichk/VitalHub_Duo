@@ -8,6 +8,7 @@ export const Button = styled.TouchableOpacity`
     border: 1px solid #496BBA;
     border-radius: 5px;
     align-items: center;
+    margin-top: 15px;
 `
 
 export const ButtonCard = styled.TouchableOpacity`

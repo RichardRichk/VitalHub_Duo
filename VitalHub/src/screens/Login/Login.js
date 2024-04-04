@@ -9,28 +9,44 @@ import AsyncStorage from "@react-native-async-storage/async-storage"
 
 import api from "../../Service/Service"
 import { useState } from "react"
-import axios from "axios"
+import { ActivityIndicator, Alert } from "react-native"
+import LoadingButton from "../../utils/LoadingButton"
 
-import AsyncStorage from "@react-native-async-storage/async-storage"
 
 export const LoginFunc = ({navigation}) => {
 
-    const [email, setEmail] = useState('paciente@email.com');
-    const [senha, setSenha] = useState('paciente@email.com');
+    const [email, setEmail] = useState('paciente3@email.com');
+    const [senha, setSenha] = useState('paciente123');
+    const [loading, setLoading] = useState(false);
 
 
 //Chama funcao de login
     async function Login(){
 
-        //chamar a api de login 
-        const response = await api.post('/Login', {
-            email: email,
-            senha: senha
-        })
+        setLoading(true); // Ativa a animação de loading
+        try {
+            //chamar a api de login 
+            const response = await api.post('/Login', {
+                email: email,
+                senha: senha
+            });
 
-        await AsyncStorage.setItem('token', JSON.stringify(response.data))
 
-        navigation.replace("Main")
+            if (response.status === 200) {
+
+                await AsyncStorage.setItem('token', JSON.stringify(response.data))
+
+                setLoading(true);
+
+                navigation.replace("Main")
+
+            }
+
+        } catch (error) {
+            Alert.alert('Falha no login!', 'Verifique seus dados ou aguarde um momento.')
+            setLoading(false);
+        }
+
     }
 
     return(
@@ -40,7 +56,6 @@ export const LoginFunc = ({navigation}) => {
                 source={require('../../assets/Images/VitalHub_Logo4.png')}
             />
 
-            <Title>ENTRAR OU CRIAR CONTA</Title>
  
             <Input
                 placeholder="Usuario ou Email"
@@ -63,11 +78,7 @@ export const LoginFunc = ({navigation}) => {
             </LinkMedium>
 
             
-            <Button
-            onPress={() => Login()}
-            >
-                <TextButton>ENTRAR</TextButton>
-            </Button>
+            <LoadingButton onPress={Login} disabled={loading} loading={loading} text="ENTRAR" />
                 
             
 
