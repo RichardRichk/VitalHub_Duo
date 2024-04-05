@@ -137,7 +137,7 @@ export const HomeFunc = ({ navigation }) => {
                     setShowModalCancel={setShowModalCancel}
                 />
 
-                <ListComponent
+                {/* <ListComponent
                     data={AppointmentModalData}
                     renderItem={({ item }) =>
                         <AppointmentModal
@@ -156,6 +156,17 @@ export const HomeFunc = ({ navigation }) => {
                             situacao={statusLista}
                         />
                     }
+                /> */}
+
+                <AppointmentModal
+
+                    consulta={consultaSelecionada}
+                    roleUsuario={userType}
+                    
+                    visible={showModalAppointment}
+                    setShowModalAppointment={setShowModalAppointment}
+                    navigation={navigation}
+                    situacao={statusLista}
                 />
 
                 <ScheduleModal

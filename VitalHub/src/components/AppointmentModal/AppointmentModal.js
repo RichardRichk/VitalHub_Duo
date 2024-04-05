@@ -5,6 +5,7 @@ import { ButtonModal, ButtonSecondary, ButtonSecondaryTitle, TextButton } from "
 import { ContainerModalText, ImageModalAppointment, ModalTextAppointment } from "./Style";
 import { useState } from "react";
 import LoadingButton from "../../utils/LoadingButton";
+import { useEffect } from "react";
 
 const AppointmentModal = ({ roleUsuario, consulta, navigation, situacao ,visible, setShowModalAppointment, id, name, ModalText1, ModalText2, ButtonProntuary ,...rest }) => {
 
@@ -12,13 +13,21 @@ const AppointmentModal = ({ roleUsuario, consulta, navigation, situacao ,visible
 
     const [loading, setLoading] = useState(false);
 
-    async function handleClose(screen){
-        await setShowModalAppointment(false)
+    useEffect(() => {
+        console.log(' hjjg ');
+        console.log(consulta)
+    }, [visible])
 
-        if (screen == "Local consulta"){
-            navigate.replace(screen,{clinicaid : consulta.medicoClinica.clinicaid})
+    async function handleClose(screen){
+        
+        if (screen === "ClinicAdress"){
+            console.log(' entrou ')
+            await setShowModalAppointment(false); 
+            
+            navigate.replace(screen, {clinicaid : consulta.medicoClinica.clinicaId, teste : 123})
         }
         else{
+            await setShowModalDoctorAppointment(false)
             navigation.replace( screen )
         }
     }
@@ -26,12 +35,14 @@ const AppointmentModal = ({ roleUsuario, consulta, navigation, situacao ,visible
     // Função para cancelar a consulta
     const appointmentModal = async () => {
         setLoading(true); 
+
         try {
 
             await new Promise(resolve => setTimeout(resolve, 800));
-            navigation.replace("ClinicAdress")
             setLoading(false); 
-            setShowModalAppointment(false); 
+            
+            await handleClose("ClinicAdress")
+            
         } catch (error) {
             setLoading(false); 
         }
@@ -73,7 +84,8 @@ const AppointmentModal = ({ roleUsuario, consulta, navigation, situacao ,visible
                         />
 
                         ) : (
-                            <ButtonModal onPress={() => {setShowModalAppointment(false); navigation.navigate("FormRequire")}}>
+                            <ButtonModal onPress={() => handleClose("ClinicAdress")}>
+                                {/* {setShowModalAppointment(false); navigation.navigate("FormRequire")} */}
                                 <TextButton>Inserir Prontuario</TextButton>
                             </ButtonModal>
                         )
