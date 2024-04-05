@@ -45,13 +45,17 @@ export const HomeFunc = ({ navigation }) => {
 
 
     async function ListarConsultas() {
-        const url = (userType == 'Medico' ? "Medicos" : "Pacientes")
-
-        await api.get(`/${url}/BuscarPorData?data=${dataConsulta}&id=${profileData.id}`)
-        .then( response => {
-            setConsultas(response.data);
-        })
+        const url = (userType === 'Medico' ? "Medicos" : "Pacientes");
+    
+        try {
+            const response = await api.get(`/${url}/BuscarPorData?data=${dataConsulta}&id=${profileData.id}`);
+            setConsultas(response.data); // Assume que a resposta da API contém os dados das consultas
+        } catch (error) {
+            console.error('Erro ao buscar consultas:', error);
+            // Trate o erro, se necessário
+        }
     }
+    
 
     useEffect(() => {
         const profileLoad = async () => {
@@ -87,9 +91,7 @@ export const HomeFunc = ({ navigation }) => {
 
             />
 
-            
-
-            {/* <FilterAppointment>
+            <FilterAppointment>
 
                 <AbsListAppointment
                     textButton={"Agendadas"}
@@ -107,7 +109,7 @@ export const HomeFunc = ({ navigation }) => {
                     onPress={() => setStatusLista("Cancelados")}
                 />
 
-            </FilterAppointment> */}
+            </FilterAppointment>
 
             <ContainerScroll>
                 <ListComponent
@@ -139,7 +141,7 @@ export const HomeFunc = ({ navigation }) => {
                     setShowModalCancel={setShowModalCancel}
                 />
 
-                <ListComponent
+                {/* <ListComponent
                     data={AppointmentModalData}
                     renderItem={({ item }) =>
                         <AppointmentModal
@@ -158,6 +160,17 @@ export const HomeFunc = ({ navigation }) => {
                             situacao={statusLista}
                         />
                     }
+                /> */}
+
+                <AppointmentModal
+
+                    consulta={consultaSelecionada}
+                    roleUsuario={userType}
+                    
+                    visible={showModalAppointment}
+                    setShowModalAppointment={setShowModalAppointment}
+                    navigation={navigation}
+                    situacao={statusLista}
                 />
 
                 <ScheduleModal

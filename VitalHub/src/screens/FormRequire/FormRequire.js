@@ -8,6 +8,7 @@ import { AntDesign } from "@expo/vector-icons"
 import { ButtonSecondaryForm, ButtonSecondaryFormTitle, HR } from "./Style"
 import { useState } from "react"
 import { CameraComp } from "../../components/Camera/Camera"
+import LoadingButton from "../../utils/LoadingButton"
 
 export const FormRequire = ({ navigation }) => {
 
@@ -15,6 +16,23 @@ export const FormRequire = ({ navigation }) => {
     const image = require("../../assets/Images/ProfilePic.png");
     const [showCamera, setShowCamera] = useState(false);
     const [uriCameraCapture, setUriCameraCapture] = useState(null);
+
+    const [loading, setLoading] = useState(false);
+
+    // Função para cancelar a consulta
+    const formRequire = async () => {
+        setLoading(true);
+        try {
+
+            await new Promise(resolve => setTimeout(resolve, 800));
+            navigation.replace("")
+            setLoading(false);
+
+        } catch (error) {
+            console.error("Erro ao cancelar consulta:", error);
+            setLoading(false);
+        }
+    };
 
     return (
         <Container>
@@ -49,9 +67,12 @@ export const FormRequire = ({ navigation }) => {
                     placeholder="Prescrição medica"
                 />
 
-                <ButtonWithMargin>
-                    <TextButton>Salvar</TextButton>
-                </ButtonWithMargin>
+                <LoadingButton
+                    onPress={formRequire}
+                    disabled={loading}
+                    loading={loading}
+                    text="Salvar"
+                />
 
                 <ButtonWithMargin>
                     <TextButton>Editar </TextButton>
@@ -70,7 +91,7 @@ export const FormRequire = ({ navigation }) => {
                         </>
                     ) : (
                         <>
-                                <InputLabel>Exames médicos</InputLabel>
+                            <InputLabel>Exames médicos</InputLabel>
                             {
                                 uriCameraCapture == null ? (
                                     <>
