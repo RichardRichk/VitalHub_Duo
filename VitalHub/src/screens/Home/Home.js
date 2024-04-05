@@ -11,6 +11,7 @@ import AppointmentModal from "../../components/AppointmentModal/AppointmentModal
 import ScheduleModal from "../../components/ScheduleModal/ScheduleModal"
 import { userDecodeToken } from "../../utils/Auth"
 import api from "../../Service/Service"
+import moment from "moment";
 
 
 const AppointmentModalData = [
@@ -22,7 +23,7 @@ export const HomeFunc = ({ navigation }) => {
 
     const [profileData, setProfileData] = useState('')
     const [userType, setUserType] = useState('');
-    const [statusLista, setStatusLista] = useState("pendente");
+    const [statusLista, setStatusLista] = useState('Pendentes');
     // Satate para os modais
     const [showModalCancel, setShowModalCancel] = useState(false);
     const [showModalAppointment, setShowModalAppointment] = useState(false);
@@ -54,13 +55,13 @@ export const HomeFunc = ({ navigation }) => {
 
     useEffect(() => {
         const profileLoad = async () => {
-
             const token = await userDecodeToken();
-
+    
             setProfileData(token)
-
+    
             setUserType(token.role)
-
+    
+            setDataConsulta(moment().format('YYYY-MM-DD'))
         };
 
         profileLoad();  
@@ -86,22 +87,24 @@ export const HomeFunc = ({ navigation }) => {
 
             />
 
+            
+
             {/* <FilterAppointment>
 
                 <AbsListAppointment
                     textButton={"Agendadas"}
-                    clickButton={statusLista === "pendente"}
-                    onPress={() => setStatusLista("pendente")}
+                    clickButton={statusLista === "Pendentes"}
+                    onPress={() => setStatusLista("Pendentes")}
                 />
                 <AbsListAppointment
                     textButton={"Realizadas"}
-                    clickButton={statusLista === "realizado"}
-                    onPress={() => setStatusLista("realizado")}
+                    clickButton={statusLista === "Realizados"}
+                    onPress={() => setStatusLista("Realizados")}
                 />
                 <AbsListAppointment
                     textButton={"Canceladas"}
-                    clickButton={statusLista === "cancelado"}
-                    onPress={() => setStatusLista("cancelado")}
+                    clickButton={statusLista === "Cancelados"}
+                    onPress={() => setStatusLista("Cancelados")}
                 />
 
             </FilterAppointment> */}
@@ -112,7 +115,7 @@ export const HomeFunc = ({ navigation }) => {
                     keyExtractor={(item) => item.id}
 
                     renderItem={({ item }) =>
-                        // statusLista == item.situacao.situacao && (
+                        statusLista == item.situacao.situacao && (
 
                             <CardAppointment
                                 navigation={navigation}
@@ -125,7 +128,7 @@ export const HomeFunc = ({ navigation }) => {
                                 onPressCard={() => MostrarModal('prontuario', item)}
                             />
 
-                        // )
+                        )
                     }
                 />
 

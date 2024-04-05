@@ -3,8 +3,9 @@ import { Title } from "../Title/Style"
 import { ModalContent, ModalText, PatientModal } from "../CancellationModal/Style"
 import { ButtonModal, ButtonSecondary, ButtonSecondaryTitle, TextButton } from "../Button/Style"
 import { ContainerModalText, ImageModalAppointment, ModalTextAppointment } from "./Style";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import LoadingButton from "../../utils/LoadingButton";
+import { userDecodeToken } from "../../utils/Auth";
 
 const AppointmentModal = ({ roleUsuario, consulta, navigation, situacao ,visible, setShowModalAppointment, id, name, ModalText1, ModalText2, ButtonProntuary ,...rest }) => {
 
@@ -36,6 +37,8 @@ const AppointmentModal = ({ roleUsuario, consulta, navigation, situacao ,visible
             setLoading(false); 
         }
     };
+
+
 
     return (
         <Modal {...rest} visible={visible} transparent={true} animationType="fade">
