@@ -6,17 +6,37 @@ import { ContainerModalText, ImageModalAppointment, ModalTextAppointment } from 
 import { useState } from "react";
 import LoadingButton from "../../utils/LoadingButton";
 import { useEffect } from "react";
+import api from "../../Service/Service";
 
-const AppointmentModal = ({ roleUsuario, consulta, navigation, situacao ,visible, setShowModalAppointment, id, name, ModalText1, ModalText2, ButtonProntuary ,...rest }) => {
+const AppointmentModal = ({ navigation, profileData, consulta, situacao ,visible, setShowModalAppointment,...rest }) => {
 
     const image = require("../../assets/Images/Picture_Modal.png")
+    const [medicoData, setMedicoData] = useState('');
+    const [nome, setNome] = useState('')
+    const [crm, setCrm] = useState('')
+    const [especialidade, setEspecialidade] = useState('')
+    const [userIdLoaded, setUserIdLoaded] = useState(false);
 
     const [loading, setLoading] = useState(false);
 
+
     useEffect(() => {
-        console.log(' hjjg ');
-        console.log(consulta)
-    }, [visible])
+            getMedicoData();
+    }, [userIdLoaded])
+
+
+    async function getMedicoData() {
+            const response = await api.get(`/Medicos/BuscarPorID?id=${consulta.medicoClinica.medicoId}`)
+            await setMedicoData(response.data)
+
+            await console.log(medicoData);
+
+            setCrm(medicoData.crm)
+            setNome(medicoData.idNavigation.nome)
+            setEspecialidade(medicoData.especialidade.especialidade1)
+
+            setUserIdLoaded(true)
+    }
 
     async function handleClose(screen){
         
@@ -24,10 +44,11 @@ const AppointmentModal = ({ roleUsuario, consulta, navigation, situacao ,visible
             console.log(' entrou ')
             await setShowModalAppointment(false); 
             
-            navigate.replace(screen, {clinicaid : consulta.medicoClinica.clinicaId, teste : 123})
+            navigation.replace(screen, {clinicaid : consulta.medicoClinica.clinicaId})
         }
         else{
-            await setShowModalDoctorAppointment(false)
+            console.log('nao entrou');
+            await setShowModalAppointment(false)
             navigation.replace( screen )
         }
     }
@@ -62,12 +83,14 @@ const AppointmentModal = ({ roleUsuario, consulta, navigation, situacao ,visible
                         source={image}
                     />
                     
-                    <Title>{name}</Title>
+                    <Title>{nome}</Title>
 
                     <ContainerModalText>
-                        <ModalTextAppointment>{ModalText1}</ModalTextAppointment>
 
-                        <ModalTextAppointment>{ModalText2} </ModalTextAppointment>
+                        <ModalTextAppointment>{especialidade}</ModalTextAppointment>
+
+                        <ModalTextAppointment>CRM-{crm}</ModalTextAppointment>
+
                     </ContainerModalText>
 
                     {

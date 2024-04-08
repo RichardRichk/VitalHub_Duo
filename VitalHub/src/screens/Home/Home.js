@@ -125,6 +125,7 @@ export const HomeFunc = ({ navigation }) => {
                                 situacao={item.situacao.situacao}
                                 type={item.prioridade.prioridade}
                                 onPressAppointment={() => navigation.navigate('FormRequire', userType)}
+                                name={item.medicoClinica.medico.crm}
                                 
                                 onPressCancel={() => MostrarModal('cancelar', item)}
                                 onPressCard={() => MostrarModal('prontuario', item)}
@@ -165,7 +166,7 @@ export const HomeFunc = ({ navigation }) => {
                 <AppointmentModal
 
                     consulta={consultaSelecionada}
-                    roleUsuario={userType}
+                    profileData={profileData}
                     
                     visible={showModalAppointment}
                     setShowModalAppointment={setShowModalAppointment}

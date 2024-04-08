@@ -1,11 +1,10 @@
 import styled from "styled-components";
 
-export const MapImage = styled.View`
-    width: 100%;
-    height: 50.6%;
-    margin-bottom: 30px;
+export const TitleAdress = styled.Text`
+    font-size: 20px;
+    color: #33303e;
+    font-family: "MontserratAlternates_600SemiBold";
+    margin-bottom: 5px; 
+    margin-top: 30px;
 `
 
-export const reload = styled.View`
-    
-`
