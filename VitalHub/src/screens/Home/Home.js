@@ -45,13 +45,17 @@ export const HomeFunc = ({ navigation }) => {
 
 
     async function ListarConsultas() {
-        const url = (userType == 'Medico' ? "Medicos" : "Pacientes")
-
-        await api.get(`/${url}/BuscarPorData?data=${dataConsulta}&id=${profileData.id}`)
-        .then( response => {
-            setConsultas(response.data);
-        })
+        const url = (userType === 'Medico' ? "Medicos" : "Pacientes");
+    
+        try {
+            const response = await api.get(`/${url}/BuscarPorData?data=${dataConsulta}&id=${profileData.id}`);
+            setConsultas(response.data); // Assume que a resposta da API contém os dados das consultas
+        } catch (error) {
+            console.error('Erro ao buscar consultas:', error);
+            // Trate o erro, se necessário
+        }
     }
+    
 
     useEffect(() => {
         const profileLoad = async () => {

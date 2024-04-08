@@ -32,7 +32,7 @@ const AppointmentModal = ({ roleUsuario, consulta, navigation, situacao ,visible
         }
     }
 
-    // Função para cancelar a consulta
+    // Função para loading do botao
     const appointmentModal = async () => {
         setLoading(true); 
 
