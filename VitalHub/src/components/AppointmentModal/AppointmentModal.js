@@ -5,38 +5,15 @@ import { ButtonModal, ButtonSecondary, ButtonSecondaryTitle, TextButton } from "
 import { ContainerModalText, ImageModalAppointment, ModalTextAppointment } from "./Style";
 import { useState } from "react";
 import LoadingButton from "../../utils/LoadingButton";
-import { useEffect } from "react";
-import api from "../../Service/Service";
 
-const AppointmentModal = ({ navigation, profileData, consulta, situacao ,visible, setShowModalAppointment,...rest }) => {
+const AppointmentModal = ({ navigation, profileData, consulta, situacao ,visible, setShowModalAppointment, crm, nomeMedico, especialidadeMedico,...rest }) => {
 
     const image = require("../../assets/Images/Picture_Modal.png")
-    const [medicoData, setMedicoData] = useState('');
-    const [nome, setNome] = useState('')
-    const [crm, setCrm] = useState('')
-    const [especialidade, setEspecialidade] = useState('')
-    const [userIdLoaded, setUserIdLoaded] = useState(false);
 
     const [loading, setLoading] = useState(false);
 
 
-    useEffect(() => {
-            getMedicoData();
-    }, [userIdLoaded])
-
-
-    async function getMedicoData() {
-            const response = await api.get(`/Medicos/BuscarPorID?id=${consulta.medicoClinica.medicoId}`)
-            await setMedicoData(response.data)
-
-            await console.log(medicoData);
-
-            setCrm(medicoData.crm)
-            setNome(medicoData.idNavigation.nome)
-            setEspecialidade(medicoData.especialidade.especialidade1)
-
-            setUserIdLoaded(true)
-    }
+    
 
     async function handleClose(screen){
         
@@ -83,11 +60,11 @@ const AppointmentModal = ({ navigation, profileData, consulta, situacao ,visible
                         source={image}
                     />
                     
-                    <Title>{nome}</Title>
+                    <Title>{nomeMedico}</Title>
 
                     <ContainerModalText>
 
-                        <ModalTextAppointment>{especialidade}</ModalTextAppointment>
+                        <ModalTextAppointment>{especialidadeMedico}</ModalTextAppointment>
 
                         <ModalTextAppointment>CRM-{crm}</ModalTextAppointment>
 

@@ -71,7 +71,7 @@ export const ClinicAdress = ({ navigation, route }) => {
 
                         </ContainerScroll>
 
-                        <ButtonSecondary onPress={() => navigation.navigate('Home')}>
+                        <ButtonSecondary onPress={() => navigation.navigate('Main')}>
                             <ButtonSecondaryTitle>Voltar</ButtonSecondaryTitle>
                         </ButtonSecondary>
                     </Container>

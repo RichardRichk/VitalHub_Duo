@@ -14,10 +14,6 @@ import api from "../../Service/Service"
 import moment from "moment";
 
 
-const AppointmentModalData = [
-    { id: 1, name: "Richk", ModalText1: "45 anos", ModalText2: "richk@gmail.com", ButtonProntuary: "Inserir Prontuario" },
-]
-
 export const HomeFunc = ({ navigation }) => {
     const [dataConsulta, setDataConsulta] = useState('')
 
@@ -31,14 +27,35 @@ export const HomeFunc = ({ navigation }) => {
     const [consultas, setConsultas] = useState([]);
 
     const [consultaSelecionada, setConsultaSelecionada] = useState(null);
+    const [medicoData, setMedicoData] = useState('');
+    const [nomeMedico, setNomeMedico] = useState('')
+    const [crm, setCrm] = useState('')
+    const [especialidade, setEspecialidade] = useState('')
+
 
     async function MostrarModal(modal, consulta) {
         setConsultaSelecionada(consulta)
 
+        async function getMedicoData() {
+            const response = await api.get(`/Medicos/BuscarPorID?id=${consulta.medicoClinica.medicoId}`)
+            await setMedicoData(response.data)
+    
+            console.log(medicoData);
+    
+            setCrm(medicoData.crm)
+            setNomeMedico(medicoData.idNavigation.nome)
+            setEspecialidade(medicoData.especialidade.especialidade1)
+    }
+
         if (modal == 'cancelar') {
             setShowModalCancel(true)
         } else {
-            setShowModalAppointment(true)
+            await getMedicoData();
+            if (medicoData === '') {
+                return null;
+            } else {
+                setShowModalAppointment(true)
+            }
         }
     }
 
@@ -66,6 +83,7 @@ export const HomeFunc = ({ navigation }) => {
             setUserType(token.role)
     
             setDataConsulta(moment().format('YYYY-MM-DD'))
+            console.log(token);
         };
 
         profileLoad();  
@@ -142,32 +160,15 @@ export const HomeFunc = ({ navigation }) => {
                     setShowModalCancel={setShowModalCancel}
                 />
 
-                {/* <ListComponent
-                    data={AppointmentModalData}
-                    renderItem={({ item }) =>
-                        <AppointmentModal
-                            id={item.id}
-                            name={item.name}
-
-                            consulta={consultaSelecionada}
-                            roleUsuario={userType}
-
-                            ModalText1={item.ModalText1}
-                            ModalText2={item.ModalText2}
-                            ButtonProntuary={item.ButtonProntuary}
-                            visible={showModalAppointment}
-                            setShowModalAppointment={setShowModalAppointment}
-                            navigation={navigation}
-                            situacao={statusLista}
-                        />
-                    }
-                /> */}
 
                 <AppointmentModal
 
                     consulta={consultaSelecionada}
                     profileData={profileData}
                     
+                    nomeMedico={nomeMedico}
+                    crm={crm}
+                    especialidadeMedico={especialidade}
                     visible={showModalAppointment}
                     setShowModalAppointment={setShowModalAppointment}
                     navigation={navigation}
@@ -183,7 +184,7 @@ export const HomeFunc = ({ navigation }) => {
             </ContainerScroll>
 
             {
-                userType == "Doutor" ? (
+                userType == "Medico" ? (
                     <>
                     </>
                 ) : (
