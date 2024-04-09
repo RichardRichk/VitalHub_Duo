@@ -27,35 +27,16 @@ export const HomeFunc = ({ navigation }) => {
     const [consultas, setConsultas] = useState([]);
 
     const [consultaSelecionada, setConsultaSelecionada] = useState(null);
-    const [medicoData, setMedicoData] = useState('');
-    const [nomeMedico, setNomeMedico] = useState('')
-    const [crm, setCrm] = useState('')
-    const [especialidade, setEspecialidade] = useState('')
 
 
     async function MostrarModal(modal, consulta) {
         setConsultaSelecionada(consulta)
 
-        async function getMedicoData() {
-            const response = await api.get(`/Medicos/BuscarPorID?id=${consulta.medicoClinica.medicoId}`)
-            await setMedicoData(response.data)
-    
-            console.log(medicoData);
-    
-            setCrm(medicoData.crm)
-            setNomeMedico(medicoData.idNavigation.nome)
-            setEspecialidade(medicoData.especialidade.especialidade1)
-    }
 
         if (modal == 'cancelar') {
             setShowModalCancel(true)
         } else {
-            await getMedicoData();
-            if (medicoData === '') {
-                return null;
-            } else {
                 setShowModalAppointment(true)
-            }
         }
     }
 
@@ -67,6 +48,7 @@ export const HomeFunc = ({ navigation }) => {
         try {
             const response = await api.get(`/${url}/BuscarPorData?data=${dataConsulta}&id=${profileData.id}`);
             setConsultas(response.data); // Assume que a resposta da API contém os dados das consultas
+            console.log(response.data);
         } catch (error) {
             console.error('Erro ao buscar consultas:', error);
             // Trate o erro, se necessário
@@ -143,7 +125,10 @@ export const HomeFunc = ({ navigation }) => {
                                 situacao={item.situacao.situacao}
                                 type={item.prioridade.prioridade}
                                 onPressAppointment={() => navigation.navigate('FormRequire', userType)}
-                                name={item.medicoClinica.medico.crm}
+
+                                usuarioConsulta={ item && 
+                                    ( profileData.role == "Medico" ? item.paciente : item.medicoClinica )
+                                }
                                 
                                 onPressCancel={() => MostrarModal('cancelar', item)}
                                 onPressCard={() => MostrarModal('prontuario', item)}
@@ -162,13 +147,12 @@ export const HomeFunc = ({ navigation }) => {
 
 
                 <AppointmentModal
-
+                    usuarioConsulta={ consultaSelecionada && 
+                        ( profileData.role == "Medico" ? consultaSelecionada.paciente : consultaSelecionada.medicoClinica.medico )
+                    }
                     consulta={consultaSelecionada}
                     profileData={profileData}
-                    
-                    nomeMedico={nomeMedico}
-                    crm={crm}
-                    especialidadeMedico={especialidade}
+
                     visible={showModalAppointment}
                     setShowModalAppointment={setShowModalAppointment}
                     navigation={navigation}

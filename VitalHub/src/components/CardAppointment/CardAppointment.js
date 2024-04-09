@@ -16,7 +16,7 @@ export const CardAppointment = ({
     onPressCancel,
     onPressAppointment,
     onPressCard,
-    idConsulta,
+    usuarioConsulta,
     type,
     time = "14:00",
 }) => {
@@ -55,6 +55,10 @@ export const CardAppointment = ({
         LoadUserData();
     }, [profileData])
 
+    useEffect(() => {
+        console.log(usuarioConsulta);
+    }, [usuarioConsulta])
+
     return (
         <ContainerCard onPress={() => {
         
@@ -74,7 +78,7 @@ export const CardAppointment = ({
 
                 <DataProfileCard>
 
-                    <ProfileName>{profileData.name}</ProfileName>
+                    {/* <ProfileName>{(userType === 'Paciente' ? ( usuarioConsulta && usuarioConsulta.paciente.idNavigation.nome) : (usuarioConsulta && usuarioConsulta.medico.idNavigation.nome))}</ProfileName> */}
 
                     <ProfileDataCard>
 

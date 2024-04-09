@@ -3,16 +3,14 @@ import { Title } from "../Title/Style"
 import { ModalContent, ModalText, PatientModal } from "../CancellationModal/Style"
 import { ButtonModal, ButtonSecondary, ButtonSecondaryTitle, TextButton } from "../Button/Style"
 import { ContainerModalText, ImageModalAppointment, ModalTextAppointment } from "./Style";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import LoadingButton from "../../utils/LoadingButton";
 
-const AppointmentModal = ({ navigation, profileData, consulta, situacao ,visible, setShowModalAppointment, crm, nomeMedico, especialidadeMedico,...rest }) => {
+const AppointmentModal = ({ navigation, usuarioConsulta, profileData, consulta, situacao ,visible, setShowModalAppointment,...rest }) => {
 
     const image = require("../../assets/Images/Picture_Modal.png")
 
     const [loading, setLoading] = useState(false);
-
-
     
 
     async function handleClose(screen){
@@ -60,13 +58,13 @@ const AppointmentModal = ({ navigation, profileData, consulta, situacao ,visible
                         source={image}
                     />
                     
-                    <Title>{nomeMedico}</Title>
+                    <Title>{(usuarioConsulta && usuarioConsulta.idNavigation.nome)}</Title>
 
                     <ContainerModalText>
 
-                        <ModalTextAppointment>{especialidadeMedico}</ModalTextAppointment>
+                        <ModalTextAppointment>{profileData.role == 'Paciente' ? (usuarioConsulta && usuarioConsulta.especialidade.especialidade1) : (usuarioConsulta && usuarioConsulta.idNavigation.email)}</ModalTextAppointment>
 
-                        <ModalTextAppointment>CRM-{crm}</ModalTextAppointment>
+                        <ModalTextAppointment>{profileData.role == 'Paciente' ? (`CRM-${usuarioConsulta && usuarioConsulta.crm}`) : (null)}</ModalTextAppointment>
 
                     </ContainerModalText>
 
