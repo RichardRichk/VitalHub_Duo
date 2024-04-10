@@ -16,6 +16,8 @@
 
         public int? Numero { get; set; }
 
+        public string? Cidade { get; set; }
+
         public Guid? EspecialidadeId { get; set; }
 
         public string? Crm { get; set; }

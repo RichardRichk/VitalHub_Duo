@@ -1,4 +1,5 @@
 ﻿using Microsoft.Identity.Client;
+using System.Globalization;
 using WebAPI.Domains;
 
 namespace WebAPI.Interfaces
@@ -9,7 +10,7 @@ namespace WebAPI.Interfaces
 
         public Consulta BuscarPorId(Guid id);
 
-        public void EditarStatus(Consulta consulta);
+        public void EditarStatus(Guid idConsulta, string status);
         public void EditarProntuario(Consulta consulta);
 
         public List<Consulta> ListarTodos();

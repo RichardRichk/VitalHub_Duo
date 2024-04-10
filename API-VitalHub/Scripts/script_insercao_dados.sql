@@ -1,4 +1,4 @@
-USE [VitalHub_G13M(C)];
+USE VitalHub;
 
 -- Selecionando todos os endereços
 SELECT * FROM dbo.Enderecos;
@@ -6,10 +6,7 @@ SELECT * FROM dbo.Enderecos;
 INSERT INTO
 	dbo.Enderecos
 VALUES
-	(NEWID(), '57000000', 'Alagoas', 100, -35.7351,  -9.66625),
-	(NEWID(), '09510200', 'Rua Niterói', 180, -46.6388, -23.5489),
-	(NEWID(), '69000000', 'Amazonas', 600,  -60.0261, -3.10719);
-
+	(NEWID(), '09510200', 'Rua Niterói', 180);
 
 
 
@@ -20,17 +17,16 @@ INSERT INTO dbo.TiposUsuario VALUES (NEWID(), 'Medico'), (NEWID(), 'Paciente');
 
 
 
-
 -- Selecionando todos os usuários
 SELECT * FROM dbo.Usuarios;
 
 INSERT INTO
 	dbo.Usuarios
 VALUES
-	(NEWID(), 'CFC0C3FF-09E2-45F4-ACD6-DCC261AB5739', 'Lucas Silveira Portal', 'medico@email.com', 'medico123', 'string'),
-	(NEWID(), 'CFC0C3FF-09E2-45F4-ACD6-DCC261AB5739', 'Carlos Roque', 'medico2@email.com', 'medico123', 'string'),
-	(NEWID(), '676F07F1-73CC-4B59-83E6-F07064DB4C4F', 'Martin Lorenzo', 'paciente@email.com', 'paciente123', 'string'),
-	(NEWID(), '676F07F1-73CC-4B59-83E6-F07064DB4C4F', 'Heitor Paulo Campos', 'paciente2@email.com', 'paciente123', 'string');
+	(NEWID(), 'ADA71C00-9A15-4C9F-BA63-FAA88B62CA72', 'Lucas Silveira Portal', 'lucas.portal@gmail.com', 'medico123', 'string'),
+	(NEWID(), 'ADA71C00-9A15-4C9F-BA63-FAA88B62CA72', 'Carlos Roque', 'carlos.roque@gmail.com', 'medico123', 'string'),
+	(NEWID(), '41375149-6A84-4690-ACE8-196700FFB1D1', 'Martin Lorenzo', 'martin_ferreira@gmail.com', 'paciente123', 'string'),
+	(NEWID(), '41375149-6A84-4690-ACE8-196700FFB1D1', 'Heitor Paulo Campos', 'heitor-campos80@gmail.com', 'paciente123', 'string');
 
 UPDATE dbo.Usuarios SET senha = '$2y$10$kZROpWHidaGEbQdfvq3SpeVPGiNcpLQHAOcENJbblYV0aAqXoHnYO' WHERE id = 'F63A83C9-35C7-4BDE-940D-5B07303D8F02';
 
@@ -41,8 +37,8 @@ SELECT * FROM dbo.Especialidades;
 INSERT INTO
 	dbo.Especialidades
 VALUES
-	(NEWID(), 'Pediatra'),
-	(NEWID(), 'Cardio');
+	(NEWID(), 'Pediatra');
+
 
 
 -- Selecionando todos os médicos
@@ -51,8 +47,8 @@ SELECT * FROM dbo.Medicos;
 INSERT INTO
 	dbo.Medicos
 VALUES
-	('897FC1D2-EF7E-49F1-A322-B0B5257C45BE', 'B3A90F75-BFCE-4785-B6CA-5C8A5FCF394C', '123456789', '4E8132FC-446D-421E-B995-DB6DB10CA339'),
-	('856A41AE-C591-44A8-A9BA-E953038CAF0C', '149BCD82-94A8-4CAF-97AE-EA89BEFEC5D6', '987654321', '4E8132FC-446D-421E-B995-DB6DB10CA339');
+	('F63A83C9-35C7-4BDE-940D-5B07303D8F02', '910D82CF-404A-4A7A-9B39-E343823842F9', '123456789'),
+	('04030137-BA59-42CA-9320-1CD586278B7B', '3FA85F64-5717-4562-B3FC-2C963F66AFA6', '987654321');
 
 
 
@@ -62,8 +58,8 @@ SELECT * FROM dbo.Pacientes;
 INSERT INTO
 	dbo.Pacientes
 VALUES
-	('FC6D2A91-5D8B-4F00-9C8C-6706E5B613D1', '2000-01-01', '391166037', '01318181801', '4CEC1FA1-857A-450C-980A-5A818C1F53B8'),
-	('C1DAAD30-2120-4AED-A9F3-FC1DDAF952A5', '2001-02-02', '473972438', '25319361815', '4CEC1FA1-857A-450C-980A-5A818C1F53B8');
+	('E4F4A3B1-5AED-4981-8336-7E7A5440AD1F', '2000-01-01', '391166037', '01318181801', 'A13E687B-D94F-41D4-AC8A-AA1E4216D9CA'),
+	('683F4955-7BEF-4154-AA38-F7215AD0DCD9', '2001-02-02', '473972438', '25319361815', 'A13E687B-D94F-41D4-AC8A-AA1E4216D9CA');
 
 
 
@@ -97,5 +93,5 @@ SELECT * FROM dbo.Clinicas;
 INSERT INTO
 	dbo.Clinicas
 VALUES
-	(NEWID(), 'Clínica Médica Vida & Saúde', '12345678000190', 'Clínica Médica Vida & Saúde', 'clinica.vidasaude@gmail.com', '74AFF17C-B35E-4EEE-8E6C-C236D1C5A901'),
-	(NEWID(), 'Centro Médico São Paulo', '23456789000101', 'Centro Médico São Paulo', 'medico.saopaulo@gmail.com', '4E8132FC-446D-421E-B995-DB6DB10CA339');
+	(NEWID(), 'Clínica Médica Vida & Saúde', '12345678000190', 'Clínica Médica Vida & Saúde', -23.5505, -46.6333, 'clinica.vidasaude@gmail.com'),
+	(NEWID(), 'Centro Médico São Paulo', '23456789000101', 'Centro Médico São Paulo', -23.5674, -46.6482, 'medico.saopaulo@gmail.com');
