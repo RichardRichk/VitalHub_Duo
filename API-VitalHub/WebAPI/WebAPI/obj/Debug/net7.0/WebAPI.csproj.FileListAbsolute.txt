@@ -244,3 +244,11 @@ C:\Users\45811737874\Desktop\API-VitalHub\WebAPI\WebAPI\obj\Debug\net7.0\refint\
 C:\Users\45811737874\Desktop\API-VitalHub\WebAPI\WebAPI\obj\Debug\net7.0\WebAPI.pdb
 C:\Users\45811737874\Desktop\API-VitalHub\WebAPI\WebAPI\obj\Debug\net7.0\WebAPI.genruntimeconfig.cache
 C:\Users\45811737874\Desktop\API-VitalHub\WebAPI\WebAPI\obj\Debug\net7.0\ref\WebAPI.dll
+C:\Users\45811737874\Desktop\API-VitalHub\WebAPI\WebAPI\bin\Debug\net7.0\BouncyCastle.Cryptography.dll
+C:\Users\45811737874\Desktop\API-VitalHub\WebAPI\WebAPI\bin\Debug\net7.0\MailKit.dll
+C:\Users\45811737874\Desktop\API-VitalHub\WebAPI\WebAPI\bin\Debug\net7.0\MimeKit.dll
+C:\Users\45811737874\Desktop\API-VitalHub\WebAPI\WebAPI\bin\Debug\net7.0\System.Formats.Asn1.dll
+C:\Users\45811737874\Desktop\API-VitalHub\WebAPI\WebAPI\bin\Debug\net7.0\System.Security.Cryptography.Pkcs.dll
+C:\Users\45811737874\Desktop\API-VitalHub\WebAPI\WebAPI\bin\Debug\net7.0\System.Text.Encoding.CodePages.dll
+C:\Users\45811737874\Desktop\API-VitalHub\WebAPI\WebAPI\bin\Debug\net7.0\runtimes\win\lib\net7.0\System.Security.Cryptography.Pkcs.dll
+C:\Users\45811737874\Desktop\API-VitalHub\WebAPI\WebAPI\bin\Debug\net7.0\runtimes\win\lib\net7.0\System.Text.Encoding.CodePages.dll
