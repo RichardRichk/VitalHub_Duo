@@ -252,3 +252,6 @@ C:\Users\45811737874\Desktop\API-VitalHub\WebAPI\WebAPI\bin\Debug\net7.0\System.
 C:\Users\45811737874\Desktop\API-VitalHub\WebAPI\WebAPI\bin\Debug\net7.0\System.Text.Encoding.CodePages.dll
 C:\Users\45811737874\Desktop\API-VitalHub\WebAPI\WebAPI\bin\Debug\net7.0\runtimes\win\lib\net7.0\System.Security.Cryptography.Pkcs.dll
 C:\Users\45811737874\Desktop\API-VitalHub\WebAPI\WebAPI\bin\Debug\net7.0\runtimes\win\lib\net7.0\System.Text.Encoding.CodePages.dll
+C:\Users\45811737874\Desktop\API-VitalHub\WebAPI\WebAPI\bin\Debug\net7.0\Azure.Storage.Blobs.dll
+C:\Users\45811737874\Desktop\API-VitalHub\WebAPI\WebAPI\bin\Debug\net7.0\Azure.Storage.Common.dll
+C:\Users\45811737874\Desktop\API-VitalHub\WebAPI\WebAPI\bin\Debug\net7.0\System.IO.Hashing.dll
