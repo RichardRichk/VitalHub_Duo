@@ -1,9 +1,10 @@
 ﻿using WebAPI.Contexts;
 using WebAPI.Domains;
+using WebAPI.Interfaces;
 
 namespace WebAPI.Repositories
 {
-    public class ExameRepository
+    public class ExameRepository : IExameRepository
     {
         public VitalContext ctx = new VitalContext();
 
