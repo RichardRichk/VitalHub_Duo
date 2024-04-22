@@ -78,7 +78,7 @@ export const CardAppointment = ({
 
                 <DataProfileCard>
 
-                    {/* <ProfileName>{(userType === 'Paciente' ? ( usuarioConsulta && usuarioConsulta.paciente.idNavigation.nome) : (usuarioConsulta && usuarioConsulta.medico.idNavigation.nome))}</ProfileName> */}
+                    {/* <ProfileName>{(userType === 'Paciente' ? ( usuarioConsulta && usuarioConsulta.idNavigation.nome) : (usuarioConsulta && usuarioConsulta.medico.idNavigation.nome))}</ProfileName> */}
 
                     <ProfileDataCard>
 
