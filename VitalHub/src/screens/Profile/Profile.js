@@ -6,6 +6,7 @@ import { ModalProfile } from "../../components/Modal/Style"
 import { SubTitle, Title } from "../../components/Title/Style"
 import { Button, ButtonSecondary, ButtonSecondaryTitle, TextButton } from "../../components/Button/Style"
 import { ContentInput } from "../../components/ContentAccount/Style"
+import { MaterialCommunityIcons } from '@expo/vector-icons'
 
 import { userEncodeToken } from "../../utils/Auth"
 import AsyncStorage from "@react-native-async-storage/async-storage"
@@ -15,6 +16,8 @@ import { userDecodeToken } from '../../utils/Auth'
 import { useEffect, useState } from "react";
 import moment from "moment";
 import api from "../../Service/Service"
+import { ButtonCamera } from "./Style"
+import { CameraComp } from "../../components/Camera/Camera"
 
 
 export const ProfileFunc = ({navigation}) => {
@@ -23,6 +26,9 @@ export const ProfileFunc = ({navigation}) => {
     const [userId, setUserId] = useState('');
     const [userType, setUserType] = useState('');
     const [userIdLoaded, setUserIdLoaded] = useState(false);
+
+    const [showCam, setShowCam] = useState(false)
+    const [uriCameraCapture, setUriCameraCapture] = useState(null)
 
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
@@ -53,6 +59,7 @@ export const ProfileFunc = ({navigation}) => {
         }
     } 
 
+    
 
     useEffect(() => {
         const profileLoad = async () => {
@@ -93,7 +100,12 @@ export const ProfileFunc = ({navigation}) => {
                 <HeaderPhoto
                     source={require("../../assets/Images/ProfilePic.png")}
                 />
+                <ButtonCamera onPress={() => {setShowCam(true)}} >
+                    <MaterialCommunityIcons name="camera-plus" size={20} color={"#fbfbfb"} />
+                </ButtonCamera>
             </HeaderPhotoContainer>
+
+            <CameraComp visible={showCam} getMediaLibrary={true} setShowCamera={setShowCam} setUriCameraCapture={setUriCameraCapture}/>
 
             <ModalProfile>
                 <Title>{name}</Title>

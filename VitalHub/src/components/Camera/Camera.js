@@ -3,15 +3,47 @@ import { Container } from '../Container/Style'
 import { Alert, Image, Modal, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { useEffect, useRef, useState } from 'react'
 import * as MediaLibrary from 'expo-media-library'
+import * as ImagePicker from 'expo-image-picker'
 import { FontAwesome, FontAwesome6, AntDesign } from '@expo/vector-icons';
+import { LastPhoto } from './Style'
 
-export const CameraComp = ({ visible, setShowCamera, setUriCameraCapture }) => {
-
+export const CameraComp = ({ visible, setShowCamera, setUriCameraCapture, getMediaLibrary=false, ...rest }) => {
+    
     const cameraRef = useRef(null);
     const [photo, setPhoto] = useState(null);
     const [openModal, setOpenModal] = useState(false);
-
+    
     const [tipoCamera, setTipoCamera] = useState(Camera.Constants.Type.front);
+    const [lastPhoto, setLastPhoto] = useState(null)
+
+    useEffect(() => {
+        (async () => {
+            const { status: cameraStatus } = await Camera.requestCameraPermissionsAsync();
+    
+            const { status: mediaStatus } = await MediaLibrary.requestPermissionsAsync();
+        })();
+    }, [])
+
+    useEffect(() => {
+        setPhoto(null)
+
+        if (getMediaLibrary) {
+            GetLastPhoto();
+        }
+    }, [visible])
+
+    async function SelectImageGallery() {
+        const result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.Images,
+            quality : 1
+        });
+
+        if (!result.canceled) {
+            setPhoto(result.assets[0].uri);
+
+            setOpenModal(true)
+        }
+    }
 
     async function CapturePhoto() {
         if (cameraRef) {
@@ -32,6 +64,16 @@ export const CameraComp = ({ visible, setShowCamera, setUriCameraCapture }) => {
         setPhoto(null)
 
         setOpenModal(false)
+        setShowCamera(false)
+    }
+
+    async function GetLastPhoto() {
+        const assets = await MediaLibrary.getAssetsAsync({ sortBy: [[MediaLibrary.SortBy.creationTime, false]], first: 1 })
+        console.log(assets);
+
+        if (assets.length > 0) {
+            setLastPhoto(assets[0].uri)
+        }
     }
 
     async function SavePhoto() {
@@ -45,15 +87,10 @@ export const CameraComp = ({ visible, setShowCamera, setUriCameraCapture }) => {
         }
 
         setOpenModal(false)
+        setShowCamera(false)
+
     }
 
-    useEffect(() => {
-        (async () => {
-            const { status: cameraStatus } = await Camera.requestCameraPermissionsAsync();
-
-            const { status: mediaStatus } = await MediaLibrary.requestPermissionsAsync();
-        })();
-    }, [])
 
     return (
         <Modal
@@ -66,12 +103,23 @@ export const CameraComp = ({ visible, setShowCamera, setUriCameraCapture }) => {
                     type={tipoCamera}
                     style={styles.camera}
                     ratio={'16:9'}
+                    autoFocus={Camera.Constants.AutoFocus.on}
                 />
 
                 <View style={styles.viewFlip}>
 
-                    <TouchableOpacity style={styles.btnGallery}>
-                        <AntDesign name="picture" size={23} color={'#fff'} />
+                    
+                    <TouchableOpacity style={styles.btnGallery} onPress={SelectImageGallery}>
+                        {
+                            lastPhoto != null 
+                            ? (
+                                <LastPhoto
+                                    source={{uri : lastPhoto}}
+                                />
+                            )
+                            :
+                            <AntDesign name="picture" size={30} color={'#fff'} />
+                        }
                     </TouchableOpacity>
 
                     <TouchableOpacity style={styles.btnTake} onPress={() => CapturePhoto()}>
