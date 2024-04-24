@@ -8,6 +8,9 @@ import LoadingButton from "../../utils/LoadingButton"
 
 export const ChangePassword = ({ navigation }) => {
 
+    const [senha, setSenha] = useState
+    const [confirmarsenha, Setconfirmarsenha]= useState
+
     const [loading, setLoading] = useState(false);
 
     // Função para cancelar a consulta
@@ -18,12 +21,25 @@ export const ChangePassword = ({ navigation }) => {
             await new Promise(resolve => setTimeout(resolve, 800));
             navigation.replace("Login")
             setLoading(false);
+            AtualizarSenha()
 
         } catch (error) {
             console.error("Erro ao cancelar consulta:", error);
             setLoading(false);
         }
     };
+
+    async function AtualizarSenha(){
+        if( senha === confirmar){
+            await api.put(`/Usuario/AlterarSenha?email=${route.params.emailRecuperacao}`, {
+                senhaNova : senha
+            }).then(( ) =>{
+                navigation.replace("Login")
+            }).catch(error =>{
+                console.log(error);
+            })
+        }
+    }
 
     return (
         <Container>
@@ -45,10 +61,12 @@ export const ChangePassword = ({ navigation }) => {
 
             <Input
                 placeholder="Nova Senha"
+                onChangeText={(txt) => setSenha(txt)}
             />
 
             <Input
                 placeholder="Confirmar nova senha"
+                onChangeText={(txt) => Setconfirmarsenha(txt)}
             />
 
             <LoadingButton
