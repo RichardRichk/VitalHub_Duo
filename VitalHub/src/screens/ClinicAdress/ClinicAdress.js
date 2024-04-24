@@ -15,7 +15,6 @@ export const ClinicAdress = ({ navigation, route }) => {
     useEffect(() => {
         if (clinica == null) {
 
-            console.log(route);
             SearchClinic();
         }
     }, [clinica])
@@ -36,7 +35,7 @@ export const ClinicAdress = ({ navigation, route }) => {
         <>
             {clinica !== null ? (
                 <>
-                    <Map />
+                    <Map latitude={clinica.endereco.latitude} longitude={clinica.endereco.longitude}/>
 
                     <Container>
 

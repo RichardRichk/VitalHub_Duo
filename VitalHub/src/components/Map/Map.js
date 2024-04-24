@@ -7,15 +7,14 @@ import MapViewDirections from "react-native-maps-directions";
 import { mapskey } from "../../utils/mapsApiKey";
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 import { Title } from "../Title/Style";
+import api from "../../Service/Service";
 
-export const Map = () => {
+export const Map = (latitude, longitude) => {
 
+    console.log(latitude, longitude);
     const mapReference = useRef(null) // Referência para o mapa
     const [initialPosition, setInitialPosition] = useState(null)
-    const [finalPosition, setFinalPosition] = useState({
-        latitude: -23.671776,
-        longitude: -46.617512
-    })
+    const [finalPosition, setFinalPosition] = useState({})
 
     async function CaptureLocation() {
         const {granted} = await requestForegroundPermissionsAsync()
@@ -49,6 +48,7 @@ export const Map = () => {
     useEffect(() => {
         CaptureLocation()
 
+        setFinalPosition(latitude, longitude)
         // watchPositionAsync({
         //     accuracy: LocationAccuracy.Highest,
         //     timeInterval: 1000,

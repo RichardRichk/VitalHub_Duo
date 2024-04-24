@@ -46,6 +46,8 @@ export const ProfileFunc = ({navigation}) => {
         try {
             const response = await api.get(`/Pacientes/BuscarPorID?id=${userId}`);
             setUserData(response.data);
+
+            console.log(response.data);
         } catch (error) {
             console.log(error);
         }
