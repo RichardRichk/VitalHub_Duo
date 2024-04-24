@@ -129,6 +129,8 @@ export const HomeFunc = ({ navigation }) => {
                                 usuarioConsulta={ item && 
                                     ( profileData.role == "Medico" ? item.paciente : item.medicoClinica )
                                 }
+
+                                userType={userType}
                                 
                                 onPressCancel={() => MostrarModal('cancelar', item)}
                                 onPressCard={() => MostrarModal('prontuario', item)}
