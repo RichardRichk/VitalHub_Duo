@@ -20,9 +20,9 @@ import { ButtonCamera } from "./Style"
 import { CameraComp } from "../../components/Camera/Camera"
 
 
-export const ProfileFunc = ({navigation}) => {
+export const ProfileFunc = ({ navigation }) => {
 
-    const[userData, setUserData] = useState([]);
+    const [userData, setUserData] = useState([]);
     const [userId, setUserId] = useState('');
     const [userType, setUserType] = useState('');
     const [userIdLoaded, setUserIdLoaded] = useState(false);
@@ -35,18 +35,18 @@ export const ProfileFunc = ({navigation}) => {
 
 
     useEffect(() => {
-        if(uriCameraCapture){
+        if (uriCameraCapture) {
             AlterarFotoPerfil()
             console.log("lucao fera");
         }
     }, [uriCameraCapture])
 
-    async function AlterarFotoPerfil(){
+    async function AlterarFotoPerfil() {
 
         const formData = new FormData();
         formData.append("Arquivo", {
-            uri : uriCameraCapture,
-            name : `image.${uriCameraCapture.split(".")[1]}`,
+            uri: uriCameraCapture,
+            name: `image.${uriCameraCapture.split(".")[1]}`,
             type: `image/${uriCameraCapture.split(".")[1]}`,
         })
 
@@ -54,9 +54,9 @@ export const ProfileFunc = ({navigation}) => {
             headers: {
                 "Content-Type": "Multipart/form-data"
             }
-        }).then( response =>{
+        }).then(response => {
             console.log(response);
-        }).catch(error =>{
+        }).catch(error => {
             console.log(error);
         })
     }
@@ -74,8 +74,8 @@ export const ProfileFunc = ({navigation}) => {
         navigation.replace('Login')
     };
 
-    
-    async function ListProfile(){
+
+    async function ListProfile() {
         try {
             const response = await api.get(`/Pacientes/BuscarPorID?id=${userId}`);
             setUserData(response.data);
@@ -84,9 +84,9 @@ export const ProfileFunc = ({navigation}) => {
         } catch (error) {
             console.log(error);
         }
-    } 
+    }
 
-    
+
 
     useEffect(() => {
         const profileLoad = async () => {
@@ -106,10 +106,10 @@ export const ProfileFunc = ({navigation}) => {
             setUserId(token.id)
 
             setUserIdLoaded(true);
-            
+
         };
 
-        profileLoad();  
+        profileLoad();
     }, []);
 
 
@@ -119,20 +119,29 @@ export const ProfileFunc = ({navigation}) => {
         }
     }, [userIdLoaded]);
 
-    return(
-        
-    <Container>
+
+
+    return (
+
+        <Container>
 
             <HeaderPhotoContainer>
-                <HeaderPhoto
-                    source={require("../../assets/Images/ProfilePic.png")}
-                />
-                <ButtonCamera onPress={() => {setShowCam(true)}} >
+                {uriCameraCapture ? (
+                    <HeaderPhoto
+                        source={{ uri: uriCameraCapture }}
+                    />
+                ) : (
+                    <HeaderPhoto
+                        source={require('')}
+                    />
+                )}
+                <ButtonCamera onPress={() => { setShowCam(true) }} >
                     <MaterialCommunityIcons name="camera-plus" size={20} color={"#fbfbfb"} />
                 </ButtonCamera>
             </HeaderPhotoContainer>
 
-            <CameraComp visible={showCam} getMediaLibrary={true} setShowCamera={setShowCam} setUriCameraCapture={setUriCameraCapture}/>
+
+            <CameraComp visible={showCam} getMediaLibrary={true} setShowCamera={setShowCam} setUriCameraCapture={setUriCameraCapture} />
 
             <ModalProfile>
                 <Title>{name}</Title>
@@ -141,56 +150,56 @@ export const ProfileFunc = ({navigation}) => {
 
             <ContainerScroll>
 
-            <InputLabel>Data de nascimento:</InputLabel>
-            <InputProfile
-                placeholder= {moment(userData.dataNascimento).format('DD-MM-YYYY')}
-                editable={false}
-            />
+                <InputLabel>Data de nascimento:</InputLabel>
+                <InputProfile
+                    placeholder={moment(userData.dataNascimento).format('DD-MM-YYYY')}
+                    editable={false}
+                />
 
-            <InputLabel>CPF:</InputLabel>
-            <InputProfile
-                placeholder= {userData.cpf}
-                editable={false}
-            />
+                <InputLabel>CPF:</InputLabel>
+                <InputProfile
+                    placeholder={userData.cpf}
+                    editable={false}
+                />
 
-            <InputLabel>Endereço</InputLabel>
-            <InputProfile
-                placeholder= {userData.endereco ? `${userData.endereco.logradouro}, ${userData.endereco.numero}` : ''}
-                editable={false}
-            />
+                <InputLabel>Endereço</InputLabel>
+                <InputProfile
+                    placeholder={userData.endereco ? `${userData.endereco.logradouro}, ${userData.endereco.numero}` : ''}
+                    editable={false}
+                />
 
-            <ContentInput>
-                <BoxInput>
-                    <InputLabel>Cep</InputLabel>
-                    <InputDouble
-                        placeholder= {userData.endereco ? userData.endereco.cep : ''}
-                        editable={false}
-                    />
-                </BoxInput>
+                <ContentInput>
+                    <BoxInput>
+                        <InputLabel>Cep</InputLabel>
+                        <InputDouble
+                            placeholder={userData.endereco ? userData.endereco.cep : ''}
+                            editable={false}
+                        />
+                    </BoxInput>
 
-                <BoxInput>
-                    <InputLabel>Cidade</InputLabel>
-                    <InputDouble
-                        placeholder="Diadema-SP"
-                        editable={false}
-                    />
-                </BoxInput>
-            </ContentInput>
+                    <BoxInput>
+                        <InputLabel>Cidade</InputLabel>
+                        <InputDouble
+                            placeholder="Diadema-SP"
+                            editable={false}
+                        />
+                    </BoxInput>
+                </ContentInput>
 
-            {/* <Button>
+                {/* <Button>
 
                 <TextButton>SALVAR</TextButton>
 
             </Button> */}
 
-            <ButtonSecondary onPress={handleLogout}>
-                <ButtonSecondaryTitle>
-                    Sair do app
-                </ButtonSecondaryTitle>
-            </ButtonSecondary>
+                <ButtonSecondary onPress={handleLogout}>
+                    <ButtonSecondaryTitle>
+                        Sair do app
+                    </ButtonSecondaryTitle>
+                </ButtonSecondary>
 
             </ContainerScroll>
-    
-    </Container> 
+
+        </Container>
     )
 }
