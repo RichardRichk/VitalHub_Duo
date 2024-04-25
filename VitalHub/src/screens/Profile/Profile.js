@@ -129,15 +129,9 @@ export const ProfileFunc = ({ navigation }) => {
         <Container>
 
             <HeaderPhotoContainer>
-                {uriCameraCapture ? (
                     <HeaderPhoto
                         source={{ uri: uriCameraCapture }}
                     />
-                ) : (
-                    <HeaderPhoto
-                        source={require('')}
-                    />
-                )}
                 <ButtonCamera onPress={() => { setShowCam(true) }} >
                     <MaterialCommunityIcons name="camera-plus" size={20} color={"#fbfbfb"} />
                 </ButtonCamera>
