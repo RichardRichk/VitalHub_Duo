@@ -1,4 +1,3 @@
-import { StatusBar } from "expo-status-bar"
 import { BoxInput, Container, ContainerScroll, DoubleView } from "../../components/Container/Style"
 import { HeaderPhotoContainer, HeaderPhoto } from "../../components/HeaderPhoto/Style"
 import { InputDouble, InputLabel, InputProfile } from "../../components/Input/Style"
@@ -20,9 +19,9 @@ import { ButtonCamera } from "./Style"
 import { CameraComp } from "../../components/Camera/Camera"
 
 
-export const ProfileFunc = ({ navigation }) => {
+export const ProfileFunc = ({navigation}) => {
 
-    const [userData, setUserData] = useState([]);
+    const[userData, setUserData] = useState([]);
     const [userId, setUserId] = useState('');
     const [userType, setUserType] = useState('');
     const [userIdLoaded, setUserIdLoaded] = useState(false);
@@ -32,6 +31,15 @@ export const ProfileFunc = ({ navigation }) => {
 
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
+
+
+    const [isEditing, setIsEditing] = useState(false);
+    const [buttonText, setButtonText] = useState('Editar');
+
+    const handleEditToggle = () => {
+        setIsEditing(!isEditing);
+        setButtonText(isEditing ? 'Editar' : 'Salvar');
+    };
 
 
     const handleLogout = async () => {
@@ -47,8 +55,8 @@ export const ProfileFunc = ({ navigation }) => {
         navigation.replace('Login')
     };
 
-
-    async function ListProfile() {
+    
+    async function ListProfile(){
         try {
             const response = await api.get(`/Pacientes/BuscarPorID?id=${userId}`);
             setUserData(response.data);
@@ -57,9 +65,9 @@ export const ProfileFunc = ({ navigation }) => {
         } catch (error) {
             console.log(error);
         }
-    }
+    } 
 
-
+    
 
     useEffect(() => {
         const profileLoad = async () => {
@@ -79,10 +87,10 @@ export const ProfileFunc = ({ navigation }) => {
             setUserId(token.id)
 
             setUserIdLoaded(true);
-
+            
         };
 
-        profileLoad();
+        profileLoad();  
     }, []);
 
 
@@ -97,7 +105,7 @@ export const ProfileFunc = ({ navigation }) => {
         console.log(uriCameraCapture);
         if(uriCameraCapture){
             AlterarFotoPerfil();
-            console.log("SALVE ERA PRA TER ATUALIZADO JA");
+            
         }
     }, [uriCameraCapture])
 
@@ -138,8 +146,7 @@ export const ProfileFunc = ({ navigation }) => {
                 </ButtonCamera>
             </HeaderPhotoContainer>
 
-
-            <CameraComp visible={showCam} getMediaLibrary={true} setShowCamera={setShowCam} setUriCameraCapture={setUriCameraCapture} />
+            <CameraComp visible={showCam} getMediaLibrary={true} setShowCamera={setShowCam} setUriCameraCapture={setUriCameraCapture}/>
 
             <ModalProfile>
                 <Title>{name}</Title>
@@ -148,56 +155,54 @@ export const ProfileFunc = ({ navigation }) => {
 
             <ContainerScroll>
 
-                <InputLabel>Data de nascimento:</InputLabel>
-                <InputProfile
-                    placeholder={moment(userData.dataNascimento).format('DD-MM-YYYY')}
-                    editable={false}
-                />
+            <InputLabel>Data de nascimento:</InputLabel>
+            <InputProfile
+                placeholder= {moment(userData.dataNascimento).format('DD-MM-YYYY')}
+                editable={false}
+            />
 
-                <InputLabel>CPF:</InputLabel>
-                <InputProfile
-                    placeholder={userData.cpf}
-                    editable={false}
-                />
+            <InputLabel>CPF:</InputLabel>
+            <InputProfile
+                placeholder= {userData.cpf}
+                editable={false}
+            />
 
-                <InputLabel>Endereço</InputLabel>
-                <InputProfile
-                    placeholder={userData.endereco ? `${userData.endereco.logradouro}, ${userData.endereco.numero}` : ''}
-                    editable={false}
-                />
+            <InputLabel>Endereço</InputLabel>
+            <InputProfile
+                placeholder= {userData.endereco ? `${userData.endereco.logradouro}, ${userData.endereco.numero}` : ''}
+                editable={false}
+            />
 
-                <ContentInput>
-                    <BoxInput>
-                        <InputLabel>Cep</InputLabel>
-                        <InputDouble
-                            placeholder={userData.endereco ? userData.endereco.cep : ''}
-                            editable={false}
-                        />
-                    </BoxInput>
+            <ContentInput>
+                <BoxInput>
+                    <InputLabel>Cep</InputLabel>
+                    <InputDouble
+                        placeholder= {userData.endereco ? userData.endereco.cep : ''}
+                        editable={false}
+                    />
+                </BoxInput>
 
-                    <BoxInput>
-                        <InputLabel>Cidade</InputLabel>
-                        <InputDouble
-                            placeholder="Diadema-SP"
-                            editable={false}
-                        />
-                    </BoxInput>
-                </ContentInput>
+                <BoxInput>
+                    <InputLabel>Cidade</InputLabel>
+                    <InputDouble
+                        placeholder="Diadema-SP"
+                        editable={false}
+                    />
+                </BoxInput>
+            </ContentInput>
 
-                {/* <Button>
+            <Button onPress={handleEditToggle}>
+                    <TextButton>{buttonText}</TextButton>
+            </Button>
 
-                <TextButton>SALVAR</TextButton>
-
-            </Button> */}
-
-                <ButtonSecondary onPress={handleLogout}>
-                    <ButtonSecondaryTitle>
-                        Sair do app
-                    </ButtonSecondaryTitle>
-                </ButtonSecondary>
+            <ButtonSecondary onPress={handleLogout}>
+                <ButtonSecondaryTitle>
+                    Sair do app
+                </ButtonSecondaryTitle>
+            </ButtonSecondary>
 
             </ContainerScroll>
-
-        </Container>
+    
+    </Container> 
     )
 }

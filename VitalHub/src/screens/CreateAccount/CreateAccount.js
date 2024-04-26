@@ -6,6 +6,7 @@ import { ContentAccount, ContentResend } from "../../components/ContentAccount/S
 import { Logo } from "../../components/Logo/Style";
 import { SubTitle, Title } from "../../components/Title/Style";
 import api from "../../Service/Service";
+import { Alert } from "react-native";
 
 // Seus outros imports...
 
@@ -16,26 +17,66 @@ export const CreateAccountFunc = ({ navigation }) => {
     const [senha, setSenha] = useState("paciente123");
     const [confirmPassword, setConfirmPassword] = useState("paciente123");
 
-    const createAccount = async () => {
-        setLoading(true);
+    async function Create(){
+
+        const formData = new FormData();
+        formData.append('Rg', null);
+        formData.append('Cpf', null);
+        formData.append('DataNascimento', "");
+        formData.append('Cep', null);
+        formData.append('Logadouro', null);
+        formData.append('Numero', "");
+        formData.append('Nome', nome);
+        formData.append('Email', email);
+        formData.append('Senha', senha);
+        formData.append('Cidade', null);
+        formData.append('IdTipoUsuario', '676F07F1-73CC-4B59-83E6-F07064DB4C4F');
+        formData.append('Foto', null);
+        formData.append('File', null);
+
         try {
-            const response = await api.post("/Pacientes", {
-                Nome: nome, // Usuário em vez de Nome
-                Email: email, // Usar a variável email
-                Senha: senha // Usar a variável password
-            });
-    
-            if (response.status === 200) {
-                navigation.replace("Login");
-            } else {
-                console.error("Erro ao criar usuário:", response.data.error);
+            if (senha === confirmPassword) {
+                setLoading(true); 
+                const response = await api.post('/Pacientes', formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    }
+                });
+                console.log(response.data);
+                if (response.status === 200) {
+                    Notification("Usuario Cadastrado", "Sucesso")
+                    await Login(); // Chama o login após o cadastro
+                    Notification("Usuario Cadastrado")
+                }
             }
         } catch (error) {
-            console.error("Erro ao criar usuário:", error);
+            console.log(error.response.status);
+            console.log(error.response.data);
         } finally {
-            setLoading(false);
+            setLoading(false); 
+            navigation.replace('Login'); // Navega para a tela de login
+            Alert.alert("Conta cadastrada")
         }
-    };
+    }
+
+    async function Login() {
+        setLoading(true); // Inicia o carregamento
+
+        try {
+            const response = await api.post('/Login', {
+                email: email,
+                senha: senha
+            });
+
+            await AsyncStorage.setItem("token", JSON.stringify(response.data));
+            navigation.replace("Profile");
+        } catch (error) {
+            console.log(error.response.status);
+            console.log(error.response.data);
+        } finally {
+            setLoading(false); // Finaliza o carregamento
+        }
+    }
 
     return (
         <Container>
@@ -54,7 +95,7 @@ export const CreateAccountFunc = ({ navigation }) => {
             <Input placeholder="Confirmar Senha" value={confirmPassword} onChangeText={setConfirmPassword} />
 
             <LoadingButton
-                onPress={createAccount}
+                onPress={Create}
                 disabled={loading}
                 loading={loading}
                 text="Continuar"
