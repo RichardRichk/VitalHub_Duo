@@ -34,33 +34,6 @@ export const ProfileFunc = ({ navigation }) => {
     const [email, setEmail] = useState('');
 
 
-    useEffect(() => {
-        if (uriCameraCapture) {
-            AlterarFotoPerfil()
-            console.log("lucao fera");
-        }
-    }, [uriCameraCapture])
-
-    async function AlterarFotoPerfil() {
-
-        const formData = new FormData();
-        formData.append("Arquivo", {
-            uri: uriCameraCapture,
-            name: `image.${uriCameraCapture.split(".")[1]}`,
-            type: `image/${uriCameraCapture.split(".")[1]}`,
-        })
-
-        await api.put(`/Usuario/AlterarFotoPerfil?id=${userId}`, formData, {
-            headers: {
-                "Content-Type": "Multipart/form-data"
-            }
-        }).then(response => {
-            console.log(response);
-        }).catch(error => {
-            console.log(error);
-        })
-    }
-
     const handleLogout = async () => {
         // Obtenha o token do AsyncStorage (supondo que você o tenha armazenado com o nome 'token')
         const token = await AsyncStorage.getItem('token');
@@ -119,22 +92,47 @@ export const ProfileFunc = ({ navigation }) => {
         }
     }, [userIdLoaded]);
 
+    useEffect(() => {
+        
+        console.log(uriCameraCapture);
+        if(uriCameraCapture){
+            AlterarFotoPerfil();
+            console.log("SALVE ERA PRA TER ATUALIZADO JA");
+        }
+    }, [uriCameraCapture])
 
 
+    async function AlterarFotoPerfil() {
+        const formData = new FormData();
+        formData.append("Arquivo", {
+            uri : uriCameraCapture,
+            name: `image.${uriCameraCapture.split(".")[1]}`,
+            type: `image/${uriCameraCapture.split(".")[1]}`
+        })
+        console.log(idUser);
+        await api.put(`/Usuario/AlterarFotoPerfil?id=${userId}`, formData, {
+            headers:{
+                "Content-Type": "multipart/form-data"
+            }
+        }).then(response => {
+            console.log("RESPONSE DO PUT");
+            console.log(response);
+        }).catch(erro => {
+            console.log("Alterar foto");
+            console.log(erro);
+        })
+    }
+
+    
     return (
 
         <Container>
 
             <HeaderPhotoContainer>
-                {uriCameraCapture ? (
                     <HeaderPhoto
                         source={{ uri: uriCameraCapture }}
                     />
-                ) : (
-                    <HeaderPhoto
-                        source={require('')}
-                    />
-                )}
+
                 <ButtonCamera onPress={() => { setShowCam(true) }} >
                     <MaterialCommunityIcons name="camera-plus" size={20} color={"#fbfbfb"} />
                 </ButtonCamera>
