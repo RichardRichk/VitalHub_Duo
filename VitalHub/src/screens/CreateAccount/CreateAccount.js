@@ -35,13 +35,10 @@ export const CreateAccountFunc = ({ navigation }) => {
 
             <Title>Criar Conta</Title>
 
-            <SubTitle>Insira um nome de usuario, seu endereço de e-mail e senha para realizar seu cadastro.</SubTitle>
+            <SubTitle>Insira seu endereço de e-mail e senha para realizar seu cadastro.</SubTitle>
 
             <Input
-                placeholder="Usuário"
-            />
-            <Input
-                placeholder="E-mail"
+                placeholder="Usuário ou E-mail"
             />
             <Input
                 placeholder="Senha"
