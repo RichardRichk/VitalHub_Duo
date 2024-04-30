@@ -103,6 +103,13 @@ export const ProfileFunc = ({ navigation }) => {
         }
     }, [userData]);
 
+    useEffect(() => {
+        console.log("cameraCapture", uriCameraCapture);
+        if (uriCameraCapture) {
+            AlterarFotoPerfil();
+        }
+    },[uriCameraCapture])
+
     // Função para salvar as alterações no banco de dados
     const handleSave = async () => {
         try {
@@ -124,7 +131,7 @@ export const ProfileFunc = ({ navigation }) => {
             console.log(error);
         }
     };
-    
+
 
     return (
 

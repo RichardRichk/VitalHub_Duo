@@ -13,12 +13,14 @@ export const CardClinicSelect = ({
     rating,
     days,
     select,
-    onPress
+    onPress,
+    clinica,
+    setClinica
 }) => {
 
     if (select === id) {
 
-        return (
+        return ( //Card selecionado
 
             <ContainerCardClinicSelect >
 
@@ -61,8 +63,15 @@ export const CardClinicSelect = ({
         )
 
     } else {
-        return (
-            <ContainerCardClinic onPress={onPress}>
+        return ( //Card Nao selecionado
+            <ContainerCardClinic onPress={() => {
+                onPress();
+                setClinica({
+                    clinicaId: clinica.id,
+                    clinicaLabel: clinica.nomeFantasia
+                });
+            }}
+            >
 
                 <ContentCard>
 

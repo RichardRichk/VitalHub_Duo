@@ -8,9 +8,24 @@ import { CardDoctorSelect } from "../../components/CardDoctorSelect/CardDoctorSe
 import api from "../../Service/Service"
 import LoadingButton from "../../utils/LoadingButton"
 
-export const DoctorSelect = ({ navigation }) => {
+export const DoctorSelect = ({ navigation, route }) => {
 
     const [loading, setLoading] = useState(false);
+
+    const [selected, setSelected] = useState('');
+
+
+    const [medicosLista, setMedicosLista] = useState([]);
+    const [medico, setMedico] = useState(null);
+
+    function handleContinue() {
+        navigation.replace("CalendarScreen", {
+            agendamento : {
+                ...route.params.agendamento,
+                ...medico
+            }
+        })
+    }
 
     // Função para cancelar a consulta
     const doctorSelect = async () => {
@@ -18,7 +33,7 @@ export const DoctorSelect = ({ navigation }) => {
         try {
 
             await new Promise(resolve => setTimeout(resolve, 800));
-            navigation.replace("CalendarScreen")
+            handleContinue();
             setLoading(false);
 
         } catch (error) {
@@ -29,13 +44,18 @@ export const DoctorSelect = ({ navigation }) => {
 
 
 
-    const [selected, setSelected] = useState('');
-
-
-    const [medicosLista, setMedicosLista] = useState([]);
+    // async function ListarMedicos() {
+    //     await api.get('/Medicos')
+    //         .then(response => {
+    //             setMedicosLista(response.data)
+    //             console.log(response.data);
+    //         }).catch(error => {
+    //             console.log(error);
+    //         })
+    // }
 
     async function ListarMedicos() {
-        await api.get('/Medicos')
+        await api.get(`/Medicos/BuscarPorIdClinica?id=${route.params.agendamento.clinicaId}`)
             .then(response => {
                 setMedicosLista(response.data)
                 console.log(response.data);
@@ -69,6 +89,10 @@ export const DoctorSelect = ({ navigation }) => {
                         <CardDoctorSelect
                             onPress={() => setSelected(item.idNavigation.id)}
                             select={selected}
+
+                            setMedico={setMedico}
+                            medico={item}
+
                             id={item.idNavigation.id}
                             name={item.idNavigation.nome}
                             specialty={item.especialidade.especialidade1}

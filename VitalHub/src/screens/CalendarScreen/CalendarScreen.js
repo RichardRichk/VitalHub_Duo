@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button, ButtonSecondary, ButtonSecondaryTitle, TextButton } from "../../components/Button/Style";
 import { CalendarChoose } from "../../components/CalendarChoose/CalendarChoose";
 import { InputSelect } from "../../components/Input/InputSelect";
@@ -9,9 +9,13 @@ import { ConfirmScheduleModal } from "../../components/ConfirmScheduleModal/Conf
 import { ListComponent } from "../../components/List/List";
 import LoadingButton from "../../utils/LoadingButton";
 
-export const CalendarScreen = ({ navigation, onValueChange }) => {
+export const CalendarScreen = ({ navigation, route, onValueChange }) => {
 
     const [showModalConfirmAppointment, setShowModalConfirmAppointment] = useState(false);
+
+    useEffect(() => {
+        console.log("aAAAAAAAAAAAAAAAAAAAA",route);
+    },[route])
 
     const ConfirmScheduleData = [
         { id: 1, AppointmentDate: "1 de Novembro de 2024", DoctorName: "Dra Alessandra", Specialty: "Demartologa, Esteticist", LocalAppointment:"São Paulo, SP", AppointmentType: "Rotina" },
