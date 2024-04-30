@@ -3,10 +3,11 @@ import { ModalContainerConfirm, ModalContentConfirm } from "./Style"
 import { SubTitle, SubTitleDataModal, Title } from "../Title/Style"
 import { InputLabel } from "../Input/Style"
 import { ButtonSecondary, ButtonSecondaryTitle, ButtonWithMargin, TextButton } from "../Button/Style"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import LoadingButton from "../../utils/LoadingButton"
+import moment from "moment"
 
-export const ConfirmScheduleModal = ({ navigation, visible, setShowModalConfirmAppointment, id, AppointmentDate, DoctorName, Specialty, LocalAppointment, AppointmentType, ...rest }) => {
+export const ConfirmScheduleModal = ({ navigation, dataConsulta, agendamento, visible, setShowModalConfirmAppointment, id, AppointmentDate, DoctorName, Specialty, LocalAppointment, AppointmentType, ...rest }) => {
 
     const [loading, setLoading] = useState(false);
 
@@ -18,6 +19,7 @@ export const ConfirmScheduleModal = ({ navigation, visible, setShowModalConfirmA
             await new Promise(resolve => setTimeout(resolve, 800));
             navigation.replace("Main")
             setLoading(false);
+            ConfirmarConsulta();
 
 
         } catch (error) {
@@ -25,6 +27,34 @@ export const ConfirmScheduleModal = ({ navigation, visible, setShowModalConfirmA
             setLoading(false);
         }
     };
+
+    async function profileLoad(){
+        const token = await userDecodeToken();
+
+        if(token){
+            setProfile(token)
+        }
+    }
+
+    async function ConfirmarConsulta(){
+        await api.post("/Consultas/Cadastrar", {
+            ...agendamento,
+            pacienteId : profile.user,
+            situacaoId : `612893C7-CBCA-4C96-9CB9-2D9C5E78EFF2`
+
+
+        }).then(async response =>{
+            await setShowModalConfirmAppointment
+
+            navigation.replace("Main")
+        }).catch(error => {
+            console.log(error);
+        })
+    }
+
+    useEffect(() =>{
+        profileLoad();
+    }, [])
 
     return (
         <Modal {...rest} visible={visible} transparent={true}>
@@ -36,17 +66,19 @@ export const ConfirmScheduleModal = ({ navigation, visible, setShowModalConfirmA
                     <SubTitle>Consulte os dados selecionados para a sua consulta</SubTitle>
 
                     <InputLabel>Data da consulta:</InputLabel>
-                    <SubTitleDataModal>{AppointmentDate}</SubTitleDataModal>
+                    <SubTitleDataModal>{moment(agendamento.dataConsulta).format('DD/MM/YYYY, hh:mm')}</SubTitleDataModal>
 
                     <InputLabel>Médico(a) da consulta:</InputLabel>
                     <SubTitleDataModal>{DoctorName}</SubTitleDataModal>
                     <SubTitleDataModal>{Specialty}</SubTitleDataModal>
 
                     <InputLabel>Local da consulta:</InputLabel>
-                    <SubTitleDataModal>{LocalAppointment}</SubTitleDataModal>
+                    <SubTitleDataModal></SubTitleDataModal>
 
                     <InputLabel>Tipo da consulta:</InputLabel>
-                    <SubTitleDataModal>{AppointmentType}</SubTitleDataModal>
+                    <SubTitleDataModal>{agendamento.propriedadeLabel}</SubTitleDataModal>
+
+                    {/* {moment(agendamento.dataConsulta).format('DD/MM/YYYY')} */}
 
                     <LoadingButton
                         onPress={confirmScheduleModal}

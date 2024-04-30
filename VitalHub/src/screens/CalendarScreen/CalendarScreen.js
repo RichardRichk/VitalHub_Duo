@@ -11,11 +11,20 @@ import LoadingButton from "../../utils/LoadingButton";
 
 export const CalendarScreen = ({ navigation, route, onValueChange }) => {
 
+
+    const [agendamento, setAgendamento] = useState(null);
+    const [dataSelecionada, setDataSelecionada] = useState("");
+    const [horaSelecionada, setHoraSelecionada] = useState("");
+
     const [showModalConfirmAppointment, setShowModalConfirmAppointment] = useState(false);
 
-    useEffect(() => {
-        console.log("aAAAAAAAAAAAAAAAAAAAA",route);
-    },[route])
+    function handleContinue(){
+        console.log(route);
+        setAgendamento({
+            ...route.params.agendamento,
+            dataConsulta : `${dataSelecionada} ${horaSelecionada}`
+        });
+    }
 
     const ConfirmScheduleData = [
         { id: 1, AppointmentDate: "1 de Novembro de 2024", DoctorName: "Dra Alessandra", Specialty: "Demartologa, Esteticist", LocalAppointment:"São Paulo, SP", AppointmentType: "Rotina" },
@@ -30,6 +39,8 @@ export const CalendarScreen = ({ navigation, route, onValueChange }) => {
 
             await new Promise(resolve => setTimeout(resolve, 800));
             setLoading(false);
+            
+            await handleContinue();
             setShowModalConfirmAppointment(true);
 
         } catch (error) {
@@ -43,12 +54,17 @@ export const CalendarScreen = ({ navigation, route, onValueChange }) => {
 
                 <Title>Selecionar Data</Title>
 
-            <CalendarChoose/>
+            <CalendarChoose
+                setDataSelecionada={setDataSelecionada}
+                dataSelecionada={dataSelecionada}
+            />
 
             <ContainerSelect>
             <InputLabel>Selecione um horário disponível:</InputLabel>
 
-            <InputSelect />
+            <InputSelect
+                setHoraSelecionada={setHoraSelecionada}
+            />
             </ContainerSelect>
 
             <LoadingButton
@@ -64,9 +80,10 @@ export const CalendarScreen = ({ navigation, route, onValueChange }) => {
 
 
             <ListComponent
-                data={ConfirmScheduleData}
                 renderItem={({item})  =>
+                {agendamento && (
                 <ConfirmScheduleModal
+                    agendamento={agendamento}
                     visible={showModalConfirmAppointment}
                     setShowModalConfirmAppointment={setShowModalConfirmAppointment}
                     navigation={navigation}
@@ -76,7 +93,7 @@ export const CalendarScreen = ({ navigation, route, onValueChange }) => {
                     Specialty={item.Specialty}
                     LocalAppointment={item.LocalAppointment}
                     AppointmentType={item.AppointmentType}
-                />}
+                />)}}
             />
             </ContainerCalendar>
     )
