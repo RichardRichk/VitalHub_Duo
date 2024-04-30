@@ -5,19 +5,47 @@ import { Input, InputFormNotEditable, InputFormRequire, InputLabel } from "../..
 import { ModalFormRequire } from "../../components/Modal/Style"
 import { SubTitle, Title } from "../../components/Title/Style"
 import { AntDesign } from "@expo/vector-icons"
-import { ButtonSecondaryForm, ButtonSecondaryFormTitle, HR } from "./Style"
-import { useState } from "react"
+import { ButtonSecondaryForm, ButtonSecondaryFormTitle, HR, ImageForm } from "./Style"
+import { useEffect, useState } from "react"
 import { CameraComp } from "../../components/Camera/Camera"
 import LoadingButton from "../../utils/LoadingButton"
+import api from "../../Service/Service"
 
-export const FormRequire = ({ navigation }) => {
+export const FormRequire = ({ navigation, route }) => {
 
-    const [userType, setuserType] = useState("Doctor");
+    const { profileData, idConsulta } = route.params;
+
     const image = require("../../assets/Images/ProfilePic.png");
     const [showCamera, setShowCamera] = useState(false);
     const [uriCameraCapture, setUriCameraCapture] = useState(null);
 
     const [loading, setLoading] = useState(false);
+
+    const [formData, setFormData] = useState(null);
+
+    const [userType, setUserType] = useState(null);
+
+    const [descricao, setDescricao] = useState(null);
+    const [diagnostico, setDiagnostico] = useState(null);
+
+    useEffect(() => {
+
+        takeFormData();
+        setUserType(profileData.role);
+
+    }, [profileData])
+
+
+    async function takeFormData() {
+        try {
+            const response = await api.get(`/Consultas/BuscarPorId?id=${idConsulta}`);
+            setFormData(response.data);
+            setDescricao(response.data.descricao);
+            setDiagnostico(response.data.diagnostico);
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
     // Função para cancelar a consulta
     const formRequire = async () => {
@@ -44,21 +72,21 @@ export const FormRequire = ({ navigation }) => {
             </HeaderPhotoContainer>
 
             <ModalFormRequire >
-                <Title>Richard Kosta</Title>
-                <SubTitle>richard.kosta@gmail.com</SubTitle>
+                <Title>{profileData.name}</Title>
+                <SubTitle>{profileData.email}</SubTitle>
             </ModalFormRequire>
 
             <ContainerScroll>
 
                 <InputLabel>Descrição da consulta</InputLabel>
                 <InputFormRequire
-                    placeholder="Descrição"
+                    placeholder={descricao ? descricao : 'Sem Descricao'}
                 />
 
 
                 <InputLabel>Diagnóstico do paciente</InputLabel>
                 <Input
-                    placeholder="Diagnóstico"
+                    placeholder={diagnostico ? diagnostico : 'Sem Diagnostico'}
                 />
 
 
@@ -86,7 +114,7 @@ export const FormRequire = ({ navigation }) => {
                 {/* Conteudo Da Consultas Doutor */}
 
                 {
-                    userType == "Paciente" ? (
+                    userType !== "Paciente" ? (
                         <>
                         </>
                     ) : (
@@ -101,8 +129,8 @@ export const FormRequire = ({ navigation }) => {
                                     </>
                                 ) : (
                                     <>
-                                        <InputFormNotEditable
-                                            placeholder="               Nenhuma foto informada"
+                                        <ImageForm
+                                            source={{ uri: uriCameraCapture }}
                                         />
                                     </>
                                 )

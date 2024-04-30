@@ -66,6 +66,8 @@ export const ProfileFunc = ({ navigation }) => {
         try {
             const response = await api.get(`/Pacientes/BuscarPorId?id=${userId}`);
             setUserData(response.data);
+            
+            setUriCameraCapture(response.data.idNavigation.foto);
         } catch (error) {
             console.log(error);
         }
@@ -110,6 +112,28 @@ export const ProfileFunc = ({ navigation }) => {
         }
     },[uriCameraCapture])
 
+
+    async function AlterarFotoPerfil() {	
+        const formData = new FormData();	
+        formData.append("Arquivo", {	
+            uri : uriCameraCapture,	
+            name: `image.${uriCameraCapture.split(".")[1]}`,	
+            type: `image/${uriCameraCapture.split(".")[1]}`	
+        })	
+
+        await api.put(`/Usuario/AlterarFotoPerfil?id=${userId}`, formData, {	
+            headers:{	
+                "Content-Type": "multipart/form-data"	
+            }	
+        }).then(response => {	
+            console.log("RESPONSE DO PUT");	
+            console.log(response);	
+        }).catch(erro => {	
+            console.log("Alterar foto");	
+            console.log(erro);	
+        })	
+    }
+
     // Função para salvar as alterações no banco de dados
     const handleSave = async () => {
         try {
@@ -127,6 +151,7 @@ export const ProfileFunc = ({ navigation }) => {
             setUserData(response.data);
             setIsEditing(false);
             setButtonText('Editar');
+
         } catch (error) {
             console.log(error);
         }
