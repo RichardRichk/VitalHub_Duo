@@ -61,7 +61,10 @@ export const ProfileFunc = ({navigation}) => {
             const response = await api.get(`/Pacientes/BuscarPorID?id=${userId}`);
             setUserData(response.data);
 
-            console.log(response.data);
+            console.log("userData",response.data);
+
+            setUriCameraCapture(response.data.idNavigation.foto);
+
         } catch (error) {
             console.log(error);
         }
@@ -102,7 +105,7 @@ export const ProfileFunc = ({navigation}) => {
 
     useEffect(() => {
         
-        console.log(uriCameraCapture);
+        console.log("cameraCapture",uriCameraCapture);
         if(uriCameraCapture){
             AlterarFotoPerfil();
             

@@ -11,15 +11,28 @@ const ScheduleModal = ({ navigation, visible, setShowScheduleModal, ...rest }) =
 
     const [loading, setLoading] = useState(false);
 
+    const nivelConsulta = [
+        {id:'1FB33A47-431D-405E-852B-A885FC02CFF4', tipo:"Rotina"},
+        {id:'8F411990-C076-423E-8418-764F73D117ED', tipo:"Exame"},
+        {id:'EFFE6247-D610-4701-83BB-6AA9A6DACD25', tipo:"Urgencia"}
+    ]
+
+    const [agendamento, setAgendamento] = useState(null);
+
+    async function handleContinue() {
+        setShowScheduleModal(false);
+
+        navigation.replace("ClinicSelect", {agendamento : agendamento})    
+    }
     
     const scheduleModal = async () => {
         setLoading(true);
         try {
 
             await new Promise(resolve => setTimeout(resolve, 800));
-            navigation.replace("ClinicSelect")
             setLoading(false);
-            setShowScheduleModal(false);
+            handleContinue();
+
         } catch (error) {
             console.error("Erro ao cancelar consulta:", error);
             setLoading(false);
@@ -35,23 +48,49 @@ const ScheduleModal = ({ navigation, visible, setShowScheduleModal, ...rest }) =
 
                     <InputLabel>Qual o nível da consulta:</InputLabel>
                     <ScheduleModalView>
-                        <ButtonAppointmentLevel>
-                            <TextButtonAppointment>Rotina</TextButtonAppointment>
-                        </ButtonAppointmentLevel>
+                        {nivelConsulta.map( (item, index) => {
+                            return(
 
-                        <ButtonAppointmentLevel>
-                            <TextButtonAppointment>Exame</TextButtonAppointment>
-                        </ButtonAppointmentLevel>
+                        <ButtonAppointmentLevel
+                                key={item.id}
+                                onPress={() => setAgendamento({
+                                    ...agendamento,
 
-                        <ButtonAppointmentLevelUrgency>
-                            <TextButtonAppointment>Urgência </TextButtonAppointment>
-                        </ButtonAppointmentLevelUrgency>
+                                    prioridadeId: item.id,
+                                    prioridadeLabel: item.tipo
+                                })}
+
+                                optionSelected={
+                                    agendamento
+                                    ? agendamento.prioridadeId = item.id
+                                    : false
+                                }
+                        >
+                            <TextButtonAppointment
+                            
+                            optionSelected={
+                                agendamento
+                                ? agendamento.prioridadeId = item.id
+                                : false
+                            }
+
+                            >{item.tipo}</TextButtonAppointment>
+
+                        </ButtonAppointmentLevel>
+                            )
+                        })}
 
                     </ScheduleModalView>
 
                     <InputLabel>Informe a localização desejada</InputLabel>
                     <InputScheduleModal
                         placeholder="Informe a localização"
+
+                        value={agendamento ? agendamento.localizacao : null}
+                        onChangeText={(txt) => setAgendamento({
+                            ...agendamento, //Mantendo as informacoes dentro de agendamento
+                            localizacao: txt
+                        })}
                     />
 
                     <LoadingButton

@@ -8,7 +8,9 @@ export const CardDoctorSelect = ({
     name,
     specialty,
     select,
-    onPress
+    onPress, 
+    medico,
+    setMedico
 }) => {
 
     image = require("../../assets/Images/SelectDoctor1.png");
@@ -39,7 +41,13 @@ export const CardDoctorSelect = ({
     } else {
 
         return(
-        <ContainerCard onPress={onPress}>
+        <ContainerCard onPress={() => {
+                onPress();
+                setMedico({
+                    medicoClinicaId: medico.id,
+                    medicoLabel: medico.idNavigation.nome
+                });
+            }}>
 
             <DoctorImage
                 source={image}

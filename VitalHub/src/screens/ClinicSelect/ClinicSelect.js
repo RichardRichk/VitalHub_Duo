@@ -9,26 +9,10 @@ import api from "../../Service/Service"
 
 import LoadingButton from "../../utils/LoadingButton"
 
-export const ClinicSelect = ({ navigation }) => {
+export const ClinicSelect = ({ navigation, route }) => {
 
     const [loading, setLoading] = useState(false);
-
-    // Função para cancelar a consulta
-    const clinicSelect = async () => {
-        setLoading(true);
-        try {
-
-            await new Promise(resolve => setTimeout(resolve, 800));
-            navigation.replace("DoctorSelect")
-            setLoading(false);
-
-        } catch (error) {
-            console.error("Erro ao cancelar consulta:", error);
-            setLoading(false);
-        }
-    };
-
-
+    const [clinica, setClinica] = useState(null);
 
     const [selected, setSelected] = useState('');
 
@@ -36,13 +20,52 @@ export const ClinicSelect = ({ navigation }) => {
     const [clinicData, setClinicData] = useState([]);
 
 
+    function handleContinue() {
+        navigation.replace("DoctorSelect", {
+            agendamento:{
+
+                ...route.params.agendamento, //Passando todas as informacoes contidas no route.params.agendamento
+                ...clinica
+                
+            }
+        })
+    }
+
+
+    // Função para cancelar a consulta
+    const clinicSelect = async () => {
+        setLoading(true);
+        try {
+
+            await new Promise(resolve => setTimeout(resolve, 800));
+            handleContinue();
+            setLoading(false);
+
+        } catch (error) {
+            console.error("Erro ao cancelar consulta:", error);
+            setLoading(false);
+        }
+    };
+    
+
+
+    // async function ListClinic() {
+    //     await api.get('/Clinica/ListarTodas')
+    //         .then(response => {
+    //             setClinicData(response.data)
+    //         }).catch(error => {
+    //             console.log(error);
+    //         })
+    // }
+
     async function ListClinic() {
-        await api.get('/Clinica/ListarTodas')
-            .then(response => {
-                setClinicData(response.data)
-            }).catch(error => {
-                console.log(error);
-            })
+        await api.get(`/Clinica/BuscarPorCidade?cidade=${route.params.agendamento.localizacao}`)
+        .then((response) => {
+            setClinicData(response.data)
+        })
+        .catch((error) => {
+            console.log(error);
+        })
     }
 
     useEffect(() => {
@@ -67,8 +90,13 @@ export const ClinicSelect = ({ navigation }) => {
                     keyExtractor={(item) => item.id}
                     renderItem={({ item }) =>
                         <CardClinicSelect
-                            onPress={() => setSelected(item.id)}
+                            onPress={() => {setSelected(item.id)}}
+
                             select={selected}
+
+                            clinica={item}
+                            setClinica={setClinica}
+
                             id={item.id}
                             name={item.nomeFantasia}
                             adress={item.endereco.logradouro}
