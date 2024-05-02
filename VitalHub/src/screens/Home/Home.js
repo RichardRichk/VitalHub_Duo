@@ -40,6 +40,8 @@ export const HomeFunc = ({ navigation }) => {
         }
     }
 
+    console.log(profileData);
+
 
 
     async function ListarConsultas() {

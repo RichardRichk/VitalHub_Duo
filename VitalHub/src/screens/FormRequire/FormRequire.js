@@ -47,7 +47,6 @@ export const FormRequire = ({ navigation, route }) => {
         }
     }
 
-    // Função para cancelar a consulta
     const formRequire = async () => {
         setLoading(true);
         try {
@@ -57,10 +56,34 @@ export const FormRequire = ({ navigation, route }) => {
             setLoading(false);
 
         } catch (error) {
-            console.error("Erro ao cancelar consulta:", error);
+            console.error(error);
             setLoading(false);
         }
     };
+
+    async function InsertExam() {
+        const formData = new FormData();
+        formData.append("ConsultaId", idConsulta);
+        formData.append("Imagem", {
+            uri: uriCameraCapture,
+            name: `image.${uriCameraCapture.split(".").pop()}`,
+            type: `image/${uriCameraCapture.split(".").pop()}`
+        }
+
+        )
+        await api.put(`/Exame/Cadastrar`, formData, {
+            headers: {
+                "Content-Type": "multipart/form-data"
+            }
+        }).then(response => {
+            setDescricao(descricao + "\n" + response.data.descricao)
+        }).catch(error => {
+            console.log(error);
+        })
+    }
+
+
+
 
     return (
         <Container>
@@ -156,6 +179,7 @@ export const FormRequire = ({ navigation, route }) => {
                                     visible={showCamera}
                                     setUriCameraCapture={setUriCameraCapture}
                                     setShowCamera={setShowCamera}
+                                    getMediaLibrary={true}
                                 />
 
 

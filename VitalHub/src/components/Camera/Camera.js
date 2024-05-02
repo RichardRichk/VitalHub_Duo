@@ -47,7 +47,7 @@ export const CameraComp = ({ visible, setShowCamera, setUriCameraCapture, getMed
 
     async function CapturePhoto() {
         if (cameraRef) {
-            const photo = await cameraRef.current.takePictureAsync();
+            const photo = await cameraRef.current.takePictureAsync({quality: 1});
             await setPhoto(photo.uri)
 
             setOpenModal(true)
@@ -111,7 +111,7 @@ export const CameraComp = ({ visible, setShowCamera, setUriCameraCapture, getMed
                     
                     <TouchableOpacity style={styles.btnGallery} onPress={SelectImageGallery}>
                         {
-                            lastPhoto != null 
+                            lastPhoto == null 
                             ? (
                                 <LastPhoto
                                     source={{uri : lastPhoto}}
