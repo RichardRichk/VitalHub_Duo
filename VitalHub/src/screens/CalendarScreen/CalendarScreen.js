@@ -26,10 +26,6 @@ export const CalendarScreen = ({ navigation, route, onValueChange }) => {
         });
     }
 
-    const ConfirmScheduleData = [
-        { id: 1, AppointmentDate: "1 de Novembro de 2024", DoctorName: "Dra Alessandra", Specialty: "Demartologa, Esteticist", LocalAppointment:"São Paulo, SP", AppointmentType: "Rotina" },
-    ]
-
     const [loading, setLoading] = useState(false);
 
     // Função para cancelar a consulta
@@ -40,8 +36,8 @@ export const CalendarScreen = ({ navigation, route, onValueChange }) => {
             await new Promise(resolve => setTimeout(resolve, 800));
             setLoading(false);
             
-            await handleContinue();
             setShowModalConfirmAppointment(true);
+            await handleContinue();
 
         } catch (error) {
             console.error("Erro ao cancelar consulta:", error);
@@ -79,22 +75,16 @@ export const CalendarScreen = ({ navigation, route, onValueChange }) => {
             </ButtonSecondary>
 
 
-            <ListComponent
-                renderItem={({item})  =>
+            
+               {console.log('teste agendamento',agendamento)}
                 {agendamento && (
                 <ConfirmScheduleModal
                     agendamento={agendamento}
                     visible={showModalConfirmAppointment}
                     setShowModalConfirmAppointment={setShowModalConfirmAppointment}
                     navigation={navigation}
-                    id={item.id}
-                    AppointmentDate={item.AppointmentDate}
-                    DoctorName={item.DoctorName}
-                    Specialty={item.Specialty}
-                    LocalAppointment={item.LocalAppointment}
-                    AppointmentType={item.AppointmentType}
-                />)}}
-            />
+                />)}
+            
             </ContainerCalendar>
     )
 }

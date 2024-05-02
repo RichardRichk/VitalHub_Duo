@@ -6,6 +6,7 @@ import { ButtonSecondary, ButtonSecondaryTitle, ButtonWithMargin, TextButton } f
 import { useEffect, useState } from "react"
 import LoadingButton from "../../utils/LoadingButton"
 import moment from "moment"
+import api from "../../Service/Service"
 
 export const ConfirmScheduleModal = ({ navigation, dataConsulta, agendamento, visible, setShowModalConfirmAppointment, id, AppointmentDate, DoctorName, Specialty, LocalAppointment, AppointmentType, ...rest }) => {
 
@@ -17,9 +18,8 @@ export const ConfirmScheduleModal = ({ navigation, dataConsulta, agendamento, vi
         try {
 
             await new Promise(resolve => setTimeout(resolve, 800));
-            navigation.replace("Main")
-            setLoading(false);
-            ConfirmarConsulta();
+            
+            
 
 
         } catch (error) {
@@ -36,16 +36,19 @@ export const ConfirmScheduleModal = ({ navigation, dataConsulta, agendamento, vi
         }
     }
 
+    console.log("Confirmar Consulta", agendamento);
+
     async function ConfirmarConsulta(){
+        console.log("Confirmar Consulta");
         await api.post("/Consultas/Cadastrar", {
             ...agendamento,
-            pacienteId : profile.user,
             situacaoId : `612893C7-CBCA-4C96-9CB9-2D9C5E78EFF2`
 
 
         }).then(async response =>{
-            await setShowModalConfirmAppointment
+            await setShowModalConfirmAppointment(false)
 
+            setLoading(false);
             navigation.replace("Main")
         }).catch(error => {
             console.log(error);
@@ -54,6 +57,7 @@ export const ConfirmScheduleModal = ({ navigation, dataConsulta, agendamento, vi
 
     useEffect(() =>{
         profileLoad();
+        console.log(agendamento.userId);
     }, [])
 
     return (
@@ -69,19 +73,17 @@ export const ConfirmScheduleModal = ({ navigation, dataConsulta, agendamento, vi
                     <SubTitleDataModal>{moment(agendamento.dataConsulta).format('DD/MM/YYYY, hh:mm')}</SubTitleDataModal>
 
                     <InputLabel>Médico(a) da consulta:</InputLabel>
-                    <SubTitleDataModal>{DoctorName}</SubTitleDataModal>
-                    <SubTitleDataModal>{Specialty}</SubTitleDataModal>
+                    <SubTitleDataModal>{agendamento.medicoLabel}</SubTitleDataModal>
 
                     <InputLabel>Local da consulta:</InputLabel>
-                    <SubTitleDataModal></SubTitleDataModal>
+                    <SubTitleDataModal>{agendamento.localizacao}</SubTitleDataModal>
 
                     <InputLabel>Tipo da consulta:</InputLabel>
-                    <SubTitleDataModal>{agendamento.propriedadeLabel}</SubTitleDataModal>
+                    <SubTitleDataModal>{agendamento.prioridadeLabel}</SubTitleDataModal>
 
-                    {/* {moment(agendamento.dataConsulta).format('DD/MM/YYYY')} */}
 
                     <LoadingButton
-                        onPress={confirmScheduleModal}
+                        onPress={()=> ConfirmarConsulta()}
                         disabled={loading}
                         loading={loading}
                         text="Continuar"

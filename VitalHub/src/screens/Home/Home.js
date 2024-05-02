@@ -165,6 +165,7 @@ export const HomeFunc = ({ navigation }) => {
                     visible={showScheduleModal}
                     setShowScheduleModal={setShowScheduleModal}
                     navigation={navigation}
+                    userId={profileData.id}
                 />
 
             </ContainerScroll>
