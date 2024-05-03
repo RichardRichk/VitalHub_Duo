@@ -6,23 +6,23 @@ import { InputLabel } from "../../components/Input/Style";
 import { Title } from "../../components/Title/Style";
 import { ContainerCalendar, ContainerSelect } from "./Style";
 import { ConfirmScheduleModal } from "../../components/ConfirmScheduleModal/ConfirmScheduleModal";
-import { ListComponent } from "../../components/List/List";
 import LoadingButton from "../../utils/LoadingButton";
 
-export const CalendarScreen = ({ navigation, route, onValueChange }) => {
+export const CalendarScreen = ({ navigation, route}) => {
 
 
-    const [agendamento, setAgendamento] = useState(null);
+    const [agendamento, setAgendamento] = useState("");
     const [dataSelecionada, setDataSelecionada] = useState("");
     const [horaSelecionada, setHoraSelecionada] = useState("");
 
     const [showModalConfirmAppointment, setShowModalConfirmAppointment] = useState(false);
+    
 
-    function handleContinue(){
+    function handleContinue() {
         console.log(route);
         setAgendamento({
             ...route.params.agendamento,
-            dataConsulta : `${dataSelecionada} ${horaSelecionada}`
+            dataConsulta: `${dataSelecionada} ${horaSelecionada}`
         });
     }
 
@@ -35,7 +35,7 @@ export const CalendarScreen = ({ navigation, route, onValueChange }) => {
 
             await new Promise(resolve => setTimeout(resolve, 800));
             setLoading(false);
-            
+
             setShowModalConfirmAppointment(true);
             await handleContinue();
 
@@ -45,10 +45,11 @@ export const CalendarScreen = ({ navigation, route, onValueChange }) => {
         }
     };
 
-    return (
-            <ContainerCalendar>
 
-                <Title>Selecionar Data</Title>
+    return (
+        <ContainerCalendar>
+
+            <Title>Selecionar Data</Title>
 
             <CalendarChoose
                 setDataSelecionada={setDataSelecionada}
@@ -56,11 +57,11 @@ export const CalendarScreen = ({ navigation, route, onValueChange }) => {
             />
 
             <ContainerSelect>
-            <InputLabel>Selecione um horário disponível:</InputLabel>
+                <InputLabel>Selecione um horário disponível:</InputLabel>
 
-            <InputSelect
-                setHoraSelecionada={setHoraSelecionada}
-            />
+                <InputSelect
+                    setHoraSelecionada={setHoraSelecionada}
+                />
             </ContainerSelect>
 
             <LoadingButton
@@ -75,16 +76,14 @@ export const CalendarScreen = ({ navigation, route, onValueChange }) => {
             </ButtonSecondary>
 
 
-            
-               {console.log('teste agendamento',agendamento)}
-                {agendamento && (
+            {/* {agendamento && ()} */}
                 <ConfirmScheduleModal
-                    agendamento={agendamento}
                     visible={showModalConfirmAppointment}
                     setShowModalConfirmAppointment={setShowModalConfirmAppointment}
                     navigation={navigation}
-                />)}
-            
-            </ContainerCalendar>
+                    route={agendamento}
+                />
+
+        </ContainerCalendar>
     )
 }
