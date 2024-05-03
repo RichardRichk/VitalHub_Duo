@@ -21,6 +21,7 @@ export const HR = styled.View`
 `
 
 export const ImageForm = styled.Image`
+    margin-top: 20px;
     height: 121px;
     width: 88.88%;
 `

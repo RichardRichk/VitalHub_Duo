@@ -40,6 +40,8 @@ export const HomeFunc = ({ navigation }) => {
         }
     }
 
+    console.log(profileData);
+
 
 
     async function ListarConsultas() {
@@ -124,7 +126,7 @@ export const HomeFunc = ({ navigation }) => {
                                 idConsulta={item.id}
                                 situacao={item.situacao.situacao}
                                 type={item.prioridade.prioridade}
-                                onPressAppointment={() => navigation.navigate('FormRequire', userType)}
+                                onPressAppointment={() => navigation.navigate('FormRequire', { profileData: profileData, idConsulta: item.id})}
 
                                 usuarioConsulta={ item && 
                                     ( profileData.role == "Medico" ? item.paciente : item.medicoClinica )

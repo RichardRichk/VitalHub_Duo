@@ -5,19 +5,31 @@ import { Input } from "../../components/Input/Style"
 import { Logo, ReturnIcon } from "../../components/Logo/Style"
 import { SubTitle, Title } from "../../components/Title/Style"
 import LoadingButton from "../../utils/LoadingButton"
+import api from "../../Service/Service"
 
 export const ForgotPassword = ({ navigation }) => {
 
     const [loading, setLoading] = useState(false);
 
-    // Função para cancelar a consulta
+    const [email, setEmail] = useState('alvesbautistajoaovictor@gmail.com');
+
+    async function EnviarEmail(){
+        await api.post(`/RecuperarSenha?email=${email}`)
+        .then(()=> {
+            setLoading(false);
+            navigation.replace("Email_Verify", {emailRecuperacao : email})
+        }).catch( error => {
+            console.log(error);
+        })
+
+    }
+
     const forgotPassword = async () => {
         setLoading(true);
         try {
 
             await new Promise(resolve => setTimeout(resolve, 800));
-            navigation.replace("Email_Verify")
-            setLoading(false);
+            EnviarEmail();
 
         } catch (error) {
             console.error("Erro ao cancelar consulta:", error);
@@ -50,6 +62,8 @@ export const ForgotPassword = ({ navigation }) => {
 
             <Input
                 placeholder="Usuário ou E-mail"
+                value={email}
+                onChangeText={(txt => setEmail(txt))}
             />
 
             <LoadingButton
