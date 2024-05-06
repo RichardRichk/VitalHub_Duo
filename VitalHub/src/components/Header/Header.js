@@ -4,7 +4,9 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 //Importado funcao da utils/Auth
 import { userDecodeToken } from '../../utils/Auth'
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useFocusEffect } from "@react-navigation/native";
+import { StatusBar } from "expo-status-bar";
 
 export const Header = ({ navigation }) => {
 
@@ -24,6 +26,19 @@ export const Header = ({ navigation }) => {
 
         profileLoad();
     }, []);
+
+    useFocusEffect(
+        React.useCallback(() =>{
+            StatusBar.setBarStyle('light-content')
+
+            profileLoad();
+
+            return () => {
+                StatusBar.setBarStyle('default');
+            };
+
+        }, [])
+    );
 
     return (
         <ContainerHeader>

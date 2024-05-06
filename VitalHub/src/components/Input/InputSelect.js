@@ -19,7 +19,7 @@ export const InputSelect = ({setHoraSelecionada }) => {
             let valor = new Date().getHours() + (index + 1)
 
             return {
-                label : `${valor}:00`, value : valor
+                label : `${valor}:00`, value : `${valor}:00`
             }
         })
 

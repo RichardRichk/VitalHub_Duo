@@ -9,21 +9,20 @@ import moment from "moment"
 import api from "../../Service/Service"
 import { userDecodeToken } from "../../utils/Auth"
 
-export const ConfirmScheduleModal = ({ navigation, route, dataConsulta, agendamento, visible, setShowModalConfirmAppointment, id, AppointmentDate, DoctorName, Specialty, LocalAppointment, AppointmentType, ...rest }) => {
+export const ConfirmScheduleModal = ({ navigation, token, route, dataConsulta, agendamento, visible, setShowModalConfirmAppointment, id, AppointmentDate, DoctorName, Specialty, LocalAppointment, AppointmentType, ...rest }) => {
 
     const [loading, setLoading] = useState(false);
-    const [profile, setProfile] = useState()
+    const [profileId, setProfileId] = useState()
 
-    // Função para cancelar a consulta
     const confirmScheduleModal = async () => {
         setLoading(true);
         try {
 
             await new Promise(resolve => setTimeout(resolve, 800));
-            ConfirmarConsulta()
+            ConfirmarConsulta();
 
         } catch (error) {
-            console.error("Erro ao cancelar consulta:", error);
+            console.error("Erro ao cadastrar consulta:", error);
             setLoading(false);
         }
     };
@@ -32,18 +31,28 @@ export const ConfirmScheduleModal = ({ navigation, route, dataConsulta, agendame
         const token = await userDecodeToken();
 
         if(token){
-            setProfile(token.jti)
+            setProfileId(token.id)
         }
     }
 
 
-    async function ConfirmarConsulta(){
-        console.log("Confirmar Consulta", route);
-        await api.post("/Consultas/Cadastrar", {
-            ...route,
-            pacienteId : profile,
-            situacaoId : `612893C7-CBCA-4C96-9CB9-2D9C5E78EFF2`
 
+    async function ConfirmarConsulta(){
+        console.log("Agendamento");
+        console.log({
+
+            ...agendamento,
+
+            situacaoId : `612893C7-CBCA-4C96-9CB9-2D9C5E78EFF2`,
+            pacienteId : profileId,
+
+        });
+        await api.post("/Consultas/Cadastrar", {
+
+            ...agendamento,
+
+            situacaoId : `612893C7-CBCA-4C96-9CB9-2D9C5E78EFF2`,
+            pacienteId : profileId,
 
         }).then(async response =>{
             await setShowModalConfirmAppointment(false)
@@ -53,6 +62,7 @@ export const ConfirmScheduleModal = ({ navigation, route, dataConsulta, agendame
         }).catch(error => {
             console.log(error);
         })
+        console.log("Passou a funcao");
     }
 
     useEffect(() =>{
@@ -69,16 +79,16 @@ export const ConfirmScheduleModal = ({ navigation, route, dataConsulta, agendame
                     <SubTitle>Consulte os dados selecionados para a sua consulta</SubTitle>
 
                     <InputLabel>Data da consulta:</InputLabel>
-                    <SubTitleDataModal>{moment(route.dataConsulta).format('DD/MM/YYYY, hh:mm')}</SubTitleDataModal>
+                    <SubTitleDataModal>{moment(agendamento.dataConsulta).format('DD/MM/YYYY, hh:mm')}</SubTitleDataModal>
 
                     <InputLabel>Médico(a) da consulta:</InputLabel>
-                    <SubTitleDataModal>{route.medicoLabel}</SubTitleDataModal>
+                    <SubTitleDataModal>{agendamento.medicoLabel}</SubTitleDataModal>
 
                     <InputLabel>Local da consulta:</InputLabel>
-                    <SubTitleDataModal>{route.localizacao}</SubTitleDataModal>
+                    <SubTitleDataModal>{agendamento.localizacao}</SubTitleDataModal>
 
                     <InputLabel>Tipo da consulta:</InputLabel>
-                    <SubTitleDataModal>{route.prioridadeLabel}</SubTitleDataModal>
+                    <SubTitleDataModal>{agendamento.prioridadeLabel}</SubTitleDataModal>
 
 
                     <LoadingButton

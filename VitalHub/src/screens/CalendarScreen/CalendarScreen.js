@@ -19,7 +19,6 @@ export const CalendarScreen = ({ navigation, route}) => {
     
 
     function handleContinue() {
-        console.log(route);
         setAgendamento({
             ...route.params.agendamento,
             dataConsulta: `${dataSelecionada} ${horaSelecionada}`
@@ -28,7 +27,7 @@ export const CalendarScreen = ({ navigation, route}) => {
 
     const [loading, setLoading] = useState(false);
 
-    // Função para cancelar a consulta
+
     const calendarScreen = async () => {
         setLoading(true);
         try {
@@ -36,8 +35,8 @@ export const CalendarScreen = ({ navigation, route}) => {
             await new Promise(resolve => setTimeout(resolve, 800));
             setLoading(false);
 
-            setShowModalConfirmAppointment(true);
             await handleContinue();
+            setShowModalConfirmAppointment(true);
 
         } catch (error) {
             console.error("Erro ao cancelar consulta:", error);
@@ -81,7 +80,7 @@ export const CalendarScreen = ({ navigation, route}) => {
                     visible={showModalConfirmAppointment}
                     setShowModalConfirmAppointment={setShowModalConfirmAppointment}
                     navigation={navigation}
-                    route={agendamento}
+                    agendamento={agendamento}
                 />
 
         </ContainerCalendar>
