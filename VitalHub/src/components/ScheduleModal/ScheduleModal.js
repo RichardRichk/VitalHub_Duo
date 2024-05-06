@@ -7,7 +7,7 @@ import { ScheduleModalView } from "../Container/Style";
 import { useState } from "react";
 import LoadingButton from "../../utils/LoadingButton";
 
-const ScheduleModal = ({ navigation, visible, setShowScheduleModal, ...rest }) => {
+const ScheduleModal = ({ navigation, visible, setShowScheduleModal,userId, ...rest }) => {
 
     const [loading, setLoading] = useState(false);
 
@@ -57,7 +57,8 @@ const ScheduleModal = ({ navigation, visible, setShowScheduleModal, ...rest }) =
                                     ...agendamento,
 
                                     prioridadeId: item.id,
-                                    prioridadeLabel: item.tipo
+                                    prioridadeLabel: item.tipo,
+                                    userId
                                 })}
 
                                 optionSelected={

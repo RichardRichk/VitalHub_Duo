@@ -1,28 +1,64 @@
-import { StyleSheet, View } from 'react-native';
+import { ActivityIndicator, StyleSheet, View } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
 import { AntDesign } from '@expo/vector-icons'
+import { useEffect, useState } from 'react';
+import moment from "moment"
 
-export const InputSelect = ({ onValueChange }) => {
+
+export const InputSelect = ({setHoraSelecionada }) => {
+
+    const dataAtual = moment().format('YYYY-MM-DD');
+    const [arrayOptions, setarrayOptions] = useState(null)
+
+    function LoadOptions(){
+        //conferir quantas horas faltam ate as 24h
+        const horasRestantes = moment(dataAtual).add(24, 'hours').diff( moment(), 'hours')
+
+        // Criar um laco que rode a quantidade de horas que faltam
+        const options = Array.from({ length : horasRestantes }, (_, index) => {
+            let valor = new Date().getHours() + (index + 1)
+
+            return {
+                label : `${valor}:00`, value : `${valor}:00`
+            }
+        })
+
+        //Devolver para cada hora, uma nova opcao no select
+        setarrayOptions(options)
+    }
+    
+    useEffect(() => {
+        LoadOptions();
+    }, [])
+    
     return (
-            <RNPickerSelect
+        <View>
+            {
+            
+                arrayOptions != null
+                 ?(
+                    <RNPickerSelect
 
-                placeholder={{
-                    label: "Selecionar horário",
-                    value: null,
-                    color: '#34898F',
-                }}
-                useNativeAndroidPickerStyle={false}
-                style={pickerSelectStyles}
-
-                Icon={() => {
-                    return <AntDesign name="caretdown" size={24} color="#60BFC5" style={pickerSelectStyles.icon} />;
-                }}
-                items={[
-                    // { label: '16h30m', value: 'hour1' },
-                    // { label: '12h', value: 'hour2' },
-                    // { label: '08h30m', value: 'hour3' }
-                ]}
-            />
+                    placeholder={{
+                        label: "Selecionar horário",
+                        value: null,
+                        color: '#34898F',
+                    }}
+                    useNativeAndroidPickerStyle={false}
+                    style={pickerSelectStyles}
+    
+                    Icon={() => {
+                        return <AntDesign name="caretdown" size={24} color="#60BFC5" style={pickerSelectStyles.icon} />;
+                    }}
+                    onValueChange={(value) => setHoraSelecionada(value)}
+                    items={ arrayOptions }
+                />
+                 ) : (
+                    <ActivityIndicator/>
+                 )
+            }
+           
+        </View>
     )
 }
 
