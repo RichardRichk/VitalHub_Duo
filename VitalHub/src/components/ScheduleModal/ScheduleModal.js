@@ -1,8 +1,8 @@
 import { Modal } from "react-native";
 import { Title } from "../Title/Style"
-import { ButtonAppointmentLevel, ButtonScheduleModal, ButtonSecondary, ButtonSecondaryTitle, TextButton } from "../Button/Style";
+import { ButtonScheduleModal, ButtonSecondary, ButtonSecondaryTitle, TextButton } from "../Button/Style";
 import { InputLabel, InputScheduleModal } from "../Input/Style";
-import { ButtonAppointmentLevelUrgency, ModalContainer, ModalContent, TextButtonAppointment } from "./Style";
+import { ButtonAppointmentLevel, ModalContainer, ModalContent, TextButtonAppointment } from "./Style";
 import { ScheduleModalView } from "../Container/Style";
 import { useState } from "react";
 import LoadingButton from "../../utils/LoadingButton";
@@ -11,13 +11,17 @@ const ScheduleModal = ({ navigation, visible, setShowScheduleModal,userId, ...re
 
     const [loading, setLoading] = useState(false);
 
-    const nivelConsulta = [
-        {id:'1FB33A47-431D-405E-852B-A885FC02CFF4', tipo:"Rotina"},
-        {id:'8F411990-C076-423E-8418-764F73D117ED', tipo:"Exame"},
-        {id:'EFFE6247-D610-4701-83BB-6AA9A6DACD25', tipo:"Urgencia"}
-    ]
+    const [click, setClick] = useState("");
 
     const [agendamento, setAgendamento] = useState(null);
+
+
+    // Nivel 0
+    const Rotina = { id: "1FB33A47-431D-405E-852B-A885FC02CFF4", tipo: "Rotina" }
+    // Nivel 1
+    const Exame = { id: "8F411990-C076-423E-8418-764F73D117ED", tipo: "Exame" }
+    // Nivel 2
+    const Urgencia = { id: "EFFE6247-D610-4701-83BB-6AA9A6DACD25", tipo: "Urgencia" }
 
     async function handleContinue() {
         setShowScheduleModal(false);
@@ -47,39 +51,60 @@ const ScheduleModal = ({ navigation, visible, setShowScheduleModal,userId, ...re
                     <Title>Agendar Consulta</Title>
 
                     <InputLabel>Qual o nível da consulta:</InputLabel>
+
                     <ScheduleModalView>
-                        {nivelConsulta.map( (item, index) => {
-                            return(
-
+                        
                         <ButtonAppointmentLevel
-                                key={item.id}
-                                onPress={() => setAgendamento({
-                                    ...agendamento,
+                            onPress={() => {setAgendamento({
+                                ...agendamento,
 
-                                    prioridadeId: item.id,
-                                    prioridadeLabel: item.tipo,
-                                    userId
-                                })}
+                                prioridadeId: Rotina.id,
+                                prioridadeLabel: Rotina.tipo,
+                                userId
+                            }), setClick("Rotina")}}
 
-                                optionSelected={
-                                    agendamento
-                                    ? agendamento.prioridadeId = item.id
-                                    : false
-                                }
+                            clickButton={click == "Rotina"}
+
                         >
-                            <TextButtonAppointment
-                            
-                            optionSelected={
-                                agendamento
-                                ? agendamento.prioridadeId = item.id
-                                : false
-                            }
 
-                            >{item.tipo}</TextButtonAppointment>
+                            <TextButtonAppointment clickButton={click == "Rotina"}>{Rotina.tipo}</TextButtonAppointment>
 
                         </ButtonAppointmentLevel>
-                            )
-                        })}
+
+
+                        <ButtonAppointmentLevel
+                        onPress={() => {setAgendamento({
+                            ...agendamento,
+
+                            prioridadeId: Exame.id,
+                            prioridadeLabel: Exame.tipo,
+                            userId
+                        }), setClick("Exame")}}
+
+                            clickButton={click == "Exame"}
+                        >
+
+                            <TextButtonAppointment clickButton={click == "Exame"}>{Exame.tipo}</TextButtonAppointment>
+
+                        </ButtonAppointmentLevel>
+
+
+                        <ButtonAppointmentLevel
+                        
+                        onPress={() => {setAgendamento({
+                            ...agendamento,
+
+                            prioridadeId: Urgencia.id,
+                            prioridadeLabel: Urgencia.tipo,
+                            userId
+                        }), setClick("Urgencia")}}
+
+                        clickButton={click == "Urgencia"}
+                        >
+
+                            <TextButtonAppointment clickButton={click == "Urgencia"}>{Urgencia.tipo}</TextButtonAppointment>
+                            
+                        </ButtonAppointmentLevel>
 
                     </ScheduleModalView>
 

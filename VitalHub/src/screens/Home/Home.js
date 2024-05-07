@@ -28,7 +28,6 @@ export const HomeFunc = ({ navigation }) => {
 
     const [consultaSelecionada, setConsultaSelecionada] = useState(null);
 
-
     async function MostrarModal(modal, consulta) {
         setConsultaSelecionada(consulta)
 
@@ -40,17 +39,12 @@ export const HomeFunc = ({ navigation }) => {
         }
     }
 
-    console.log(profileData);
-
-
-
     async function ListarConsultas() {
         const url = (userType === 'Medico' ? "Medicos" : "Pacientes");
     
         try {
             const response = await api.get(`/${url}/BuscarPorData?data=${dataConsulta}&id=${profileData.id}`);
             setConsultas(response.data); // Assume que a resposta da API contém os dados das consultas
-            console.log(response.data);
         } catch (error) {
             console.error('Erro ao buscar consultas:', error);
             // Trate o erro, se necessário
@@ -67,7 +61,6 @@ export const HomeFunc = ({ navigation }) => {
             setUserType(token.role)
     
             setDataConsulta(moment().format('YYYY-MM-DD'))
-            console.log(token);
         };
 
         profileLoad();  
@@ -127,6 +120,7 @@ export const HomeFunc = ({ navigation }) => {
                                 situacao={item.situacao.situacao}
                                 type={item.prioridade.prioridade}
                                 onPressAppointment={() => navigation.navigate('FormRequire', { profileData: profileData, idConsulta: item.id})}
+                                time={item.dataConsulta.split('T')[1].split(':')[0] + ':' + item.dataConsulta.split('T')[1].split(':')[1]}
 
                                 usuarioConsulta={ item && 
                                     ( profileData.role == "Medico" ? item.paciente : item.medicoClinica )
@@ -147,6 +141,8 @@ export const HomeFunc = ({ navigation }) => {
                 <CancellationModal
                     visible={showModalCancel}
                     setShowModalCancel={setShowModalCancel}
+                    idConsulta={consultaSelecionada ? consultaSelecionada.id : ''}
+                    navigation={navigation}
                 />
 
 

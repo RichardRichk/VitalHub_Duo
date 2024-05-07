@@ -27,18 +27,18 @@ export const Header = ({ navigation }) => {
         profileLoad();
     }, []);
 
-    useFocusEffect(
-        React.useCallback(() =>{
-            StatusBar.setBarStyle('light-content')
+    // useFocusEffect(
+    //     React.useCallback(() =>{
+    //         StatusBar.setBarStyle('light-content')
 
-            profileLoad();
+    //         profileLoad();
 
-            return () => {
-                StatusBar.setBarStyle('default');
-            };
+    //         return () => {
+    //             StatusBar.setBarStyle('default');
+    //         };
 
-        }, [])
-    );
+    //     }, [])
+    // );
 
     return (
         <ContainerHeader>
