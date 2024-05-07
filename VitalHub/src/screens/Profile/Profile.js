@@ -68,6 +68,7 @@ export const ProfileFunc = ({ navigation }) => {
             setUserData(response.data);
             
             setUriCameraCapture(response.data.idNavigation.foto);
+            console.log("foto salva", setUriCameraCapture);
         } catch (error) {
             console.log(error);
         }

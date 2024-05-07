@@ -5,30 +5,58 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 //Importado funcao da utils/Auth
 import { userDecodeToken } from '../../utils/Auth'
 import React, { useEffect, useState } from "react";
+import api from "../../Service/Service";
+import { StatusBar } from "react-native";
 import { useFocusEffect } from "@react-navigation/native";
-import { StatusBar } from "expo-status-bar";
 
 export const Header = ({ navigation }) => {
 
     const [name, setName] = useState(['']);
+    const [foto, setFoto] = useState() //puxar foto de perfil no header
+    const [userId, setUserId] = useState(''); //puxar foto de perfil no header
 
+
+
+    const profileLoad = async () => {
+
+        const token = await userDecodeToken();
+
+        const nameParts = token.name.split(' ');
+
+        const names = nameParts.slice(0, 2).join(' ');
+
+        setName(names)
+
+        setUserId(token.id);
+
+        setName(token.name) //puxar foto de perfil no header
+
+        console.log(token);
+
+        if (foto == null) { //puxar foto de perfil no header
+            await GetUser(token.id)
+        }
+
+    };
+
+    
     useEffect(() => {
-        const profileLoad = async () => {
-
-            const token = await userDecodeToken();
-
-            const nameParts = token.name.split(' ');
-
-            const names = nameParts.slice(0, 2).join(' ');
-
-            setName(names)
-        };
-
         profileLoad();
     }, []);
 
+
+    async function GetUser() { //puxar foto de perfil no header
+        try {
+            
+            const response = await api.get(`/Usuario/BuscarPorId?id=${userId}`)
+            setFoto(response.data.foto)
+        } catch (error) {
+            console.log(error + 'erro buscar usuario');
+        }
+    }
+
     useFocusEffect(
-        React.useCallback(() =>{
+        React.useCallback(() => {
             StatusBar.setBarStyle('light-content')
 
             profileLoad();
@@ -40,18 +68,22 @@ export const Header = ({ navigation }) => {
         }, [])
     );
 
+
     return (
+
+
         <ContainerHeader>
+            {console.log("teste foto", foto)}
             <BoxUser onPress={() => navigation.navigate("Profile")}>
                 <ImageUser
-                    source={require("../../assets/Images/DoctorPhoto.png")}
+                    source={{ uri: foto }}
                 />
                 <DataUser>
                     <TextDefault>Bem Vindo</TextDefault>
                     <NameUser>{name}</NameUser>
                 </DataUser>
             </BoxUser>
-            
+
             <MaterialIcons
                 name="notifications"
                 size={30}
