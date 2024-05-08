@@ -115,6 +115,7 @@ export const HomeFunc = ({ navigation }) => {
                         statusLista == item.situacao.situacao && (
 
                             <CardAppointment
+                                consulta={item}
                                 navigation={navigation}
                                 idConsulta={item.id}
                                 situacao={item.situacao.situacao}

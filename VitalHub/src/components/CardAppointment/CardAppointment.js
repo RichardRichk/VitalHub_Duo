@@ -11,7 +11,7 @@ import api from "../../Service/Service"
 
 export const CardAppointment = ({
     navigation,
-    idConsulta,
+    consulta,
     userType,
     situacao,
     onPressCancel,
@@ -21,8 +21,10 @@ export const CardAppointment = ({
     type,
     time,
 }) => {
+
     const [profileData, setProfileData] = useState('')
     const [userData, setUserData] = useState('')
+    const [fotoCard, setFotoCard] = useState('')
 
     async function LoadUserData() {
         if (profileData.role == "Paciente") {
@@ -38,6 +40,25 @@ export const CardAppointment = ({
         }
     }
 
+    async function LoadFotoData() {
+        if(profileData.role != "Paciente"){
+            try {
+                const response = await api.get(`/Medicos/BuscarPorID?id=${consulta.medicoClinica.medico.id}`)
+                setFotoCard(response.data.idNavigation.foto);
+            } catch (error) {
+                console.error(error);
+            }
+        }else {
+            try {
+                const response = await api.get(`/Pacientes/BuscarPorID?id=${usuarioConsulta.consulta.pacienteId}`)
+                setFotoCard(response.data.idNavigation.foto);
+            } catch (error) {
+                console.error(error);
+            }
+        }
+        
+    }
+
     useEffect(() => {
         const profileLoad = async () => {
 
@@ -49,6 +70,7 @@ export const CardAppointment = ({
 
         };
 
+        LoadFotoData();
         profileLoad();  
     }, []);
 
@@ -68,7 +90,7 @@ export const CardAppointment = ({
         }>
 
             <ImageCard
-                // source={image}
+                source={{ uri: fotoCard }}
             />
 
             <ContentCard>

@@ -51,7 +51,6 @@ export const Header = ({ navigation }) => {
         try {
             
             const response = await api.get(`/Usuario/BuscarPorId?id=${id}`)
-            console.log("response: ", response);
             setFoto(response.data.foto);
             
         } catch (error) {
