@@ -79,7 +79,7 @@ export const ConfirmScheduleModal = ({ navigation, token, route, dataConsulta, a
                     <SubTitle>Consulte os dados selecionados para a sua consulta</SubTitle>
 
                     <InputLabel>Data da consulta:</InputLabel>
-                    <SubTitleDataModal>{moment(agendamento.dataConsulta).format('DD/MM/YYYY, hh:mm')}</SubTitleDataModal>
+                    <SubTitleDataModal>{moment(agendamento.dataConsulta).format('DD/MM/YYYY, HH:mm')}</SubTitleDataModal>
 
                     <InputLabel>Médico(a) da consulta:</InputLabel>
                     <SubTitleDataModal>{agendamento.medicoLabel}</SubTitleDataModal>

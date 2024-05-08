@@ -35,6 +35,11 @@ export const FormRequire = ({ navigation, route }) => {
 
     }, [profileData])
 
+    useEffect(() => {
+        if (uriCameraCapture) {
+            InsertExam();
+        }
+    },[uriCameraCapture])
 
     async function takeFormData() {
         try {
@@ -71,7 +76,7 @@ export const FormRequire = ({ navigation, route }) => {
         }
 
         )
-        await api.put(`/Exame/Cadastrar`, formData, {
+        await api.post(`/Exame/Cadastrar`, formData, {
             headers: {
                 "Content-Type": "multipart/form-data"
             }
@@ -95,8 +100,8 @@ export const FormRequire = ({ navigation, route }) => {
             </HeaderPhotoContainer>
 
             <ModalFormRequire >
-                <Title>{profileData.name}</Title>
-                <SubTitle>{profileData.email}</SubTitle>
+                <Title>{}</Title>
+                <SubTitle>{}</SubTitle>
             </ModalFormRequire>
 
             <ContainerScroll>
