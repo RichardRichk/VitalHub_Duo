@@ -20,17 +20,15 @@ import { CameraComp } from "../../components/Camera/Camera"
 
 
 export const ProfileFunc = ({ navigation }) => {
-
-    // Estados para armazenar os dados do usuário
     const [userData, setUserData] = useState({});
     const [userId, setUserId] = useState('');
     const [userType, setUserType] = useState('');
     const [userIdLoaded, setUserIdLoaded] = useState(false);
-
     const [showCam, setShowCam] = useState(false);
     const [uriCameraCapture, setUriCameraCapture] = useState(null);
+    const [name, setName]= useState('')
+    const [email, setEmail]= useState('')
 
-    // Estados para os campos editáveis
     const [editedName, setEditedName] = useState('');
     const [editedEmail, setEditedEmail] = useState('');
     const [editedDateOfBirth, setEditedDateOfBirth] = useState('');
@@ -38,16 +36,14 @@ export const ProfileFunc = ({ navigation }) => {
     const [editedAddress, setEditedAddress] = useState('');
     const [editedCEP, setEditedCEP] = useState('');
     const [editedCity, setEditedCity] = useState('');
-    const [name, setName] = useState('');
-    const [email, setEmail] = useState('');
+    const [isEditing, setIsEditing] = useState(false);
+    const [buttonText, setButtonText] = useState('Editar');
+
     const [dateOfBirth, setDateOfBirth] = useState('');
     const [cpf, setCPF] = useState('');
     const [address, setAddress] = useState('');
     const [cep, setCEP] = useState('');
     const [city, setCity] = useState('');
-
-    const [isEditing, setIsEditing] = useState(false);
-    const [buttonText, setButtonText] = useState('Editar');
 
     const handleEditToggle = () => {
         setIsEditing(!isEditing);
@@ -63,13 +59,24 @@ export const ProfileFunc = ({ navigation }) => {
     };
 
     async function ListProfile() {
-        try {
-            const response = await api.get(`/Pacientes/BuscarPorId?id=${userId}`);
-            setUserData(response.data);
+        if (userType == "Paciente") {
             
-            setUriCameraCapture(response.data.idNavigation.foto);
-        } catch (error) {
-            console.log(error);
+            try {
+                const response = await api.get(`/Pacientes/BuscarPorId?id=${userId}`);
+                setUserData(response.data);
+                setUriCameraCapture(response.data.idNavigation.foto);
+            } catch (error) {
+                console.log(error);
+            }
+
+        } else {
+            try {
+                const response = await api.get(`/Medicos/BuscarPorId?id=${userId}`);
+                setUserData(response.data);
+                setUriCameraCapture(response.data.idNavigation.foto);
+            } catch (error) {
+                console.log(error);
+            }
         }
     }
 
@@ -96,7 +103,6 @@ export const ProfileFunc = ({ navigation }) => {
 
     useEffect(() => {
         if (userData) {
-            // Preencher os campos editáveis com os dados do usuário
             setDateOfBirth(moment(userData.dataNascimento).format('DD-MM-YYYY'));
             setCPF(userData.cpf);
             setAddress(userData.endereco ? `${userData.endereco.logradouro}, ${userData.endereco.numero}` : '');
@@ -111,7 +117,6 @@ export const ProfileFunc = ({ navigation }) => {
         }
     },[uriCameraCapture])
 
-
     async function AlterarFotoPerfil() {	
         const formData = new FormData();	
         formData.append("Arquivo", {	
@@ -125,13 +130,14 @@ export const ProfileFunc = ({ navigation }) => {
                 "Content-Type": "multipart/form-data"	
             }	
         }).then(response => {	
+            console.log("RESPONSE DO PUT");	
+            console.log(response);	
         }).catch(erro => {	
             console.log("Alterar foto");	
             console.log(erro);	
         })	
     }
 
-    // Função para salvar as alterações no banco de dados
     const handleSave = async () => {
         try {
             const response = await api.put(`/Pacientes/${userId}`, {
@@ -158,7 +164,6 @@ export const ProfileFunc = ({ navigation }) => {
     return (
 
         <Container>
-
             <HeaderPhotoContainer>
                 <HeaderPhoto
                     source={{ uri: uriCameraCapture }}
