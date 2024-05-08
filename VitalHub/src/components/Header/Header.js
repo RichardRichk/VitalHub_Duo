@@ -31,13 +31,15 @@ export const Header = ({ navigation }) => {
 
         setName(token.name) //puxar foto de perfil no header
 
-        console.log(token);
-
         if (foto == null) { //puxar foto de perfil no header
             await GetUser(token.id)
         }
 
     };
+
+    useEffect(()=>{
+            GetUser()
+    }, [foto])
 
     
     useEffect(() => {
@@ -45,11 +47,13 @@ export const Header = ({ navigation }) => {
     }, []);
 
 
-    async function GetUser() { //puxar foto de perfil no header
+    async function GetUser(id) { //puxar foto de perfil no header
         try {
             
-            const response = await api.get(`/Usuario/BuscarPorId?id=${userId}`)
-            setFoto(response.data.foto)
+            const response = await api.get(`/Usuario/BuscarPorId?id=${id}`)
+            console.log("response: ", response);
+            setFoto(response.data.foto);
+            
         } catch (error) {
             console.log(error + 'erro buscar usuario');
         }
@@ -73,7 +77,6 @@ export const Header = ({ navigation }) => {
 
 
         <ContainerHeader>
-            {console.log("teste foto", foto)}
             <BoxUser onPress={() => navigation.navigate("Profile")}>
                 <ImageUser
                     source={{ uri: foto }}
