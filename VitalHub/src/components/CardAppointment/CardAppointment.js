@@ -11,6 +11,7 @@ import api from "../../Service/Service"
 
 export const CardAppointment = ({
     navigation,
+    idConsulta,
     userType,
     situacao,
     onPressCancel,
@@ -18,7 +19,7 @@ export const CardAppointment = ({
     onPressCard,
     usuarioConsulta,
     type,
-    time = "14:00",
+    time,
 }) => {
     const [profileData, setProfileData] = useState('')
     const [userData, setUserData] = useState('')
@@ -90,7 +91,7 @@ export const CardAppointment = ({
 
                     <ClockCard situacao={situacao}>
                         <AntDesign name="clockcircle" size={14} color={situacao == "Pendentes" ? "#49B3BA" : "8C8A97"} />
-                        <TextBold situacao={situacao} color={"#49B3BA"}>{time} </TextBold>
+                        <TextBold situacao={situacao} color={"#49B3BA"}> {time} </TextBold>
                     </ClockCard>
 
 

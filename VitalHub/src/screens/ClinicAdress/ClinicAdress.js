@@ -37,10 +37,10 @@ export const ClinicAdress = ({ navigation, route }) => {
                 <>
                     <Map latitude={clinica.endereco.latitude} longitude={clinica.endereco.longitude}/>
 
+
                     <Container>
 
                         <TitleAdress>{clinica.nomeFantasia}</TitleAdress>
-                        <SubTitle>Mocado</SubTitle>
 
                         <ContainerScroll>
 
@@ -59,9 +59,9 @@ export const ClinicAdress = ({ navigation, route }) => {
                                 </BoxInput>
 
                                 <BoxInput>
-                                    <InputLabel>Bairro</InputLabel>
+                                    <InputLabel>Cidade</InputLabel>
                                     <InputDouble
-                                        placeholder="Mocado"
+                                        placeholder={`${clinica.endereco.cidade}`}
                                     />
                                 </BoxInput>
                             </DoubleView>

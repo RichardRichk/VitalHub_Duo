@@ -4,21 +4,36 @@ import { Title } from "../Title/Style";
 import { ButtonModal, ButtonSecondary, ButtonSecondaryTitle, TextButton } from "../Button/Style";
 import LoadingButton from "../../utils/LoadingButton";
 import { useState } from "react";
+import api from "../../Service/Service";
 
-const CancellationModal = ({visible, setShowModalCancel, ...rest}) => {
+const CancellationModal = ({navigation, visible, idConsulta, setShowModalCancel, ...rest}) => {
 
     const [loading, setLoading] = useState(false);
 
     // Função para cancelar a consulta
+    async function cancellationAppointment() {
+        try {
+            await api.put(`/Consultas/Status?idConsulta=${idConsulta}&status=Cancelados`);
+            setLoading(false); 
+            setShowModalCancel(false); 
+            alert("Consulta Cancelada");
+            navigation.replace("Main");
+             // Assume que a resposta da API contém os dados das consultas
+        } catch (error) {
+            console.error('Erro ao cancelar consulta', error);
+            // Trate o erro, se necessário
+        }
+    }
+
+
     const cancelAppointment = async () => {
         setLoading(true); 
         try {
 
             await new Promise(resolve => setTimeout(resolve, 800));
 
-            setLoading(false); 
-            setShowModalCancel(false); 
-            alert("Consulta Cancelada");
+            cancellationAppointment();
+
         } catch (error) {
             console.error("Erro ao cancelar consulta:", error);
             setLoading(false); 
