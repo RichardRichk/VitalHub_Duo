@@ -64,6 +64,7 @@ namespace WebAPI.Controllers
                 }
 
 
+
                 string fotoUrl = await AzureBlobStorageHelper.UploadImageBlobAsync(form.Arquivo!, connectionString!, containerName!);
 
 
