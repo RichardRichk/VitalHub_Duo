@@ -68,7 +68,6 @@ export const ProfileFunc = ({ navigation }) => {
             setUserData(response.data);
             
             setUriCameraCapture(response.data.idNavigation.foto);
-            console.log("foto salva", setUriCameraCapture);
         } catch (error) {
             console.log(error);
         }
@@ -107,7 +106,6 @@ export const ProfileFunc = ({ navigation }) => {
     }, [userData]);
 
     useEffect(() => {
-        console.log("cameraCapture", uriCameraCapture);
         if (uriCameraCapture) {
             AlterarFotoPerfil();
         }
@@ -127,8 +125,6 @@ export const ProfileFunc = ({ navigation }) => {
                 "Content-Type": "multipart/form-data"	
             }	
         }).then(response => {	
-            console.log("RESPONSE DO PUT");	
-            console.log(response);	
         }).catch(erro => {	
             console.log("Alterar foto");	
             console.log(erro);	
