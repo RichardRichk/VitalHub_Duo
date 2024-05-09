@@ -142,7 +142,7 @@ export const FormRequire = ({ navigation, route }) => {
                 {/* Conteudo Da Consultas Doutor */}
 
                 {
-                    userType == "Paciente" ? (
+                    userType != "Paciente" ? (
                         <>
                         </>
                     ) : (

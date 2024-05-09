@@ -75,6 +75,7 @@ const pickerSelectStyles = StyleSheet.create({
         display: "flex",
 
         marginBottom: 42,
+        marginTop: 10,
 
     },
     icon: {
