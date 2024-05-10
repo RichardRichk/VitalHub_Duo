@@ -77,9 +77,12 @@ export const Header = ({ navigation }) => {
 
         <ContainerHeader>
             <BoxUser onPress={() => navigation.navigate("Profile")}>
+                
+                {foto !== null && (
                 <ImageUser
                     source={{ uri: foto }}
                 />
+            )}
                 <DataUser>
                     <TextDefault>Bem Vindo</TextDefault>
                     <NameUser>{name}</NameUser>

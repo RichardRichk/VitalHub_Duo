@@ -13,14 +13,12 @@ export const CardDoctorSelect = ({
     setMedico
 }) => {
 
-    image = require("../../assets/Images/SelectDoctor1.png");
-
     if (select === id) {
         return(
         <ContainerCardDoctorSelect>
 
             <DoctorImage
-                source= {image}
+                source= {{uri : medico.idNavigation.foto}}
             />
 
             <DoctorContentCard>
@@ -50,7 +48,7 @@ export const CardDoctorSelect = ({
             }}>
 
             <DoctorImage
-                source={image}
+                source= {{uri : medico.idNavigation.foto}}
             />
 
             <DoctorContentCard>

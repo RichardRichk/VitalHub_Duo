@@ -100,8 +100,8 @@ export const FormRequire = ({ navigation, route }) => {
             </HeaderPhotoContainer>
 
             <ModalFormRequire >
-                <Title>{}</Title>
-                <SubTitle>{}</SubTitle>
+                <Title>{profileData.name}</Title>
+                <SubTitle>{profileData.email}</SubTitle>
             </ModalFormRequire>
 
             <ContainerScroll>
@@ -142,7 +142,7 @@ export const FormRequire = ({ navigation, route }) => {
                 {/* Conteudo Da Consultas Doutor */}
 
                 {
-                    userType !== "Paciente" ? (
+                    userType != "Paciente" ? (
                         <>
                         </>
                     ) : (

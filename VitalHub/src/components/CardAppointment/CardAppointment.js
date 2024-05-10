@@ -6,6 +6,7 @@ import { AntDesign } from "@expo/vector-icons"
 import { useEffect, useState } from "react"
 import { userDecodeToken } from "../../utils/Auth"
 import api from "../../Service/Service"
+import { logProfileData } from "react-native-calendars/src/Profiler"
 
 
 
@@ -25,38 +26,79 @@ export const CardAppointment = ({
     const [profileData, setProfileData] = useState('')
     const [userData, setUserData] = useState('')
     const [fotoCard, setFotoCard] = useState('')
+    const [prioridade, setPrioridade] = useState('');
+    const [idadePaciente, setIdadePaciente] = useState([]);
+    const [doctorSpecialty, setDoctorSpecialty] = useState('');
+
+
+    async function AnalyseType(tipo) {
+        if (tipo == 0) {
+            setPrioridade("Rotina")
+        }
+        else if (tipo == 1) {
+            setPrioridade("Exame")
+        }
+        else {
+            setPrioridade("Urgência")
+        }
+    }
 
     async function LoadUserData() {
         if (profileData.role == "Paciente") {
             await api.get(`/Pacientes/BuscarPorID?id=${profileData.id}`)
-            .then( response => {
-                setUserData(response.data);
-            })
+                .then(response => {
+                    setUserData(response.data)
+                    // LoadAge(response.data.dataNascimento);
+                })
         } else {
             await api.get(`/Medicos/BuscarPorID?id=${profileData.id}`)
-            .then( response => {
-                setUserData(response.data);
-            })
+                .then(response => {
+                    setUserData(response.data);
+                })
         }
     }
 
+    // async function LoadAge(dataS) {
+    //     if (profileData.role == "Paciente") {
+
+    //         // Obter a data de nascimento do objeto userData
+    //         const dataNascimento = new Date(dataS);
+
+    //         // Obter a data atual
+    //         const dataAtual = new Date();
+
+    //         // Calcular a diferença entre as datas
+    //         const Anos = dataAtual.getFullYear() - dataNascimento.getFullYear();
+    //         const Meses = dataAtual.getMonth() - dataNascimento.getMonth();
+    //         const Dias = dataAtual.getDate() - dataNascimento.getDate();
+
+    //         // Ajustar a diferença para considerar os meses e dias
+    //         if (Meses < 0 || (Meses === 0 && Dias < 0)) {
+    //             Anos--;
+    //         }
+
+    //         // A idade é o número de anos de diferença
+    //         setIdadePaciente(Anos);
+    //     }
+    // }
+
     async function LoadFotoData() {
-        if(profileData.role != "Paciente"){
+        if (profileData.role === "Paciente") {
             try {
-                const response = await api.get(`/Medicos/BuscarPorID?id=${consulta.medicoClinica.medico.id}`)
+                const response = await api.get(`/Medicos/BuscarPorId?id=${consulta.medicoClinica.medico.id}`)
                 setFotoCard(response.data.idNavigation.foto);
             } catch (error) {
                 console.error(error);
             }
-        }else {
+        } else {
             try {
-                const response = await api.get(`/Pacientes/BuscarPorID?id=${usuarioConsulta.consulta.pacienteId}`)
+                const response = await api.get(`/Pacientes/BuscarPorId?id=${usuarioConsulta.consulta[0].pacienteId}`)
                 setFotoCard(response.data.idNavigation.foto);
             } catch (error) {
                 console.error(error);
             }
         }
-        
+
     }
 
     useEffect(() => {
@@ -70,28 +112,34 @@ export const CardAppointment = ({
 
         };
 
-        LoadFotoData();
-        profileLoad();  
+        profileLoad();
     }, []);
 
     useEffect(() => {
         LoadUserData();
+        LoadFotoData();
     }, [profileData])
+
+    useEffect(() => {
+        AnalyseType(type);
+    }, [type])
 
     return (
         <ContainerCard onPress={() => {
-        
+
             if (situacao === "Realizados" && userType === "Paciente") {
                 navigation.replace("FormRequire");
-            } else if(situacao == "Pendentes" || situacao === "Realizados"){
+            } else if (situacao == "Pendentes" || situacao === "Realizados") {
                 onPressCard();
             }
         }
         }>
 
-            <ImageCard
-                source={{ uri: fotoCard }}
-            />
+            {fotoCard !== null && (
+                <ImageCard
+                    source={{ uri: fotoCard }}
+                />
+            )}
 
             <ContentCard>
 
@@ -102,8 +150,9 @@ export const CardAppointment = ({
 
                     <ProfileDataCard>
 
-                        {/* <TextAge>{profileData.role == "Paciente" ? {userData.dataNascimento} : {}}</TextAge> */}
-                        <TextType>{type}</TextType>
+                        {/* <TextAge>{profileData.role != "Paciente" ? {idadePaciente} : ''}</TextAge> */}
+                        <TextAge>{ }</TextAge>
+                        <TextType>{prioridade}</TextType>
 
                     </ProfileDataCard>
 
