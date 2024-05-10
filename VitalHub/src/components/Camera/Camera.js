@@ -7,19 +7,19 @@ import * as ImagePicker from 'expo-image-picker'
 import { FontAwesome, FontAwesome6, AntDesign } from '@expo/vector-icons';
 import { LastPhoto } from './Style'
 
-export const CameraComp = ({ visible, setShowCamera, setUriCameraCapture, getMediaLibrary=false, ...rest }) => {
-    
+export const CameraComp = ({ visible, setShowCamera, setUriCameraCapture, getMediaLibrary = false, ...rest }) => {
+
     const cameraRef = useRef(null);
     const [photo, setPhoto] = useState(null);
     const [openModal, setOpenModal] = useState(false);
-    
+
     const [tipoCamera, setTipoCamera] = useState(Camera.Constants.Type.front);
     const [lastPhoto, setLastPhoto] = useState(null)
 
     useEffect(() => {
         (async () => {
             const { status: cameraStatus } = await Camera.requestCameraPermissionsAsync();
-    
+
             const { status: mediaStatus } = await MediaLibrary.requestPermissionsAsync();
         })();
     }, [])
@@ -35,7 +35,7 @@ export const CameraComp = ({ visible, setShowCamera, setUriCameraCapture, getMed
     async function SelectImageGallery() {
         const result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.Images,
-            quality : 1
+            quality: 1
         });
 
         if (!result.canceled) {
@@ -47,7 +47,7 @@ export const CameraComp = ({ visible, setShowCamera, setUriCameraCapture, getMed
 
     async function CapturePhoto() {
         if (cameraRef) {
-            const photo = await cameraRef.current.takePictureAsync({quality: 1});
+            const photo = await cameraRef.current.takePictureAsync({ quality: 1 });
             await setPhoto(photo.uri)
 
             setOpenModal(true)
@@ -93,10 +93,15 @@ export const CameraComp = ({ visible, setShowCamera, setUriCameraCapture, getMed
 
 
     return (
+
+        
         <Modal
             visible={visible}
         >
             <Container>
+
+                {console.log("teste lastfoto", lastPhoto) }
+
                 <Camera
                     ref={cameraRef}
 
@@ -108,17 +113,16 @@ export const CameraComp = ({ visible, setShowCamera, setUriCameraCapture, getMed
 
                 <View style={styles.viewFlip}>
 
-                    
+
                     <TouchableOpacity style={styles.btnGallery} onPress={SelectImageGallery}>
                         {
-                            lastPhoto == null 
-                            ? (
+                            lastPhoto !== null ? (
                                 <LastPhoto
-                                    source={{uri : lastPhoto}}
+                                    source={{ uri: lastPhoto.uri  }}
                                 />
+                            ) : (
+                                <AntDesign name="picture" size={30} color={'#fff'} />
                             )
-                            :
-                            <AntDesign name="picture" size={30} color={'#fff'} />
                         }
                     </TouchableOpacity>
 
@@ -146,7 +150,7 @@ export const CameraComp = ({ visible, setShowCamera, setUriCameraCapture, getMed
                             <FontAwesome name="trash" size={23} color={'#ff0000'} />
                         </TouchableOpacity>
 
-                        <TouchableOpacity style={styles.btnUpload} onPress={() => {SavePhoto(); SendFormPhoto(); setOpenModal(false)}}>
+                        <TouchableOpacity style={styles.btnUpload} onPress={() => { SavePhoto(); SendFormPhoto(); setOpenModal(false) }}>
                             <FontAwesome name="save" size={23} color={'#121212'} />
                         </TouchableOpacity>
 
@@ -171,9 +175,9 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     viewModal: {
-        flex: 1, 
-        alignItems: 'center', 
-        justifyContent: 'center', 
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
         padding: 30,
     },
     btnFlip: {
@@ -225,12 +229,12 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     imgModal: {
-        width: '100%', 
-        height: 500, 
+        width: '100%',
+        height: 500,
         borderRadius: 10,
     },
     viewBtnModal: {
-        margin: 15, 
+        margin: 15,
         flexDirection: 'row',
         alignItems: 'center',
 
