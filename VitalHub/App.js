@@ -21,6 +21,7 @@ import { CalendarScreen } from './src/screens/CalendarScreen/CalendarScreen';
 import { ClinicAdress } from './src/screens/ClinicAdress/ClinicAdress';
 import { Main } from './src/screens/Main/Main';
 
+
 //instancia do StackNavigator
 const Stack = createNativeStackNavigator();
 
@@ -135,6 +136,9 @@ export default function App() {
       style="auto" 
       backgroundColor="#FAFAFA"
       />
+
+      
+
       
     </NavigationContainer>
   );

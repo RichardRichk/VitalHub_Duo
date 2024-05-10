@@ -140,21 +140,26 @@ export const ProfileFunc = ({ navigation }) => {
 
     const handleSave = async () => {
         try {
-            const response = await api.put(`/Pacientes/${userId}`, {
+            const requestBody = {
+                rg: userData.rg,
+                cpf: editedCPF || userData.cpf,
+                dataNascimento: editedDateOfBirth || userData.dataNascimento,
+                cep: editedCEP || userData.endereco?.cep,
+                logradouro: editedAddress || userData.endereco?.logradouro,
+                numero: userData.endereco?.numero, // Este campo não parece estar sendo editado no front-end, então mantive o valor original
+                cidade: editedCity || userData.endereco?.cidade,
                 nome: editedName || name,
                 email: editedEmail || email,
-                dataNascimento: editedDateOfBirth || dateOfBirth,
-                cpf: editedCPF || cpf,
-                endereco: {
-                    logradouro: editedAddress || address,
-                    cep: editedCEP || cep,
-                    cidade: editedCity || city
-                }
-            });
+                senha: userData.senha, // Mantive a senha original, mas pode ser necessário alterá-la também
+                idTipoUsuario: userData.idTipoUsuario, // Mantive o ID do tipo de usuário original
+                arquivo: "string", // Não está claro o que isso representa, então mantive "string"
+                foto: uriCameraCapture || userData.foto // Usamos a nova foto se disponível, caso contrário, mantemos a foto original
+            };
+    
+            const response = await api.put(`/Pacientes?idUsuario=${userId}`, requestBody);
             setUserData(response.data);
             setIsEditing(false);
             setButtonText('Editar');
-
         } catch (error) {
             console.log(error);
         }
@@ -185,21 +190,21 @@ export const ProfileFunc = ({ navigation }) => {
 
                 <InputLabel>Data de nascimento:</InputLabel>
                 <InputProfile
-                    placeholder={isEditing ? editedDateOfBirth : moment(userData.dataNascimento).format('DD-MM-YYYY')}
+                    placeholder={userData.dataNascimento ? `${moment(userData.dataNascimento).format('DD-MM-YYYY')}` : ''}
                     onChangeText={text => setEditedDateOfBirth(text)}
                     editable={isEditing}
                 />
 
                 <InputLabel>CPF:</InputLabel>
                 <InputProfile
-                    placeholder={isEditing ? editedCPF : userData.cpf}
+                    placeholder={userData.cpf ? `${userData.cpf}` : ''}
                     onChangeText={text => setEditedCPF(text)}
                     editable={isEditing}
                 />
 
                 <InputLabel>Endereço</InputLabel>
                 <InputProfile
-                    placeholder={isEditing ? editedAddress : (userData.endereco ? `${userData.endereco.logradouro}, ${userData.endereco.numero}` : '')}
+                    placeholder={(userData.endereco ? `${userData.endereco.logradouro}` : '')}
                     onChangeText={text => setEditedAddress(text)}
                     editable={isEditing}
                 />
@@ -208,7 +213,7 @@ export const ProfileFunc = ({ navigation }) => {
                     <BoxInput>
                         <InputLabel>Cep</InputLabel>
                         <InputDouble
-                            placeholder={isEditing ? editedCEP : (userData.endereco ? userData.endereco.cep : '')}
+                            placeholder={(userData.endereco ? userData.endereco.cep : '')}
                             onChangeText={text => setEditedCEP(text)}
                             editable={isEditing}
                         />
@@ -218,7 +223,7 @@ export const ProfileFunc = ({ navigation }) => {
                     <BoxInput>
                         <InputLabel>Cidade</InputLabel>
                         <InputDouble
-                            placeholder={isEditing ? editedCity : (userData.endereco ? userData.endereco.cidade : '')}
+                            placeholder={(userData.endereco ? userData.endereco.cidade : '')}
                             onChangeText={text => setEditedCity(text)}
                             editable={isEditing}
                         />
