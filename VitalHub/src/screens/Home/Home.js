@@ -118,6 +118,7 @@ export const HomeFunc = ({ navigation }) => {
                                 consulta={item}
                                 navigation={navigation}
                                 idConsulta={item.id}
+                                dataConsulta={dataConsulta}
                                 situacao={item.situacao.situacao}
                                 type={item.prioridade.prioridade}
                                 onPressAppointment={() => navigation.navigate('FormRequire', { profileData: profileData, idConsulta: item.id})}

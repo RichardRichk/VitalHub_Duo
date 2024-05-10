@@ -30,17 +30,24 @@ export const CalendarScreen = ({ navigation, route}) => {
 
     const calendarScreen = async () => {
         setLoading(true);
-        try {
 
-            await new Promise(resolve => setTimeout(resolve, 800));
-            setLoading(false);
-
-            await handleContinue();
-            setShowModalConfirmAppointment(true);
-
-        } catch (error) {
-            console.error("Erro ao cancelar consulta:", error);
-            setLoading(false);
+        if (dataSelecionada != "" || horaSelecionada != "") {
+            
+            try {
+    
+                await new Promise(resolve => setTimeout(resolve, 800));
+                setLoading(false);
+    
+                await handleContinue();
+                setShowModalConfirmAppointment(true);
+    
+            } catch (error) {
+                console.error("Erro ao cancelar consulta:", error);
+                setLoading(false);
+            }
+        } else {
+            alert("Favor selecionar uma data para a consulta!")
+            setLoading(false); 
         }
     };
 

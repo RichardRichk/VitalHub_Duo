@@ -13,6 +13,7 @@ import { logProfileData } from "react-native-calendars/src/Profiler"
 export const CardAppointment = ({
     navigation,
     consulta,
+    dataConsulta,
     userType,
     situacao,
     onPressCancel,
@@ -28,7 +29,6 @@ export const CardAppointment = ({
     const [fotoCard, setFotoCard] = useState('')
     const [prioridade, setPrioridade] = useState('');
     const [idadePaciente, setIdadePaciente] = useState([]);
-    const [doctorSpecialty, setDoctorSpecialty] = useState('');
 
 
     async function AnalyseType(tipo) {
@@ -47,8 +47,7 @@ export const CardAppointment = ({
         if (profileData.role == "Paciente") {
             await api.get(`/Pacientes/BuscarPorID?id=${profileData.id}`)
                 .then(response => {
-                    setUserData(response.data)
-                    // LoadAge(response.data.dataNascimento);
+                    setUserData(response.data);
                 })
         } else {
             await api.get(`/Medicos/BuscarPorID?id=${profileData.id}`)
@@ -58,29 +57,29 @@ export const CardAppointment = ({
         }
     }
 
-    // async function LoadAge(dataS) {
-    //     if (profileData.role == "Paciente") {
+    async function LoadAge(dataS) {
+        if (profileData.role != "Paciente") {
 
-    //         // Obter a data de nascimento do objeto userData
-    //         const dataNascimento = new Date(dataS);
+            // Obter a data de nascimento do objeto userData
+            const dataNascimento = new Date(dataS);
 
-    //         // Obter a data atual
-    //         const dataAtual = new Date();
+            // Obter a data atual
+            const dataAtual = new Date();
 
-    //         // Calcular a diferença entre as datas
-    //         const Anos = dataAtual.getFullYear() - dataNascimento.getFullYear();
-    //         const Meses = dataAtual.getMonth() - dataNascimento.getMonth();
-    //         const Dias = dataAtual.getDate() - dataNascimento.getDate();
+            // Calcular a diferença entre as datas
+            const Anos = dataAtual.getFullYear() - dataNascimento.getFullYear();
+            const Meses = dataAtual.getMonth() - dataNascimento.getMonth();
+            const Dias = dataAtual.getDate() - dataNascimento.getDate();
 
-    //         // Ajustar a diferença para considerar os meses e dias
-    //         if (Meses < 0 || (Meses === 0 && Dias < 0)) {
-    //             Anos--;
-    //         }
+            // Ajustar a diferença para considerar os meses e dias
+            if (Meses < 0 || (Meses === 0 && Dias < 0)) {
+                Anos--;
+            }
 
-    //         // A idade é o número de anos de diferença
-    //         setIdadePaciente(Anos);
-    //     }
-    // }
+            // A idade é o número de anos de diferença
+            setIdadePaciente(Anos);
+        }
+    }
 
     async function LoadFotoData() {
         if (profileData.role === "Paciente") {
@@ -94,6 +93,7 @@ export const CardAppointment = ({
             try {
                 const response = await api.get(`/Pacientes/BuscarPorId?id=${usuarioConsulta.consulta[0].pacienteId}`)
                 setFotoCard(response.data.idNavigation.foto);
+                LoadAge(response.data.dataNascimento);
             } catch (error) {
                 console.error(error);
             }
@@ -124,6 +124,10 @@ export const CardAppointment = ({
         AnalyseType(type);
     }, [type])
 
+    useEffect(() => {
+        LoadFotoData();
+    }, [dataConsulta])
+
     return (
         <ContainerCard onPress={() => {
 
@@ -150,8 +154,7 @@ export const CardAppointment = ({
 
                     <ProfileDataCard>
 
-                        {/* <TextAge>{profileData.role != "Paciente" ? {idadePaciente} : ''}</TextAge> */}
-                        <TextAge>{ }</TextAge>
+                        <TextAge>{profileData.role != "Paciente" ? `Idade: ${idadePaciente}` : ''}</TextAge>
                         <TextType>{prioridade}</TextType>
 
                     </ProfileDataCard>

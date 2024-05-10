@@ -15,6 +15,10 @@ const ScheduleModal = ({ navigation, visible, setShowScheduleModal,userId, ...re
 
     const [agendamento, setAgendamento] = useState(null);
 
+    const [localizacao, setLocalizacao] = useState(null);
+
+    const [prioridade, setPrioridade] = useState(null);
+
 
     // Nivel 0
     const Rotina = { id: "1FB33A47-431D-405E-852B-A885FC02CFF4", tipo: "Rotina" }
@@ -31,16 +35,27 @@ const ScheduleModal = ({ navigation, visible, setShowScheduleModal,userId, ...re
     
     const scheduleModal = async () => {
         setLoading(true);
-        try {
 
-            await new Promise(resolve => setTimeout(resolve, 800));
-            setLoading(false);
-            handleContinue();
+        //VALIDACAO PARA PRIORIDADE CONSULTA
+        if (prioridade !== null && localizacao !== null) {
+            
+            try {
 
-        } catch (error) {
-            console.error("Erro ao cancelar consulta:", error);
+                await new Promise(resolve => setTimeout(resolve, 800));
+                setLoading(false);
+                handleContinue();
+    
+            } catch (error) {
+                console.error("Erro ao marcar prioridade", error);
+                setLoading(false);
+            }
+
+        } else {
+            console.log("Else");
+            alert("Selecione a prioridade e a localizacao para avancar")
             setLoading(false);
         }
+
     };
 
     return (
@@ -61,7 +76,7 @@ const ScheduleModal = ({ navigation, visible, setShowScheduleModal,userId, ...re
                                 prioridadeId: Rotina.id,
                                 prioridadeLabel: Rotina.tipo,
                                 userId
-                            }), setClick("Rotina")}}
+                            }), setClick("Rotina"), setPrioridade(Rotina.id)}}
 
                             clickButton={click == "Rotina"}
 
@@ -113,10 +128,10 @@ const ScheduleModal = ({ navigation, visible, setShowScheduleModal,userId, ...re
                         placeholder="Informe a localização"
 
                         value={agendamento ? agendamento.localizacao : null}
-                        onChangeText={(txt) => setAgendamento({
+                        onChangeText={(txt) => {setAgendamento({
                             ...agendamento, //Mantendo as informacoes dentro de agendamento
                             localizacao: txt
-                        })}
+                        }), setLocalizacao(txt), console.log(localizacao);}}
                     />
 
                     <LoadingButton

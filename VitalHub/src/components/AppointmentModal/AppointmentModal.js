@@ -8,7 +8,6 @@ import LoadingButton from "../../utils/LoadingButton";
 
 const AppointmentModal = ({ navigation, usuarioConsulta, profileData, consulta, situacao ,visible, setShowModalAppointment,...rest }) => {
 
-    const image = require("../../assets/Images/Picture_Modal.png")
 
     const [loading, setLoading] = useState(false);
     
@@ -16,13 +15,11 @@ const AppointmentModal = ({ navigation, usuarioConsulta, profileData, consulta, 
     async function handleClose(screen){
         
         if (screen === "ClinicAdress"){
-            console.log(' entrou ')
             await setShowModalAppointment(false); 
             
             navigation.replace(screen, {clinicaid : consulta.medicoClinica.clinicaId})
         }
         else{
-            console.log('nao entrou');
             await setShowModalAppointment(false)
             navigation.replace( screen )
         }
@@ -49,14 +46,13 @@ const AppointmentModal = ({ navigation, usuarioConsulta, profileData, consulta, 
 
             <PatientModal>
 
-                {/* Imagem */}
-
 
                 <ModalContent>
 
                     <ImageModalAppointment
-                        source={image}
+                        source={{uri : usuarioConsulta && usuarioConsulta.idNavigation.foto}}
                     />
+
                     
                     <Title>{(usuarioConsulta && usuarioConsulta.idNavigation.nome)}</Title>
 
@@ -113,13 +109,12 @@ export const AppointmentDoctorModal = ({ navigation ,visible, setShowModalAppoin
 
             <PatientModal>
 
-                {/* Imagem */}
-
 
                 <ModalContent>
 
                     <ImageModalAppointment
-                        source={image}
+                        
+                        source={{uri : usuarioConsulta && usuarioConsulta.idNavigation.foto}}
                     />
                     
                     <Title>{name}</Title>

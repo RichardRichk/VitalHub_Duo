@@ -4,6 +4,7 @@ import { NavigationFunc } from './src/screens/Navigation/Navigation';
 import { LoginFunc } from './src/screens/Login/Login';
 import { ForgotPassword } from './src/screens/ForgotPassword/ForgotPassword';
 import { StatusBar } from 'react-native';
+import { LogBox } from 'react-native';
 
 //import das fonts
 import { useFonts } from 'expo-font';
@@ -38,6 +39,8 @@ export default function App() {
   if(!fontsLoaded && !fontsError){
     return null;
   }
+  // LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
+  // LogBox.ignoreAllLogs();//Ignore all log notifications
 
   return (
     // Navegacao

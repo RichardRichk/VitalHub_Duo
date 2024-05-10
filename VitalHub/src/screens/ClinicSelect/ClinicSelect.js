@@ -34,15 +34,23 @@ export const ClinicSelect = ({ navigation, route }) => {
 
     // Função para cancelar a consulta
     const clinicSelect = async () => {
+
         setLoading(true);
-        try {
 
-            await new Promise(resolve => setTimeout(resolve, 800));
-            handleContinue();
-            setLoading(false);
+        if (selected != '') {
+            try {
 
-        } catch (error) {
-            console.error("Erro ao cancelar consulta:", error);
+                await new Promise(resolve => setTimeout(resolve, 800));
+                handleContinue();
+                setLoading(false);
+    
+            } catch (error) {
+                console.error("Erro ao cancelar consulta:", error);
+                setLoading(false);
+            }
+        }
+        else{
+            alert("Favor selecionar uma clinica para consulta!")
             setLoading(false);
         }
     };

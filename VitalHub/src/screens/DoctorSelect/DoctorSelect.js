@@ -30,14 +30,21 @@ export const DoctorSelect = ({ navigation, route }) => {
     // Função para cancelar a consulta
     const doctorSelect = async () => {
         setLoading(true);
-        try {
 
-            await new Promise(resolve => setTimeout(resolve, 800));
-            handleContinue();
-            setLoading(false);
-
-        } catch (error) {
-            console.error("Erro ao cancelar consulta:", error);
+        if (selected != '') {
+            
+            try {
+    
+                await new Promise(resolve => setTimeout(resolve, 800));
+                handleContinue();
+                setLoading(false);
+    
+            } catch (error) {
+                console.error("Erro ao cancelar consulta:", error);
+                setLoading(false);
+            }
+        } else {
+            alert("Favor selecionar a Medica(o) para a consulta")
             setLoading(false);
         }
     };
