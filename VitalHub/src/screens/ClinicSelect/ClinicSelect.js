@@ -47,6 +47,7 @@ export const ClinicSelect = ({ navigation, route }) => {
             } catch (error) {
                 console.error("Erro ao cancelar consulta:", error);
                 setLoading(false);
+                setSelected('')
             }
         }
         else{
@@ -123,7 +124,7 @@ export const ClinicSelect = ({ navigation, route }) => {
                 text="Continuar"
             />
 
-            <ButtonSecondary onPress={() => navigation.replace("Main")}>
+            <ButtonSecondary onPress={() => {navigation.replace("Main"), setSelected('')}}>
                 <ButtonSecondaryTitle>Cancelar</ButtonSecondaryTitle>
             </ButtonSecondary>
 

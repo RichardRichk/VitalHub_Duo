@@ -73,7 +73,12 @@ export const CameraComp = ({ visible, setShowCamera, setUriCameraCapture, getMed
 
         if (assets.length > 0) {
             setLastPhoto(assets[0].uri)
+
+            //Nova atualizacao
+            //const infoAssets = await MediaLibrary.getAssetInfoAsync(assets[0].id)
+            //setLastPhoto(infoAssets.localUri)
         }
+
     }
 
     async function SavePhoto() {

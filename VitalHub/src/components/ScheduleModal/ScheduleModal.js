@@ -51,8 +51,11 @@ const ScheduleModal = ({ navigation, visible, setShowScheduleModal,userId, ...re
             }
 
         } else {
-            console.log("Else");
-            alert("Selecione a prioridade e a localizacao para avancar")
+            alert("Selecione a prioridade e a localizacao para avancar");
+
+            setPrioridade(null);
+            setLocalizacao(localizacao);
+            setClick(null);
             setLoading(false);
         }
 
@@ -76,7 +79,7 @@ const ScheduleModal = ({ navigation, visible, setShowScheduleModal,userId, ...re
                                 prioridadeId: Rotina.id,
                                 prioridadeLabel: Rotina.tipo,
                                 userId
-                            }), setClick("Rotina"), setPrioridade(Rotina.id)}}
+                            }), setClick("Rotina"), setPrioridade(Rotina.id), console.log(prioridade)}}
 
                             clickButton={click == "Rotina"}
 
@@ -94,7 +97,7 @@ const ScheduleModal = ({ navigation, visible, setShowScheduleModal,userId, ...re
                             prioridadeId: Exame.id,
                             prioridadeLabel: Exame.tipo,
                             userId
-                        }), setClick("Exame")}}
+                        }), setClick("Exame"), setPrioridade(Exame.id), console.log(prioridade)}}
 
                             clickButton={click == "Exame"}
                         >
@@ -112,7 +115,7 @@ const ScheduleModal = ({ navigation, visible, setShowScheduleModal,userId, ...re
                             prioridadeId: Urgencia.id,
                             prioridadeLabel: Urgencia.tipo,
                             userId
-                        }), setClick("Urgencia")}}
+                        }), setClick("Urgencia"),setPrioridade(Urgencia.id), console.log(prioridade)}}
 
                         clickButton={click == "Urgencia"}
                         >
@@ -141,7 +144,7 @@ const ScheduleModal = ({ navigation, visible, setShowScheduleModal,userId, ...re
                         text="Continuar"
                     />
 
-                    <ButtonSecondary onPress={() => { setShowScheduleModal(false) }}>
+                    <ButtonSecondary onPress={() => { setShowScheduleModal(false), setPrioridade(null), setLocalizacao(null), setClick(null) }}>
                         <ButtonSecondaryTitle>Cancelar</ButtonSecondaryTitle>
                     </ButtonSecondary>
 

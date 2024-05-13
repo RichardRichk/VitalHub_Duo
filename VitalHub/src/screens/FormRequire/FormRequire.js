@@ -15,7 +15,6 @@ export const FormRequire = ({ navigation, route }) => {
 
     const { profileData, idConsulta } = route.params;
 
-    const image = require("../../assets/Images/ProfilePic.png");
     const [showCamera, setShowCamera] = useState(false);
     const [uriCameraCapture, setUriCameraCapture] = useState(null);
 
@@ -25,13 +24,26 @@ export const FormRequire = ({ navigation, route }) => {
 
     const [userType, setUserType] = useState(null);
 
+    const [isEditing, setIsEditing] = useState(false);
+    const [name, setName] = useState('')
+    const [email, setEmail] = useState('')
+    const [userPhoto, setUserPhoto] = useState('')
+
     const [descricao, setDescricao] = useState(null);
     const [diagnostico, setDiagnostico] = useState(null);
+    const [recipe, setRecipe] = useState(null);
+
+    const [newRecipe, setNewRecipe] = useState(null);
+    const [newDescricao, setNewDescricao] = useState(null);
+    const [newDiagnostic, setNewDiagnostic] = useState(null);
 
     useEffect(() => {
 
         takeFormData();
         setUserType(profileData.role);
+        setName(profileData.name);
+        setEmail(profileData.email)
+        console.log(profileData);
 
     }, [profileData])
 
@@ -39,7 +51,7 @@ export const FormRequire = ({ navigation, route }) => {
         if (uriCameraCapture) {
             InsertExam();
         }
-    },[uriCameraCapture])
+    }, [uriCameraCapture])
 
     async function takeFormData() {
         try {
@@ -47,6 +59,14 @@ export const FormRequire = ({ navigation, route }) => {
             setFormData(response.data);
             setDescricao(response.data.descricao);
             setDiagnostico(response.data.diagnostico);
+            setRecipe(response.data.receita.medicamento);
+
+            if (profileData.role == "Paciente") {
+                setUserPhoto(response.data.paciente.idNavigation.foto);
+            }
+            else {
+                setUserPhoto(response.data.medicoClinica.medico.idNavigation.foto)
+            }
         } catch (error) {
             console.log(error);
         }
@@ -57,8 +77,7 @@ export const FormRequire = ({ navigation, route }) => {
         try {
 
             await new Promise(resolve => setTimeout(resolve, 800));
-            navigation.replace("")
-            setLoading(false);
+            EditForm();
 
         } catch (error) {
             console.error(error);
@@ -87,6 +106,26 @@ export const FormRequire = ({ navigation, route }) => {
         })
     }
 
+    async function EditForm() {
+        try {
+            const response = await api.put(`/Consultas/Prontuario`, {
+                consultaId: idConsulta,
+                medicamento: newRecipe,
+                descricao: newDescricao,
+                diagnostico: newDiagnostic,
+            });
+
+            setDescricao(response.data.descricao);
+            setDiagnostico(response.data.diagnostico);
+            setLoading(false);
+            setIsEditing(false);
+            
+        } catch (error) {
+            console.log(error);
+            console.log("Erro ao ediar Form");
+        }
+    }
+
 
 
 
@@ -95,13 +134,13 @@ export const FormRequire = ({ navigation, route }) => {
 
             <HeaderPhotoContainer>
                 <HeaderPhoto
-                    source={image}
+                    source={{ uri: userPhoto }}
                 />
             </HeaderPhotoContainer>
 
             <ModalFormRequire >
-                <Title>{profileData.name}</Title>
-                <SubTitle>{profileData.email}</SubTitle>
+                <Title>{name}</Title>
+                <SubTitle>{email}</SubTitle>
             </ModalFormRequire>
 
             <ContainerScroll>
@@ -109,104 +148,97 @@ export const FormRequire = ({ navigation, route }) => {
                 <InputLabel>Descrição da consulta</InputLabel>
                 <InputFormRequire
                     placeholder={descricao ? descricao : 'Sem Descricao'}
+                    editable={isEditing}
+                    value={newDescricao}
+                    onChangeText={setNewDescricao}
                 />
 
 
                 <InputLabel>Diagnóstico do paciente</InputLabel>
                 <Input
                     placeholder={diagnostico ? diagnostico : 'Sem Diagnostico'}
+                    editable={isEditing}
+                    value={newDiagnostic}
+                    onChangeText={setNewDiagnostic}
                 />
 
 
                 <InputLabel>Prescrição médica</InputLabel>
                 <InputFormRequire
-                    placeholder="Prescrição medica"
+                    placeholder={recipe}
+                    editable={isEditing}
+                    value={newRecipe}
+                    onChangeText={setNewRecipe}
                 />
 
-                <LoadingButton
-                    onPress={formRequire}
-                    disabled={loading}
-                    loading={loading}
-                    text="Salvar"
-                />
 
-                <ButtonWithMargin>
-                    <TextButton>Editar </TextButton>
-                </ButtonWithMargin>
+                {userType != "Paciente" && isEditing == false && (
 
-                <ButtonSecondary onPress={() => navigation.navigate("Home")}>
+                    <ButtonWithMargin onPress={() => { setIsEditing(!isEditing) }}>
+                        <TextButton>Editar </TextButton>
+                    </ButtonWithMargin>
+                )}
+
+                {isEditing == true && (
+
+                    <>
+
+                        <InputLabel>Exames médicos</InputLabel>
+                        {
+                            uriCameraCapture == null ? (
+                                <>
+                                    <InputFormNotEditable
+                                        placeholder="               Nenhuma foto informada"
+                                    />
+                                </>
+                            ) : (
+                                <>
+                                    <ImageForm
+                                        source={{ uri: uriCameraCapture }}
+                                    />
+                                </>
+                            )
+                        }
+
+                        <ButtonPhoto onPress={() => {
+                            setShowCamera(true);
+                        }}>
+                            <TextButton>
+                                <AntDesign
+                                    name="camera"
+                                    size={24}
+                                />
+                            </TextButton>
+
+                            <TextButton>Enviar</TextButton>
+
+                        </ButtonPhoto>
+
+                        <CameraComp
+                            visible={showCamera}
+                            setUriCameraCapture={setUriCameraCapture}
+                            setShowCamera={setShowCamera}
+                            getMediaLibrary={true}
+                        />
+
+                        <LoadingButton
+                            onPress={formRequire}
+                            disabled={loading}
+                            loading={loading}
+                            text="Salvar"
+                        />
+                    </>
+                )}
+
+
+                <ButtonSecondary onPress={() => navigation.navigate("Main")}>
                     <ButtonSecondaryTitle>Cancelar </ButtonSecondaryTitle>
                 </ButtonSecondary>
 
 
                 {/* Conteudo Da Consultas Doutor */}
 
-                {
-                    userType != "Paciente" ? (
-                        <>
-                        </>
-                    ) : (
-                        <>
-                            <InputLabel>Exames médicos</InputLabel>
-                            {
-                                uriCameraCapture == null ? (
-                                    <>
-                                        <InputFormNotEditable
-                                            placeholder="               Nenhuma foto informada"
-                                        />
-                                    </>
-                                ) : (
-                                    <>
-                                        <ImageForm
-                                            source={{ uri: uriCameraCapture }}
-                                        />
-                                    </>
-                                )
-                            }
 
-                            <DoubleView>
-
-                                <ButtonPhoto onPress={() => {
-                                    setShowCamera(true);
-                                }}>
-                                    <TextButton>
-                                        <AntDesign
-                                            name="camera"
-                                            size={24}
-                                        />
-                                    </TextButton>
-
-                                    <TextButton>Enviar</TextButton>
-
-                                </ButtonPhoto>
-
-                                <CameraComp
-                                    visible={showCamera}
-                                    setUriCameraCapture={setUriCameraCapture}
-                                    setShowCamera={setShowCamera}
-                                    getMediaLibrary={true}
-                                />
-
-
-                                <ButtonSecondaryForm onPress={() => navigation.replace("Home")}>
-                                    <ButtonSecondaryFormTitle>Cancelar</ButtonSecondaryFormTitle>
-                                </ButtonSecondaryForm>
-
-                            </DoubleView>
-
-                            <HR />
-
-                            <InputFormNotEditable
-                                placeholder="Resultado do exame de sangue: tudo normal "
-                            />
-
-                            <ButtonSecondary onPress={() => navigation.replace("Main")}>
-                                <ButtonSecondaryTitle>Voltar</ButtonSecondaryTitle>
-                            </ButtonSecondary>
-                        </>
-
-                    )
-                }
 
             </ContainerScroll>
 

@@ -188,16 +188,19 @@ export const ProfileFunc = ({ navigation }) => {
 
             <ContainerScroll>
 
-                <InputLabel>Data de nascimento:</InputLabel>
-                <InputProfile
-                    placeholder={userData.dataNascimento ? `${moment(userData.dataNascimento).format('DD-MM-YYYY')}` : ''}
-                    onChangeText={text => setEditedDateOfBirth(text)}
-                    editable={isEditing}
-                />
+                {userType == "Paciente" ? <>
 
-                <InputLabel>CPF:</InputLabel>
+                    <InputLabel>{userType == "Paciente" ? 'Data de nascimento:' : 'Especialidade:'}</InputLabel>
+                    <InputProfile
+                        placeholder={userData.dataNascimento ? `${moment(userData.dataNascimento).format('DD-MM-YYYY')}` : ''}
+                        onChangeText={text => setEditedDateOfBirth(text)}
+                        editable={isEditing}
+                    />
+                </> : <></>}
+
+                <InputLabel>{userType == "Paciente" ? 'CPF:' : 'CRM:'}</InputLabel>
                 <InputProfile
-                    placeholder={userData.cpf ? `${userData.cpf}` : ''}
+                    placeholder={userData.cpf ? `${userData.cpf}` : `${userData.crm}`}
                     onChangeText={text => setEditedCPF(text)}
                     editable={isEditing}
                 />
