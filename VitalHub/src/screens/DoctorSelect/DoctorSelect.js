@@ -45,6 +45,7 @@ export const DoctorSelect = ({ navigation, route }) => {
             }
         } else {
             alert("Favor selecionar a Medica(o) para a consulta")
+            setSelected('')
             setLoading(false);
         }
     };
@@ -120,7 +121,7 @@ export const DoctorSelect = ({ navigation, route }) => {
                 text="Continuar"
             />
 
-            <ButtonSecondary onPress={() => navigation.replace("Main")}>
+            <ButtonSecondary onPress={() => {navigation.replace("Main"), setSelected('')}}>
                 <ButtonSecondaryTitle>Cancelar</ButtonSecondaryTitle>
             </ButtonSecondary>
 

@@ -15,8 +15,8 @@ import LoadingButton from "../../utils/LoadingButton"
 
 export const LoginFunc = ({navigation}) => {
 
-    const [email, setEmail] = useState('paciente3@email.com');
-    const [senha, setSenha] = useState('paciente123');
+    const [email, setEmail] = useState('medico3@email.com');
+    const [senha, setSenha] = useState('medico123');
     const [loading, setLoading] = useState(false);
 
 

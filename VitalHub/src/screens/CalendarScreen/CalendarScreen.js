@@ -31,7 +31,7 @@ export const CalendarScreen = ({ navigation, route}) => {
     const calendarScreen = async () => {
         setLoading(true);
 
-        if (dataSelecionada != "" || horaSelecionada != "") {
+        if (dataSelecionada != "" && horaSelecionada != "") {
             
             try {
     
@@ -46,7 +46,10 @@ export const CalendarScreen = ({ navigation, route}) => {
                 setLoading(false);
             }
         } else {
+
             alert("Favor selecionar uma data para a consulta!")
+            setDataSelecionada("")
+            setHoraSelecionada(horaSelecionada)
             setLoading(false); 
         }
     };
