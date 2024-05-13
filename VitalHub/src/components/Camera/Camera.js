@@ -5,16 +5,19 @@ import { useEffect, useRef, useState } from 'react'
 import * as MediaLibrary from 'expo-media-library'
 import * as ImagePicker from 'expo-image-picker'
 import { FontAwesome, FontAwesome6, AntDesign } from '@expo/vector-icons';
-import { LastPhoto } from './Style'
+import { ButtonReturnCamera, LastPhoto, ReturnCamera } from './Style'
 
-export const CameraComp = ({ visible, setShowCamera, setUriCameraCapture, getMediaLibrary = false, ...rest }) => {
+
+export const CameraComp = ({navigation, visible, setShowCamera, setUriCameraCapture, getMediaLibrary = false, ...rest }) => {
 
     const cameraRef = useRef(null);
     const [photo, setPhoto] = useState(null);
     const [openModal, setOpenModal] = useState(false);
 
     const [tipoCamera, setTipoCamera] = useState(Camera.Constants.Type.front);
-    const [lastPhoto, setLastPhoto] = useState(null)
+    const [lastPhoto, setLastPhoto] = useState(null);
+    const [albums, setAlbums] = useState(null);
+    const [permissionResponse, requestPermission] = MediaLibrary.usePermissions();
 
     useEffect(() => {
         (async () => {
@@ -45,6 +48,14 @@ export const CameraComp = ({ visible, setShowCamera, setUriCameraCapture, getMed
         }
     }
 
+    async function fecharCamera() {
+        try {
+            setShowCamera(false); 
+        } catch (error) {
+            console.error('Erro ao fechar camera', error);
+        }
+    }
+
     async function CapturePhoto() {
         if (cameraRef) {
             const photo = await cameraRef.current.takePictureAsync({ quality: 1 });
@@ -66,13 +77,21 @@ export const CameraComp = ({ visible, setShowCamera, setUriCameraCapture, getMed
         setOpenModal(false)
         setShowCamera(false)
     }
+    
 
     async function GetLastPhoto() {
-        const assets = await MediaLibrary.getAssetsAsync({ sortBy: [[MediaLibrary.SortBy.creationTime, false]], first: 1 })
+        const {assets} = await MediaLibrary.getAssetsAsync({ sortBy: [[MediaLibrary.SortBy.creationTime, false]], first: 1 })
+        console.log('assets')
         console.log(assets);
 
         if (assets.length > 0) {
-            setLastPhoto(assets[0].uri)
+            const infoAssets = await MediaLibrary.getAssetInfoAsync(assets[0].id)
+            console.log('infoAssets')
+            console.log(infoAssets)
+            setLastPhoto(infoAssets.localUri)
+            // setLastPhoto(assets[0].uri)
+
+            
         }
     }
 
@@ -94,13 +113,13 @@ export const CameraComp = ({ visible, setShowCamera, setUriCameraCapture, getMed
 
     return (
 
-        
+
         <Modal
             visible={visible}
         >
             <Container>
 
-                {console.log("teste lastfoto", lastPhoto) }
+                {console.log("teste lastfoto", lastPhoto)}
 
                 <Camera
                     ref={cameraRef}
@@ -111,14 +130,22 @@ export const CameraComp = ({ visible, setShowCamera, setUriCameraCapture, getMed
                     autoFocus={Camera.Constants.AutoFocus.on}
                 />
 
+                <ButtonReturnCamera
+                    onPress={fecharCamera}
+                >
+                    <ReturnCamera
+                        source={require('../../assets/Images/Icon_Back.png')}
+                    />
+                </ButtonReturnCamera>
+
                 <View style={styles.viewFlip}>
 
 
                     <TouchableOpacity style={styles.btnGallery} onPress={SelectImageGallery}>
                         {
-                            lastPhoto !== null ? (
+                            lastPhoto != null ? (
                                 <LastPhoto
-                                    source={{ uri: lastPhoto.uri  }}
+                                    source={{ uri: lastPhoto }}
                                 />
                             ) : (
                                 <AntDesign name="picture" size={30} color={'#fff'} />
@@ -160,6 +187,7 @@ export const CameraComp = ({ visible, setShowCamera, setUriCameraCapture, getMed
             </Container>
         </Modal>
     )
+    
 }
 
 const styles = StyleSheet.create({
@@ -201,10 +229,10 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     btnGallery: {
-        margin: 20,
-        padding: 20,
+        // margin: 20,
+        padding: 22,
         borderRadius: 15,
-        backgroundColor: "#121212",
+        // backgroundColor: "#121212",
 
         alignItems: 'center',
 
