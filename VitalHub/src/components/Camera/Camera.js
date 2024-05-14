@@ -84,7 +84,7 @@ export const CameraComp = ({navigation, visible, setShowCamera, setUriCameraCapt
         console.log('assets')
         console.log(assets);
 
-        // if (assets.length > 0) {
+        if (assets.length > 0) {
             const infoAssets = await MediaLibrary.getAssetInfoAsync(assets[0].id)
             console.log('infoAssets')
             console.log(infoAssets)

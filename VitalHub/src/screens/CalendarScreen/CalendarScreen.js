@@ -71,6 +71,7 @@ export const CalendarScreen = ({ navigation, route}) => {
                 <InputSelect
                     setHoraSelecionada={setHoraSelecionada}
                 />
+                
             </ContainerSelect>
 
             <LoadingButton
