@@ -28,14 +28,14 @@ export const HomeFunc = ({ navigation }) => {
 
     const [consultaSelecionada, setConsultaSelecionada] = useState(null);
 
-    async function MostrarModal(modal, consulta) {
+    async function MostrarModal(modal, consulta, profileData) {
         setConsultaSelecionada(consulta)
 
 
         if (modal == 'cancelar') {
             setShowModalCancel(true)
         } else {
-                setShowModalAppointment(true)
+            setShowModalAppointment(true)
         }
     }
 

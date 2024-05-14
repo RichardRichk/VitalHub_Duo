@@ -6,11 +6,14 @@ import { ContainerModalText, ImageModalAppointment, ModalTextAppointment } from 
 import { useEffect, useState } from "react";
 import LoadingButton from "../../utils/LoadingButton";
 
-const AppointmentModal = ({ navigation, usuarioConsulta, profileData, consulta, situacao ,visible, setShowModalAppointment,...rest }) => {
+const AppointmentModal = ({ navigation, onPressAppointment, usuarioConsulta, profileData, consulta, situacao ,visible, setShowModalAppointment,...rest }) => {
 
 
     const [loading, setLoading] = useState(false);
-    
+   
+    console.log("ProfileData", profileData);
+    console.log("Consulta", consulta);
+
 
     async function handleClose(screen){
         
@@ -25,6 +28,12 @@ const AppointmentModal = ({ navigation, usuarioConsulta, profileData, consulta, 
         }
     }
 
+    async function handleCloseForm(screen) {
+            await setShowModalAppointment(false)
+
+            navigation.replace(screen, {profileData: profileData, idConsulta: consulta.id})
+    }
+
     // Função para loading do botao
     const appointmentModal = async () => {
         setLoading(true); 
@@ -35,6 +44,23 @@ const AppointmentModal = ({ navigation, usuarioConsulta, profileData, consulta, 
             setLoading(false); 
             
             await handleClose("ClinicAdress")
+            
+        } catch (error) {
+            setLoading(false); 
+        }
+    };
+
+
+    const appointmentModalprontuario = async () => {
+        setLoading(true); 
+
+        try {
+
+            await new Promise(resolve => setTimeout(resolve, 800));
+            setLoading(false); 
+
+            await handleCloseForm("FormRequire")
+            
             
         } catch (error) {
             setLoading(false); 
@@ -70,17 +96,27 @@ const AppointmentModal = ({ navigation, usuarioConsulta, profileData, consulta, 
                             </>
                         ) : situacao == "Pendentes" ? (
 
-                            <LoadingButton 
-                            onPress={appointmentModal}
-                            disabled={loading} 
-                            loading={loading} 
-                            text="Ver Local da Consulta"
-                        />
+                            profileData.role == "Paciente" ? (
+                                <LoadingButton 
+                                    onPress={appointmentModal}
+                                    disabled={loading} 
+                                    loading={loading} 
+                                    text="Ver Local da Consulta"
+                                />
+                            ) :(
+                                <LoadingButton 
+                                onPress={appointmentModalprontuario}
+                                disabled={loading} 
+                                loading={loading} 
+                                text="Inserir Prontuario"
+                            />
+                            ) 
+                        
 
                         ) : (
-                            <ButtonModal onPress={() => handleClose("ClinicAdress")}>
+                            <ButtonModal onPress={() => navigation.navigate("FormRequire")}>
                                 {/* {setShowModalAppointment(false); navigation.navigate("FormRequire")} */}
-                                <TextButton>Inserir Prontuario</TextButton>
+                                <TextButton>Ver Prontuario</TextButton>
                             </ButtonModal>
                         )
                     }
