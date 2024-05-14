@@ -13,6 +13,8 @@ import api from "../../Service/Service"
 
 export const FormRequire = ({ navigation, route }) => {
 
+    console.log(`route.params`)
+    console.log(route.params)
     const { profileData, idConsulta } = route.params;
 
     const [showCamera, setShowCamera] = useState(false);

@@ -35,7 +35,7 @@ export const CreateAccountFunc = ({ navigation }) => {
         formData.append('File', null);
 
         try {
-            if (senha === confirmPassword) {
+            if (senha == confirmPassword) {
                 setLoading(true); 
                 const response = await api.post('/Pacientes', formData, {
                     headers: {
@@ -47,16 +47,19 @@ export const CreateAccountFunc = ({ navigation }) => {
                     Notification("Usuario Cadastrado", "Sucesso")
                     await Login(); // Chama o login após o cadastro
                     Notification("Usuario Cadastrado")
-                }
-            }
-        } catch (error) {
-            console.log(error.response.status);
-            console.log(error.response.data);
-        } finally {
-            setLoading(false); 
+                    setLoading(false); 
             navigation.replace('Login'); // Navega para a tela de login
             Alert.alert("Conta cadastrada")
-        }
+                }
+            }
+            else{
+                alert(`Os dados nao conferem, tente novamente!`)
+                navigation.replace("Create_Account")
+            }
+
+        } catch (error) {
+            console.log(error.response.status);
+            console.log(error.response.data);}
     }
 
     async function Login() {
