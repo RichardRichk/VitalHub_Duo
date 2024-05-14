@@ -74,6 +74,7 @@ export const ProfileFunc = ({ navigation }) => {
                 const response = await api.get(`/Medicos/BuscarPorId?id=${userId}`);
                 setUserData(response.data);
                 setUriCameraCapture(response.data.idNavigation.foto);
+                console.log("UserData",response.data);
             } catch (error) {
                 console.log(error);
             }
@@ -138,7 +139,7 @@ export const ProfileFunc = ({ navigation }) => {
         })	
     }
 
-    const handleSave = async () => {
+    const handleSavePaciente = async () => {
         try {
             const requestBody = {
                 rg: userData.rg,
@@ -146,17 +147,43 @@ export const ProfileFunc = ({ navigation }) => {
                 dataNascimento: editedDateOfBirth || userData.dataNascimento,
                 cep: editedCEP || userData.endereco?.cep,
                 logradouro: editedAddress || userData.endereco?.logradouro,
-                numero: userData.endereco?.numero, // Este campo não parece estar sendo editado no front-end, então mantive o valor original
+                numero: userData.endereco?.numero,
                 cidade: editedCity || userData.endereco?.cidade,
-                nome: editedName || name,
-                email: editedEmail || email,
-                senha: userData.senha, // Mantive a senha original, mas pode ser necessário alterá-la também
-                idTipoUsuario: userData.idTipoUsuario, // Mantive o ID do tipo de usuário original
-                arquivo: "string", // Não está claro o que isso representa, então mantive "string"
-                foto: uriCameraCapture || userData.foto // Usamos a nova foto se disponível, caso contrário, mantemos a foto original
+                nome: name,
+                email: email,
+                senha: userData.senha,
+                idTipoUsuario: userData.idTipoUsuario,
+                arquivo: "string", 
+                foto: uriCameraCapture || userData.foto
             };
     
             const response = await api.put(`/Pacientes?idUsuario=${userId}`, requestBody);
+            setUserData(response.data);
+            setIsEditing(false);
+            setButtonText('Editar');
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    const handleSaveMedico = async () => {
+        try {
+            const requestBody = {
+                nome: name,
+                email: email,
+                senha: userData.senha,
+                arquivo: "string", 
+                foto: uriCameraCapture || userData.foto,
+                cep: editedCEP || userData.endereco?.cep,
+                logradouro: editedAddress || userData.endereco?.logradouro,
+                numero: userData.endereco?.numero,
+                cidade: editedCity || userData.endereco?.cidade,
+                especialidadeId: userData.especialidadeId,
+                crm: userData.crm,
+                idTipoUsuario: userData.tipoUsuarioId
+            };
+    
+            const response = await api.put(`/Medicos?idUsuario=${userId}`, requestBody);
             setUserData(response.data);
             setIsEditing(false);
             setButtonText('Editar');
@@ -190,7 +217,7 @@ export const ProfileFunc = ({ navigation }) => {
 
                 {userType == "Paciente" ? <>
 
-                    <InputLabel>{userType == "Paciente" ? 'Data de nascimento:' : 'Especialidade:'}</InputLabel>
+                    <InputLabel>{userType == "Paciente" ? 'Data de nascimento:' : ''}</InputLabel>
                     <InputProfile
                         placeholder={userData.dataNascimento ? `${moment(userData.dataNascimento).format('DD-MM-YYYY')}` : ''}
                         onChangeText={text => setEditedDateOfBirth(text)}
@@ -202,7 +229,7 @@ export const ProfileFunc = ({ navigation }) => {
                 <InputProfile
                     placeholder={userData.cpf ? `${userData.cpf}` : `${userData.crm}`}
                     onChangeText={text => setEditedCPF(text)}
-                    editable={isEditing}
+                    editable={false}
                 />
 
                 <InputLabel>Endereço</InputLabel>
@@ -233,8 +260,8 @@ export const ProfileFunc = ({ navigation }) => {
                     </BoxInput>
                 </ContentInput>
 
-                <Button onPress={isEditing ? handleSave : handleEditToggle}>
-                    <TextButton>{buttonText}</TextButton>
+                <Button onPress={isEditing ? (userType == "Paciente" ? handleSavePaciente : handleSaveMedico) : handleEditToggle}>
+                    <TextButton>{buttonText}</TextButton> 
                 </Button>
 
                 <ButtonSecondary onPress={handleLogout}>
