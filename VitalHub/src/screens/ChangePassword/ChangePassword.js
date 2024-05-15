@@ -44,7 +44,6 @@ export const ChangePassword = ({ navigation, route }) => {
 
     return (
         <Container>
-            {console.log(route)}
             <ButtonReturnIcon
                 onPress={() => navigation.replace('Login')}
             >

@@ -42,7 +42,6 @@ export const EmailVerify = ({navigation, route}) => {
     }
 
     async function ValidarCodigo(){
-        console.log( codigo );
         
         await api.post(`/RecuperarSenha/ValidarCodigoRecuperacaoSenha?email=${route.params.emailRecuperacao}&codigo=${codigo}`)
         .then( () =>{
@@ -50,7 +49,7 @@ export const EmailVerify = ({navigation, route}) => {
         }).catch(error =>{
             console.log(error);
             alert("Codigo invalido")
-            navigation.replace("Email_Verify")
+            navigation.replace("Forgot_Password")
         })
     }
 
@@ -61,7 +60,6 @@ export const EmailVerify = ({navigation, route}) => {
 
     return(
         <Container>
-            {console.log("route EmailVerify", route)}
             
             {/* Criar componente para agilizar */}
             <ButtonReturnIcon
@@ -78,7 +76,7 @@ export const EmailVerify = ({navigation, route}) => {
 
             <Title>VERIFIQUE SEU E-MAIL</Title>
 
-            <SubTitle>Digite o código de 4 dígitos enviado para username@email.com
+            <SubTitle>Digite o código de 4 dígitos enviado para {route.params.emailRecuperacao}
                 {/* {route.parms.emailRecuperacao} */}
             </SubTitle>
 

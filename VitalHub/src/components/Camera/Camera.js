@@ -81,13 +81,11 @@ export const CameraComp = ({navigation, visible, setShowCamera, setUriCameraCapt
 
     async function GetLastPhoto() {
         const {assets} = await MediaLibrary.getAssetsAsync({ sortBy: [[MediaLibrary.SortBy.creationTime, false]], first: 1 })
-        console.log('assets')
-        console.log(assets);
+
 
         if (assets.length > 0) {
             const infoAssets = await MediaLibrary.getAssetInfoAsync(assets[0].id)
-            console.log('infoAssets')
-            console.log(infoAssets)
+
             setLastPhoto(infoAssets.localUri)
             
         //     setLastPhoto(assets[0].uri)
@@ -130,7 +128,7 @@ export const CameraComp = ({navigation, visible, setShowCamera, setUriCameraCapt
         >
             <Container>
 
-                {console.log("teste lastfoto", lastPhoto)}
+
 
                 <Camera
                     ref={cameraRef}

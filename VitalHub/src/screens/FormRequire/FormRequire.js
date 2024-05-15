@@ -10,11 +10,10 @@ import { useEffect, useState } from "react"
 import { CameraComp } from "../../components/Camera/Camera"
 import LoadingButton from "../../utils/LoadingButton"
 import api from "../../Service/Service"
+import { Alert } from "react-native"
 
 export const FormRequire = ({ navigation, route }) => {
 
-    console.log(`route.params`)
-    console.log(route.params)
     const { profileData, idConsulta } = route.params;
 
     const [showCamera, setShowCamera] = useState(false);
@@ -45,8 +44,6 @@ export const FormRequire = ({ navigation, route }) => {
         setUserType(profileData.role);
         setName(profileData.name);
         setEmail(profileData.email)
-        console.log(profileData);
-
     }, [profileData])
 
     useEffect(() => {
@@ -122,6 +119,15 @@ export const FormRequire = ({ navigation, route }) => {
             setDiagnostico(response.data.diagnostico);
             setLoading(false);
             setIsEditing(false);
+
+            if (response.status == 200) {
+                try {
+                    await api.put(`/Consultas/Status?idConsulta=${idConsulta}&status=Realizados`)
+                } catch (error) {
+                    Alert.alert("erro ao marcar como realizada")
+                }
+                navigation.replace("Main")
+            }
             
         } catch (error) {
             console.log(error);
@@ -129,29 +135,26 @@ export const FormRequire = ({ navigation, route }) => {
         }
     }
 
-    async function InsertRecord() {
-        try {
-            response = await api.put('/Consultas/Prontuario', {
-                consultaId:idConsulta,
-                medicamento: receita,
-                descricao: descricao,
-                diagnostico: diagnostico
+    // async function InsertRecord() {
+    //     try {
+    //         response = await api.put('/Consultas/Prontuario', {
+    //             consultaId: idConsulta,
+    //             medicamento: receita,
+    //             descricao: descricao,
+    //             diagnostico: diagnostico
 
-            })
-            if (response) {
-                try {
-                    await api.put(`/Consultas/Status?idConsulta=${idConsulta}&status=Realizados`)
-                } catch (error) {
-                    Alert.alert("erro ao marcar como realizada")
-                }
-            }
-            navigation.replace("Main")
-        } catch (error) {
-            Alert.alert('erro ao inserir prontuario')
-        }
-
- 
-    }
+    //         })
+    //         if (response) {
+    //             try {
+    //                 await api.put(`/Consultas/Status?idConsulta=${idConsulta}&status=Realizados`)
+    //             } catch (error) {
+    //                 Alert.alert("erro ao marcar como realizada")
+    //             }
+    //         }
+    //         navigation.replace("Main")
+    //     } catch (error) {
+    //         Alert.alert('erro ao inserir prontuario')
+    //     }}
 
 
     return (
@@ -202,6 +205,7 @@ export const FormRequire = ({ navigation, route }) => {
                     <ButtonWithMargin onPress={() => { setIsEditing(!isEditing) }}>
                         <TextButton>Editar </TextButton>
                     </ButtonWithMargin>
+
                 )}
 
                 {isEditing == true && (

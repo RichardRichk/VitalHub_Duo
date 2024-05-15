@@ -11,7 +11,7 @@ export const ForgotPassword = ({ navigation }) => {
 
     const [loading, setLoading] = useState(false);
 
-    const [email, setEmail] = useState('alvesbautistajoaovictor@gmail.com');
+    const [email, setEmail] = useState('');
 
     async function EnviarEmail(){
         await api.post(`/RecuperarSenha?email=${email}`)
@@ -32,7 +32,7 @@ export const ForgotPassword = ({ navigation }) => {
             EnviarEmail();
 
         } catch (error) {
-            console.error("Erro ao cancelar consulta:", error);
+            console.error(error);
             setLoading(false);
         }
     };

@@ -25,7 +25,6 @@ export const ClinicAdress = ({ navigation, route }) => {
             .then(response => {
                 setClinica(response.data)
 
-                console.log(response.data);
             }).catch(error => {
 
             })

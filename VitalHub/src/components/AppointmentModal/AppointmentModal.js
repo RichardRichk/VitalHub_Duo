@@ -10,10 +10,6 @@ const AppointmentModal = ({ navigation, onPressAppointment, usuarioConsulta, pro
 
 
     const [loading, setLoading] = useState(false);
-   
-    console.log("ProfileData", profileData);
-    console.log("Consulta", consulta);
-
 
     async function handleClose(screen){
         
@@ -111,12 +107,14 @@ const AppointmentModal = ({ navigation, onPressAppointment, usuarioConsulta, pro
                                 text="Inserir Prontuario"
                             />
                             ) 
-                        
-
+                            
                         ) : (
-                            <Text>
-                                
-                            </Text>
+                            <LoadingButton 
+                                    onPress={appointmentModal}
+                                    disabled={loading} 
+                                    loading={loading} 
+                                    text="Ver Local da Consulta"
+                            />
                         )
                     }
                     

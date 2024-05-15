@@ -62,7 +62,6 @@ namespace WebAPI.Controllers
                 user.TipoUsuarioId = pacienteModel.IdTipoUsuario;
 
 
-
                 //Envio da imagem/arquivo
                 user.Foto = await AzureBlobStorageHelper.UploadImageBlobAsync(pacienteModel.Arquivo!, connectionString, containerName);
 
