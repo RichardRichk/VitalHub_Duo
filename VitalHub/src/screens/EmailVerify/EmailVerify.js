@@ -49,6 +49,8 @@ export const EmailVerify = ({navigation, route}) => {
             navigation.replace("Change_Password", {emailRecuperacao : route.params.emailRecuperacao});
         }).catch(error =>{
             console.log(error);
+            alert("Codigo invalido")
+            navigation.replace("Email_Verify")
         })
     }
 

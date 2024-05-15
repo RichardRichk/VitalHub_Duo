@@ -1,4 +1,4 @@
-import { Modal } from "react-native"
+import { Modal, Text } from "react-native"
 import { Title } from "../Title/Style"
 import { ModalContent, ModalText, PatientModal } from "../CancellationModal/Style"
 import { ButtonModal, ButtonSecondary, ButtonSecondaryTitle, TextButton } from "../Button/Style"
@@ -114,10 +114,9 @@ const AppointmentModal = ({ navigation, onPressAppointment, usuarioConsulta, pro
                         
 
                         ) : (
-                            <ButtonModal onPress={() => navigation.navigate("FormRequire")}>
-                                {/* {setShowModalAppointment(false); navigation.navigate("FormRequire")} */}
-                                <TextButton>Ver Prontuario</TextButton>
-                            </ButtonModal>
+                            <Text>
+                                
+                            </Text>
                         )
                     }
                     

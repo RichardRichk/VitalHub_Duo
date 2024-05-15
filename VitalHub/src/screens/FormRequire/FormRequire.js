@@ -80,6 +80,7 @@ export const FormRequire = ({ navigation, route }) => {
 
             await new Promise(resolve => setTimeout(resolve, 800));
             EditForm();
+            
 
         } catch (error) {
             console.error(error);
@@ -128,7 +129,29 @@ export const FormRequire = ({ navigation, route }) => {
         }
     }
 
+    async function InsertRecord() {
+        try {
+            response = await api.put('/Consultas/Prontuario', {
+                consultaId:idConsulta,
+                medicamento: receita,
+                descricao: descricao,
+                diagnostico: diagnostico
 
+            })
+            if (response) {
+                try {
+                    await api.put(`/Consultas/Status?idConsulta=${idConsulta}&status=Realizados`)
+                } catch (error) {
+                    Alert.alert("erro ao marcar como realizada")
+                }
+            }
+            navigation.replace("Main")
+        } catch (error) {
+            Alert.alert('erro ao inserir prontuario')
+        }
+
+ 
+    }
 
 
     return (

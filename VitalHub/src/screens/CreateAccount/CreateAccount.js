@@ -12,24 +12,26 @@ import { Alert } from "react-native";
 
 export const CreateAccountFunc = ({ navigation }) => {
     const [loading, setLoading] = useState(false);
-    const [nome, setNome] = useState("Joao Alves");
-    const [email, setEmail] = useState("paciente6@gmail.com");
-    const [senha, setSenha] = useState("paciente123");
-    const [confirmPassword, setConfirmPassword] = useState("paciente123");
+    const [nome, setNome] = useState("");
+    const [email, setEmail] = useState("");
+    const [senha, setSenha] = useState("");
+    const [confirmPassword, setConfirmPassword] = useState("");
 
     async function Create(){
 
         const formData = new FormData();
-        formData.append('Rg', null);
-        formData.append('Cpf', null);
+        
+        formData.append('')
+        formData.append('Rg', "");
+        formData.append('Cpf', "");
         formData.append('DataNascimento', "");
-        formData.append('Cep', null);
-        formData.append('Logadouro', null);
+        formData.append('Cep', "");
+        formData.append('logradouro', "");
         formData.append('Numero', "");
         formData.append('Nome', nome);
         formData.append('Email', email);
         formData.append('Senha', senha);
-        formData.append('Cidade', null);
+        formData.append('Cidade', "");
         formData.append('IdTipoUsuario', '676F07F1-73CC-4B59-83E6-F07064DB4C4F');
         formData.append('Foto', null);
         formData.append('File', null);
