@@ -25,10 +25,11 @@ export const HomeFunc = ({ navigation }) => {
     const [showModalAppointment, setShowModalAppointment] = useState(false);
     const [showScheduleModal, setShowScheduleModal] = useState(false);
     const [consultas, setConsultas] = useState([]);
+    const [clinicAdress, setClinicAdress] = useState(null)
 
     const [consultaSelecionada, setConsultaSelecionada] = useState(null);
 
-    async function MostrarModal(modal, consulta, profileData) {
+    async function MostrarModal(modal, consulta) {
         setConsultaSelecionada(consulta)
 
 
@@ -50,6 +51,15 @@ export const HomeFunc = ({ navigation }) => {
             // Trate o erro, se necessário
         }
     }
+
+    async function FoundClinicAdress() {
+        try {
+          response = await api.get(`/Clinica/ListarTodas`)
+          setClinicAdress(response.data);
+        } catch (error) {
+          console.log(error);
+        }
+      }
     
 
     useEffect(() => {
@@ -64,6 +74,7 @@ export const HomeFunc = ({ navigation }) => {
         };
 
         profileLoad();  
+        FoundClinicAdress()
     }, []);
 
 
@@ -154,6 +165,7 @@ export const HomeFunc = ({ navigation }) => {
                     }
                     consulta={consultaSelecionada}
                     profileData={profileData}
+                    userType={userType}
 
                     visible={showModalAppointment}
                     setShowModalAppointment={setShowModalAppointment}
@@ -166,6 +178,7 @@ export const HomeFunc = ({ navigation }) => {
                     setShowScheduleModal={setShowScheduleModal}
                     navigation={navigation}
                     userId={profileData.id}
+                    clinicAdress={clinicAdress}
                 />
 
             </ContainerScroll>

@@ -66,7 +66,6 @@ export const DoctorSelect = ({ navigation, route }) => {
         await api.get(`/Medicos/BuscarPorIdClinica?id=${route.params.agendamento.clinicaId}`)
             .then(response => {
                 setMedicosLista(response.data)
-                console.log(response.data);
             }).catch(error => {
                 console.log(error);
             })

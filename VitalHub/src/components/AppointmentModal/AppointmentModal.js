@@ -1,4 +1,4 @@
-import { Modal } from "react-native"
+import { Modal, Text } from "react-native"
 import { Title } from "../Title/Style"
 import { ModalContent, ModalText, PatientModal } from "../CancellationModal/Style"
 import { ButtonModal, ButtonSecondary, ButtonSecondaryTitle, TextButton } from "../Button/Style"
@@ -10,10 +10,6 @@ const AppointmentModal = ({ navigation, onPressAppointment, usuarioConsulta, pro
 
 
     const [loading, setLoading] = useState(false);
-   
-    console.log("ProfileData", profileData);
-    console.log("Consulta", consulta);
-
 
     async function handleClose(screen){
         
@@ -111,13 +107,14 @@ const AppointmentModal = ({ navigation, onPressAppointment, usuarioConsulta, pro
                                 text="Inserir Prontuario"
                             />
                             ) 
-                        
-
+                            
                         ) : (
-                            <ButtonModal onPress={() => navigation.navigate("FormRequire")}>
-                                {/* {setShowModalAppointment(false); navigation.navigate("FormRequire")} */}
-                                <TextButton>Ver Prontuario</TextButton>
-                            </ButtonModal>
+                            <LoadingButton 
+                                    onPress={appointmentModal}
+                                    disabled={loading} 
+                                    loading={loading} 
+                                    text="Ver Local da Consulta"
+                            />
                         )
                     }
                     

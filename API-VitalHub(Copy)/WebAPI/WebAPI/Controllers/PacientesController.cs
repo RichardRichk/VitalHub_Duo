@@ -63,6 +63,7 @@ namespace WebAPI.Controllers
 
 
 
+
                 //Envio da imagem/arquivo
                 user.Foto = await AzureBlobStorageHelper.UploadImageBlobAsync(pacienteModel.Arquivo!, connectionString, containerName);
 

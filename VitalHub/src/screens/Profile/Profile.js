@@ -74,7 +74,7 @@ export const ProfileFunc = ({ navigation }) => {
                 const response = await api.get(`/Medicos/BuscarPorId?id=${userId}`);
                 setUserData(response.data);
                 setUriCameraCapture(response.data.idNavigation.foto);
-                console.log("UserData",response.data);
+
             } catch (error) {
                 console.log(error);
             }

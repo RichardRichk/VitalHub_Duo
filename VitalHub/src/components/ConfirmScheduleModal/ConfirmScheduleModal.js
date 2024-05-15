@@ -38,12 +38,13 @@ export const ConfirmScheduleModal = ({ navigation, token, route, dataConsulta, a
 
 
     async function ConfirmarConsulta(){
-        console.log("Agendamento");
+
         console.log({
 
             ...agendamento,
 
-            situacaoId : `612893C7-CBCA-4C96-9CB9-2D9C5E78EFF2`,
+            //situacaoId : `612893C7-CBCA-4C96-9CB9-2D9C5E78EFF2`,
+            situacaoId :'D01CAEEB-31A1-44CD-809F-167961232B95',
             pacienteId : profileId,
 
         });
@@ -51,7 +52,8 @@ export const ConfirmScheduleModal = ({ navigation, token, route, dataConsulta, a
 
             ...agendamento,
 
-            situacaoId : `612893C7-CBCA-4C96-9CB9-2D9C5E78EFF2`,
+            //situacaoId : `612893C7-CBCA-4C96-9CB9-2D9C5E78EFF2`,
+            situacaoId :'D01CAEEB-31A1-44CD-809F-167961232B95',
             pacienteId : profileId,
 
         }).then(async response =>{
@@ -62,7 +64,7 @@ export const ConfirmScheduleModal = ({ navigation, token, route, dataConsulta, a
         }).catch(error => {
             console.log(error);
         })
-        console.log("Passou a funcao");
+
     }
 
     useEffect(() =>{

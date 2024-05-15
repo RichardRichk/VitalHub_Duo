@@ -131,11 +131,10 @@ export const CardAppointment = ({
     return (
         <ContainerCard onPress={() => {
 
-            if (situacao === "Realizados" && userType === "Paciente") {
-                navigation.replace("FormRequire");
-            } else if (situacao == "Pendentes" || situacao === "Realizados") {
+            if (situacao == "Pendentes" || situacao === "Realizados") {
+                
                 onPressCard();
-            }
+            } 
         }
         }>
 

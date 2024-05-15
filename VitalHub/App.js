@@ -40,8 +40,8 @@ export default function App() {
   if(!fontsLoaded && !fontsError){
     return null;
   }
-  // LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
-  // LogBox.ignoreAllLogs();//Ignore all log notifications
+  LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
+  LogBox.ignoreAllLogs();//Ignore all log notifications
 
   return (
     // Navegacao

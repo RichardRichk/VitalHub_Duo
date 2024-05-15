@@ -11,8 +11,7 @@ import api from "../../Service/Service";
 
 export const Map = (latitude, longitude) => {
 
-    console.log(latitude, longitude);
-    
+
     const mapReference = useRef(null) // Referência para o mapa
     const [initialPosition, setInitialPosition] = useState(null)
     const [finalPosition, setFinalPosition] = useState({})

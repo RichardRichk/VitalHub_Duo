@@ -8,17 +8,24 @@ import { ContentAccount, ContentForgot, ContentText } from "../../components/Con
 import AsyncStorage from "@react-native-async-storage/async-storage"
 
 import api from "../../Service/Service"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { ActivityIndicator, Alert } from "react-native"
 import LoadingButton from "../../utils/LoadingButton"
 
 
-export const LoginFunc = ({navigation}) => {
+export const LoginFunc = ({navigation, route}) => {
 
-    const [email, setEmail] = useState('paciente3@email.com');
-    const [senha, setSenha] = useState('paciente123');
+    const [email, setEmail] = useState('');
+    const [senha, setSenha] = useState('');
     const [loading, setLoading] = useState(false);
 
+    useEffect(() => {
+        if (route.params != undefined) {
+            
+            setEmail(route.params.email)
+        }
+
+    },[route.params])
 
 //Chama funcao de login
     async function Login(){
@@ -58,7 +65,7 @@ export const LoginFunc = ({navigation}) => {
 
  
             <Input
-                placeholder="Usuario ou Email"
+                placeholder={email ? `${email}` : "Usuario ou Email"}
                 onChangeText = {(txt) => setEmail(txt)}
                 value={email}
             />
