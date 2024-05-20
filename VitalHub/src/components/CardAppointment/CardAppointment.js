@@ -137,10 +137,9 @@ export const CardAppointment = ({
             } 
         }
         }>
-
-            {fotoCard !== null && (
+            {fotoCard != null && (
                 <ImageCard
-                    source={{ uri: fotoCard }}
+                    source={{uri: fotoCard}}
                 />
             )}
 
@@ -153,7 +152,7 @@ export const CardAppointment = ({
 
                     <ProfileDataCard>
 
-                        <TextAge>{profileData.role != "Paciente" ? `Idade: ${idadePaciente}` : ''}</TextAge>
+                        {/* <TextAge>{profileData.role != "Paciente" ? `Idade: ${idadePaciente}` : ''}</TextAge> */}
                         <TextType>{prioridade}</TextType>
 
                     </ProfileDataCard>

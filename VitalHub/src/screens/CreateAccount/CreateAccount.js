@@ -44,7 +44,7 @@ export const CreateAccountFunc = ({ navigation }) => {
             if (cpf == "" || nome == "" || email == "" || senha == "" || confirmPassword == "") {
                 Alert.alert("Confira os dados e tente novamente")
             }
-            else if (cpf.length <=11){
+            else if (cpf.length <= 10 && cpf.length <12){
                 Alert.alert("CPF Inválido")
             }
             else if (senha.length <=6) {

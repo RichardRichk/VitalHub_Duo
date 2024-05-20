@@ -159,8 +159,8 @@ export const ProfileFunc = ({ navigation }) => {
     
             const response = await api.put(`/Pacientes?idUsuario=${userId}`, requestBody);
             setUserData(response.data);
-            setIsEditing(false);
-            setButtonText('Editar');
+            setIsEditing(!isEditing);
+            setButtonText(isEditing ? 'Editar' : 'Salvar');
         } catch (error) {
             console.log(error);
         }
@@ -185,8 +185,8 @@ export const ProfileFunc = ({ navigation }) => {
     
             const response = await api.put(`/Medicos?idUsuario=${userId}`, requestBody);
             setUserData(response.data);
-            setIsEditing(false);
-            setButtonText('Editar');
+            setIsEditing(!isEditing);
+        setButtonText(isEditing ? 'Editar' : 'Salvar');
         } catch (error) {
             console.log(error);
         }

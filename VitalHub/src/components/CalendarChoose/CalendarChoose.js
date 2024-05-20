@@ -1,13 +1,16 @@
-import { React, useState } from 'react';
+import React, { useState } from 'react';
 import { Text } from 'react-native';
 import { Calendar, LocaleConfig } from 'react-native-calendars';
+import moment from 'moment';
+import 'moment/locale/pt-br';
 
-//Idioma
+// Configuração do idioma
 LocaleConfig.locales['pt-br'] = {
     monthNames: [
         'Janeiro', 
         'Fevereiro', 
-        'Março', 'Abril', 
+        'Março', 
+        'Abril', 
         'Maio', 
         'Junho', 
         'Julho', 
@@ -17,7 +20,6 @@ LocaleConfig.locales['pt-br'] = {
         'Novembro', 
         'Dezembro'
     ],
-
     monthNamesShort: [
         'jan.', 
         'fev.', 
@@ -32,25 +34,24 @@ LocaleConfig.locales['pt-br'] = {
         'nov.', 
         'dez.'
     ],
-
     dayNames: ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'],
     dayNamesShort: ['dom.', 'seg.', 'ter.', 'qua.', 'qui.', 'sex.', 'sáb.'],
     today: "Hoje"
 };
 
-//Idioma padrao
+// Idioma padrão
 LocaleConfig.defaultLocale = 'pt-br';
+moment.locale('pt-br');
 
+export const CalendarChoose = ({ setDataSelecionada, dataSelecionada }) => {
 
-export const CalendarChoose = ({setDataSelecionada, dataSelecionada}) => {
-
-    //Data Selecionada
+    // Data Selecionada
     const [selected, setSelected] = useState('');
 
     const isFutureDate = (dateString) => {
-        const selectedDate = new Date(dateString);
-        const currentDate = new Date();
-        return selectedDate > currentDate;
+        const selectedDate = moment(dateString);
+        const currentDate = moment().startOf('day');
+        return selectedDate.isSameOrAfter(currentDate, 'day');
     };
 
     return (
@@ -62,59 +63,37 @@ export const CalendarChoose = ({setDataSelecionada, dataSelecionada}) => {
                 marginBottom: 170,
                 marginTop: 35,
             }}
-
-            onDayPress={ (date) => setDataSelecionada(date.dateString)}
-
             markedDates={{
-                [dataSelecionada]:{
+                [dataSelecionada]: {
                     selected: true,
-                    disableTouchEvent:true
+                    disableTouchEvent: true
                 },
             }}
-            
             useNativeAndroidPickerStyle={false}
-
-            //Esconde os dias de outros meses (Não esta sendo utilizado)
-            //hideExtraDays
-
-            //Permite a mudança de meses
+            hideExtraDays
             enableSwipeMonths
-
-            // Função para atualizar a data selecionada quando um dia é pressionado
-            // onDayPress={day => {
-            //     if (isFutureDate(day.dateString)) {
-            //         setSelected(day.dateString);
-            //     } else {
-            //         alert('Por favor, selecione uma data futura.');
-            //     }
-            // }}
-            
-            // Mostra as setas de navegação
+            onDayPress={date => {
+                if (isFutureDate(date.dateString)) {
+                    setDataSelecionada(date.dateString);
+                } else {
+                    alert('Por favor, selecione uma data futura.');
+                }
+            }}
             hideArrows={false}
-
-
             theme={{
-                calendarBackground: '#fafafa', // Define a cor de fundo do calendário
+                calendarBackground: '#fafafa',
                 dayContainerStyle: {
-                    backgroundColor: '#fafafa', // Define a cor de fundo dos dias do calendário
+                    backgroundColor: '#fafafa',
                 },
                 selectedDayBackgroundColor: '#49B3BA',
                 selectedDayTextColor: '#FFFFFF',
                 dayBackgroundColor: 'transparent'
             }}
-
-
-            // Marcação de datas selecionadas
-            // markedDates={{
-            //     [selected]: { selected: true, disableTouchEvent: true }
-            // }}
             customStyles={{
                 monthText: { fontFamily: "MontserratAlternates_600SemiBold", fontSize: 20 },
                 dayText: { fontFamily: "Quicksand_600SemiBold" },
             }}
-            
-            // Substituir o componente de texto padrão por um personalizado para o título do mês (Linha feita com auxilio do GPT)
-            renderHeader={(date) => <Text style={{ fontFamily: 'MontserratAlternates_600SemiBold', fontSize: 20 }}>{date.toString('MMMM yyyy')}</Text>}
+            renderHeader={(date) => <Text style={{ fontFamily: 'MontserratAlternates_600SemiBold', fontSize: 20 }}>{moment(date).format('MMMM YYYY')}</Text>}
         />
-    )
-}
+    );
+};
